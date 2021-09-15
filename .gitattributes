@@ -1,0 +1,5 @@
+# Рядом со знаком "равно" пробелов нет
+* text eol=lf
+*.vba eol=crlf
+*.xlsm binary
+*.xlsx binary
