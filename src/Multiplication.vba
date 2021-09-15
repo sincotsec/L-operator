@@ -23,7 +23,7 @@ Dim UpperBounds() As Integer
 Dim LowerBounds() As Integer
 Dim DiminishingGroupIndex As Integer
 
-Const MaxRow = 2000
+Const MaxRow = 1500
 
 ' Methods
 
