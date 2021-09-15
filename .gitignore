@@ -1,5 +1,5 @@
 # Temp Excel files
 ~$*
 *.xlsx
-
 *.xlsm
+src/Export.vba
