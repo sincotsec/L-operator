@@ -242,6 +242,23 @@ Public Sub fillRepetitionsOfNumerator()
    Next i
 End Sub
 
+Public Sub prepareSheetBefore()
+   ActiveWindow.WindowState = xlMaximized
+   ActiveWindow.FreezePanes = False
+   With Sheets(2).Cells
+      .Clear
+      .ColumnWidth = 2
+      .Interior.Pattern = xlNone
+      .Interior.Color = ColorFromHSL(WorksheetFunction.RandBetween(0, 360), 70, 40)
+      .Font.ColorIndex = xlAutomatic
+      .Font.Bold = False
+      .Font.Size = 15
+      .Font.Name = "Arial Narrow"
+      .HorizontalAlignment = xlCenter
+      .VerticalAlignment = xlCenter
+   End With
+End Sub
+
 Public Sub doMultiplication()
    Dim FactorIndex As Integer
    Dim LastRow As Long
@@ -260,7 +277,7 @@ Public Sub doMultiplication()
    Loop Until (LastRow >= MaxRow Or DiminishingGroupIndex = -1)
 End Sub
 
-Sub prepareSheetAfter()
+Public Sub prepareSheetAfter()
    Sheets(2).Select
    ActiveWindow.WindowState = xlMaximized
    Cells(NumberOfFactors + 2, 1).Select
