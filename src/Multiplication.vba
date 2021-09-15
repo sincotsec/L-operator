@@ -98,6 +98,18 @@ Public Sub fillDegreesOfDenominator()
    Numerator.groupDegreesFromOperator Denominator, Conformity
 End Sub
 
+Public Sub printPointersOfDenominator()
+   Dim i As Integer
+   Dim j As Integer
+   Dim FactorGroupIndexes() As Integer
+   For i = 0 To Denominator.NumberOfGroups - 1
+      FactorGroupIndexes = getFactorGroupIndexes(i)
+      For j = 0 To NumberOfFactors - 1
+         Sheets(2).Cells(j + 1, Denominator.FirstColumn + i) = Factors(j).Degree(FactorGroupIndexes(j))
+      Next j
+   Next i
+End Sub
+
 Public Sub setColumns()
    Dim i As Integer
    Dim ColumnIndex As Integer
@@ -147,11 +159,11 @@ Private Function getPreviousIndex(FactorIndex As Integer, ByVal DenominatorGroup
    getPreviousIndex = getDenominatorGroupIndex(PreviousFactorGroupIndexes)
 End Function
 
-Public Sub fillRepetitionUpperBounds(DenominatorGroupIndex As Integer)
-   Dim FactorIndex As Integer
+Public Function getRepetition(DenominatorGroupIndex As Integer) As Integer
    Dim i As Integer
-   Dim FactorGroupIndexes() As Integer
+   Dim FactorIndex As Integer
    Dim PreviousIndex As Integer
+   Dim FactorGroupIndexes() As Integer
    FactorGroupIndexes = getFactorGroupIndexes(DenominatorGroupIndex)
    For FactorIndex = 0 To NumberOfFactors - 1
       If isFirstIndex(FactorIndex, DenominatorGroupIndex) Then
@@ -161,30 +173,11 @@ Public Sub fillRepetitionUpperBounds(DenominatorGroupIndex As Integer)
          UpperBounds(FactorIndex, DenominatorGroupIndex) = UpperBounds(FactorIndex, PreviousIndex) - Denominator.Repetition(PreviousIndex)
       End If
    Next FactorIndex
-   Erase FactorGroupIndexes
-End Sub
-
-Public Sub fillRepetitionsOfDenominator()
-   Dim DenominatorGroupIndex As Integer
-   If DiminishingGroupIndex <> -1 Then
-      Denominator.Repetition(DiminishingGroupIndex) = Denominator.Repetition(DiminishingGroupIndex) - 1
-   End If
-   For DenominatorGroupIndex = 0 To Denominator.NumberOfGroups - 1
-      If DenominatorGroupIndex > DiminishingGroupIndex Then
-         Call fillRepetitionUpperBounds(DenominatorGroupIndex)
-         Denominator.Repetition(DenominatorGroupIndex) = getRepetition(DenominatorGroupIndex)
-         LowerBounds(DenominatorGroupIndex) = getMu(DenominatorGroupIndex)
-         If LowerBounds(DenominatorGroupIndex) < 0 Then LowerBounds(DenominatorGroupIndex) = 0
-      End If
-   Next DenominatorGroupIndex
-End Sub
-
-Public Function getRepetition(DenominatorGroupIndex As Integer) As Integer
-   Dim i As Integer
    getRepetition = UpperBounds(0, DenominatorGroupIndex)
    For i = 0 To NumberOfFactors - 1
       getRepetition = getMinimum(getRepetition, UpperBounds(i, DenominatorGroupIndex))
    Next i
+   Erase FactorGroupIndexes
 End Function
 
 Public Function getMu(DenominatorGroupIndex As Integer) As Integer
@@ -214,6 +207,20 @@ Public Function getMu(DenominatorGroupIndex As Integer) As Integer
    Next i
 End Function
 
+Public Sub fillRepetitionsOfDenominator()
+   Dim DenominatorGroupIndex As Integer
+   If DiminishingGroupIndex <> -1 Then
+      Denominator.Repetition(DiminishingGroupIndex) = Denominator.Repetition(DiminishingGroupIndex) - 1
+   End If
+   For DenominatorGroupIndex = 0 To Denominator.NumberOfGroups - 1
+      If DenominatorGroupIndex > DiminishingGroupIndex Then
+         Denominator.Repetition(DenominatorGroupIndex) = getRepetition(DenominatorGroupIndex)
+         LowerBounds(DenominatorGroupIndex) = getMu(DenominatorGroupIndex)
+         If LowerBounds(DenominatorGroupIndex) < 0 Then LowerBounds(DenominatorGroupIndex) = 0
+      End If
+   Next DenominatorGroupIndex
+End Sub
+
 Public Function getDiminishingNumberIndex() As Integer
    Dim DenominatorGroupIndex As Integer
    getDiminishingNumberIndex = -1
@@ -232,18 +239,6 @@ Public Sub fillRepetitionsOfNumerator()
    Next i
    For i = 0 To Denominator.NumberOfGroups - 1
       Numerator.Repetition(Conformity(i)) = Numerator.Repetition(Conformity(i)) + Denominator.Repetition(i)
-   Next i
-End Sub
-
-Public Sub printPointersOfDenominator()
-   Dim i As Integer
-   Dim j As Integer
-   Dim FactorGroupIndexes() As Integer
-   For i = 0 To Denominator.NumberOfGroups - 1
-      FactorGroupIndexes = getFactorGroupIndexes(i)
-      For j = 0 To NumberOfFactors - 1
-         Sheets(2).Cells(j + 1, Denominator.FirstColumn + i) = Factors(j).Degree(FactorGroupIndexes(j))
-      Next j
    Next i
 End Sub
 
