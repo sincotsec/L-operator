@@ -159,24 +159,23 @@ Private Function getPreviousIndex(FactorIndex As Integer, ByVal DenominatorGroup
    getPreviousIndex = getDenominatorGroupIndex(PreviousFactorGroupIndexes)
 End Function
 
-Public Function getRepetition(DenominatorGroupIndex As Integer) As Integer
-   Dim i As Integer
+Public Function getRepetition(GroupIndex As Integer) As Integer
    Dim FactorIndex As Integer
    Dim PreviousIndex As Integer
    Dim FactorGroupIndexes() As Integer
-   FactorGroupIndexes = getFactorGroupIndexes(DenominatorGroupIndex)
+   FactorGroupIndexes = getFactorGroupIndexes(GroupIndex)
    For FactorIndex = 0 To NumberOfFactors - 1
-      If isFirstIndex(FactorIndex, DenominatorGroupIndex) Then
-         UpperBounds(FactorIndex, DenominatorGroupIndex) = Factors(FactorIndex).Repetition(FactorGroupIndexes(FactorIndex))
+      If isFirstIndex(FactorIndex, GroupIndex) Then
+         UpperBounds(FactorIndex, GroupIndex) = Factors(FactorIndex).Repetition(FactorGroupIndexes(FactorIndex))
       Else
-         PreviousIndex = getPreviousIndex(FactorIndex, DenominatorGroupIndex)
-         UpperBounds(FactorIndex, DenominatorGroupIndex) = UpperBounds(FactorIndex, PreviousIndex) - Denominator.Repetition(PreviousIndex)
+         PreviousIndex = getPreviousIndex(FactorIndex, GroupIndex)
+         UpperBounds(FactorIndex, GroupIndex) = UpperBounds(FactorIndex, PreviousIndex) - Denominator.Repetition(PreviousIndex)
       End If
    Next FactorIndex
-   getRepetition = UpperBounds(0, DenominatorGroupIndex)
-   For i = 0 To NumberOfFactors - 1
-      getRepetition = getMinimum(getRepetition, UpperBounds(i, DenominatorGroupIndex))
-   Next i
+   getRepetition = UpperBounds(0, GroupIndex)
+   For FactorIndex = 0 To NumberOfFactors - 1
+      getRepetition = getMinimum(getRepetition, UpperBounds(FactorIndex, GroupIndex))
+   Next FactorIndex
    Erase FactorGroupIndexes
 End Function
 
@@ -208,28 +207,28 @@ Public Function getMu(DenominatorGroupIndex As Integer) As Integer
 End Function
 
 Public Sub fillRepetitionsOfDenominator()
-   Dim DenominatorGroupIndex As Integer
+   Dim GroupIndex As Integer
    If DiminishingGroupIndex <> -1 Then
       Denominator.Repetition(DiminishingGroupIndex) = Denominator.Repetition(DiminishingGroupIndex) - 1
    End If
-   For DenominatorGroupIndex = 0 To Denominator.NumberOfGroups - 1
-      If DenominatorGroupIndex > DiminishingGroupIndex Then
-         Denominator.Repetition(DenominatorGroupIndex) = getRepetition(DenominatorGroupIndex)
-         LowerBounds(DenominatorGroupIndex) = getMu(DenominatorGroupIndex)
-         If LowerBounds(DenominatorGroupIndex) < 0 Then LowerBounds(DenominatorGroupIndex) = 0
+   For GroupIndex = 0 To Denominator.NumberOfGroups - 1
+      If GroupIndex > DiminishingGroupIndex Then
+         Denominator.Repetition(GroupIndex) = getRepetition(GroupIndex)
+         LowerBounds(GroupIndex) = getMu(GroupIndex)
+         If LowerBounds(GroupIndex) < 0 Then LowerBounds(GroupIndex) = 0
       End If
-   Next DenominatorGroupIndex
+   Next GroupIndex
 End Sub
 
 Public Function getDiminishingNumberIndex() As Integer
-   Dim DenominatorGroupIndex As Integer
+   Dim GroupIndex As Integer
    getDiminishingNumberIndex = -1
-   For DenominatorGroupIndex = Denominator.NumberOfGroups - 1 To 0 Step -1
-      If Denominator.Repetition(DenominatorGroupIndex) > LowerBounds(DenominatorGroupIndex) Then
-         getDiminishingNumberIndex = DenominatorGroupIndex
+   For GroupIndex = Denominator.NumberOfGroups - 1 To 0 Step -1
+      If Denominator.Repetition(GroupIndex) > LowerBounds(GroupIndex) Then
+         getDiminishingNumberIndex = GroupIndex
          Exit For
       End If
-   Next DenominatorGroupIndex
+   Next GroupIndex
 End Function
 
 Public Sub fillRepetitionsOfNumerator()
