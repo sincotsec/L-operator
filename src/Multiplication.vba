@@ -147,13 +147,11 @@ Private Function getPreviousIndex(FactorIndex As Integer, ByVal DenominatorGroup
    ReDim PreviousFactorGroupIndexes(NumberOfFactors)
    PreviousFactorGroupIndexes = getFactorGroupIndexes(DenominatorGroupIndex)
    For i = NumberOfFactors - 1 To 0 Step -1
-      If i <> FactorIndex Then
-         If PreviousFactorGroupIndexes(i) > 0 Then
-            PreviousFactorGroupIndexes(i) = PreviousFactorGroupIndexes(i) - 1
-            Exit For
-         Else
-            PreviousFactorGroupIndexes(i) = Factors(i).NumberOfGroups - 1
-         End If
+      If (i <> FactorIndex) And (PreviousFactorGroupIndexes(i) > 0) Then
+         PreviousFactorGroupIndexes(i) = PreviousFactorGroupIndexes(i) - 1
+         Exit For
+      ElseIf (i <> FactorIndex) And (PreviousFactorGroupIndexes(i) = 0) Then
+         PreviousFactorGroupIndexes(i) = Factors(i).NumberOfGroups - 1
       End If
    Next i
    getPreviousIndex = getDenominatorGroupIndex(PreviousFactorGroupIndexes)
