@@ -178,8 +178,8 @@ Public Function getRepetition(GroupIndex As Integer) As Integer
 End Function
 
 Public Function getMu(DenominatorGroupIndex As Integer) As Integer
-   Dim i As Integer
-   Dim j As Integer
+   Dim FactorIndex As Integer
+   Dim GroupIndex As Integer
    Dim LettersASum As Integer
    Dim TempIndexes() As Integer
    Dim FactorGroupIndexes() As Integer
@@ -187,21 +187,21 @@ Public Function getMu(DenominatorGroupIndex As Integer) As Integer
    ReDim TempIndexes(NumberOfFactors)
    getMu = (1 - NumberOfFactors) * NumberOfDegrees
    LettersASum = 0
-   For i = 0 To FactorGroupIndexes(0)
-      LettersASum = LettersASum + Factors(0).Repetition(i)
-   Next i
+   For GroupIndex = 0 To FactorGroupIndexes(0)
+      LettersASum = LettersASum + Factors(0).Repetition(GroupIndex)
+   Next GroupIndex
    getMu = getMu + (NumberOfFactors - 2) * LettersASum + 2 * UpperBounds(0, DenominatorGroupIndex)
-   For i = 0 To NumberOfFactors - 1
-      TempIndexes(i) = 0
-   Next i
-   For i = 0 To NumberOfFactors - 1
-      For j = 0 To FactorGroupIndexes(i)
-         getMu = getMu + UpperBounds(i, getDenominatorGroupIndex(TempIndexes))
-         TempIndexes(i) = TempIndexes(i) + 1
-      Next j
-      TempIndexes(i) = TempIndexes(i) - 1
+   For FactorIndex = 0 To NumberOfFactors - 1
+      TempIndexes(FactorIndex) = 0
+   Next FactorIndex
+   For FactorIndex = 0 To NumberOfFactors - 1
+      For GroupIndex = 0 To FactorGroupIndexes(FactorIndex)
+         getMu = getMu + UpperBounds(FactorIndex, getDenominatorGroupIndex(TempIndexes))
+         TempIndexes(FactorIndex) = TempIndexes(FactorIndex) + 1
+      Next GroupIndex
+      TempIndexes(FactorIndex) = TempIndexes(FactorIndex) - 1
       getMu = getMu - UpperBounds(0, getDenominatorGroupIndex(TempIndexes))
-   Next i
+   Next FactorIndex
 End Function
 
 Public Sub fillRepetitionsOfDenominator()
@@ -230,13 +230,13 @@ Public Function getDiminishingNumberIndex() As Integer
 End Function
 
 Public Sub fillRepetitionsOfNumerator()
-   Dim i As Integer
-   For i = 0 To Numerator.NumberOfGroups - 1
-      Numerator.Repetition(i) = 0
-   Next i
-   For i = 0 To Denominator.NumberOfGroups - 1
-      Numerator.Repetition(Conformity(i)) = Numerator.Repetition(Conformity(i)) + Denominator.Repetition(i)
-   Next i
+   Dim GroupIndex As Integer
+   For GroupIndex = 0 To Numerator.NumberOfGroups - 1
+      Numerator.Repetition(GroupIndex) = 0
+   Next GroupIndex
+   For GroupIndex = 0 To Denominator.NumberOfGroups - 1
+      Numerator.Repetition(Conformity(GroupIndex)) = Numerator.Repetition(Conformity(GroupIndex)) + Denominator.Repetition(GroupIndex)
+   Next GroupIndex
 End Sub
 
 Public Sub prepareSheetBefore()
