@@ -83,6 +83,16 @@ Public Sub groupDegreesFromOperator(OperatorFrom As Operator, ConformityArray() 
    Set TemporaryOperator = Nothing
 End Sub
 
+Public Sub groupRepetitionsFromOperator(OperatorFrom As Operator, ConformityArray() As Integer)
+   Dim GroupIndex As Integer
+   For GroupIndex = 0 To NumberOfGroups - 1
+      Groups(GroupIndex).Repetition = 0
+   Next GroupIndex
+   For GroupIndex = 0 To OperatorFrom.NumberOfGroups - 1
+      Groups(ConformityArray(GroupIndex)).Repetition = Groups(ConformityArray(GroupIndex)).Repetition + OperatorFrom.Repetition(GroupIndex)
+   Next GroupIndex
+End Sub
+
 Public Sub prepareTitle(ByVal RowIndex As Integer)
    With Range(Sheets(2).Cells(RowIndex, FirstColumn), Sheets(2).Cells(RowIndex, LastColumn))
       .Font.Bold = True

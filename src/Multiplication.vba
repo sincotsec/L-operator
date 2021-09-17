@@ -29,8 +29,6 @@ Const MaxRow = 1500
 
 Public Sub allocateMemory(parNumberOfFactors As Integer, parNumberOfDegrees As Integer)
    Dim i As Integer
-   Dim j As Integer
-   Dim NewConformity() As Integer
    NumberOfFactors = parNumberOfFactors
    NumberOfDegrees = parNumberOfDegrees
    ReDim StringFactors(NumberOfFactors - 1)
@@ -40,10 +38,8 @@ Public Sub allocateMemory(parNumberOfFactors As Integer, parNumberOfDegrees As I
    For i = 0 To NumberOfFactors - 1
       StringFactors(i).allocateMemory NumberOfDegrees
       StringFactors(i).fillStringFactor 3 + i
-      Factors(i).groupDegreesFromOperator StringFactors(i), NewConformity
-      For j = 0 To StringFactors(i).NumberOfGroups - 1
-         Factors(i).Repetition(NewConformity(j)) = Factors(i).Repetition(NewConformity(j)) + 1
-      Next j
+      Factors(i).groupDegreesFromOperator StringFactors(i), Conformity
+      Factors(i).groupRepetitionsFromOperator StringFactors(i), Conformity
    Next i
 End Sub
 
@@ -229,16 +225,6 @@ Public Function getDiminishingNumberIndex() As Integer
    Next GroupIndex
 End Function
 
-Public Sub fillRepetitionsOfNumerator()
-   Dim GroupIndex As Integer
-   For GroupIndex = 0 To Numerator.NumberOfGroups - 1
-      Numerator.Repetition(GroupIndex) = 0
-   Next GroupIndex
-   For GroupIndex = 0 To Denominator.NumberOfGroups - 1
-      Numerator.Repetition(Conformity(GroupIndex)) = Numerator.Repetition(Conformity(GroupIndex)) + Denominator.Repetition(GroupIndex)
-   Next GroupIndex
-End Sub
-
 Public Sub prepareSheetBefore()
    ActiveWindow.WindowState = xlMaximized
    ActiveWindow.FreezePanes = False
@@ -266,7 +252,7 @@ Public Sub doMultiplication()
    Do
       Call fillRepetitionsOfDenominator
       DiminishingGroupIndex = getDiminishingNumberIndex()
-      Call fillRepetitionsOfNumerator
+      Numerator.groupRepetitionsFromOperator Denominator, Conformity
       LastRow = LastRow + 1
       For FactorIndex = 0 To NumberOfFactors + 1
          Factors(FactorIndex).printItemOfGroup dgRepetition, LastRow
