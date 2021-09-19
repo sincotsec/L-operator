@@ -10,7 +10,8 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public NumberOfGroups As Integer
-Dim Groups() As Group
+Dim Degrees() As Integer
+Dim Repetitions() As Integer
 
 Public FirstColumn As Integer
 Public LastColumn As Integer
@@ -19,35 +20,36 @@ Public Hue As Double
 ' Property Get
 
 Public Property Get Degree(GroupIndex As Integer) As Integer
-   Degree = Groups(GroupIndex).Degree
+   Degree = Degrees(GroupIndex)
 End Property
 
 Public Property Get Repetition(GroupIndex As Integer) As Integer
-   Repetition = Groups(GroupIndex).Repetition
+   Repetition = Repetitions(GroupIndex)
 End Property
 
 ' Property Let
 
 Public Property Let Degree(GroupIndex As Integer, Value As Integer)
-   Groups(GroupIndex).Degree = Value
+   Degrees(GroupIndex) = Value
 End Property
 
 Public Property Let Repetition(GroupIndex As Integer, Value As Integer)
-   Groups(GroupIndex).Repetition = Value
+   Repetitions(GroupIndex) = Value
 End Property
 
 ' Methods
 
 Public Sub allocateMemory(parNumberOfGroups As Integer)
    NumberOfGroups = parNumberOfGroups
-   ReDim Groups(NumberOfGroups)
+   ReDim Degrees(NumberOfGroups)
+   ReDim Repetitions(NumberOfGroups)
 End Sub
 
 Public Sub fillStringFactor(SheetRow As Integer)
    Dim i As Integer
    For i = 0 To NumberOfGroups - 1
-      Groups(i).Degree = Sheets(1).Cells(SheetRow, 3 + i)
-      Groups(i).Repetition = 1
+      Degrees(i) = Sheets(1).Cells(SheetRow, 3 + i)
+      Repetitions(i) = 1
    Next i
 End Sub
 
@@ -76,9 +78,10 @@ Public Sub groupDegreesFromOperator(OperatorFrom As Operator, ConformityArray() 
       End If
    Next i
 
-   ReDim Groups(NumberOfGroups)
+   ReDim Degrees(NumberOfGroups)
+   ReDim Repetitions(NumberOfGroups)
    For i = 0 To NumberOfGroups - 1
-      Groups(i).Degree = TemporaryOperator.Degree(i)
+      Degrees(i) = TemporaryOperator.Degree(i)
    Next i
    Set TemporaryOperator = Nothing
 End Sub
@@ -86,10 +89,10 @@ End Sub
 Public Sub groupRepetitionsFromOperator(OperatorFrom As Operator, ConformityArray() As Integer)
    Dim GroupIndex As Integer
    For GroupIndex = 0 To NumberOfGroups - 1
-      Groups(GroupIndex).Repetition = 0
+      Repetitions(GroupIndex) = 0
    Next GroupIndex
    For GroupIndex = 0 To OperatorFrom.NumberOfGroups - 1
-      Groups(ConformityArray(GroupIndex)).Repetition = Groups(ConformityArray(GroupIndex)).Repetition + OperatorFrom.Repetition(GroupIndex)
+      Repetitions(ConformityArray(GroupIndex)) = Repetitions(ConformityArray(GroupIndex)) + OperatorFrom.Repetition(GroupIndex)
    Next GroupIndex
 End Sub
 
@@ -105,9 +108,9 @@ Public Sub printItemOfGroup(dgItem As Integer, ByVal RowIndex As Integer)
    For i = 0 To NumberOfGroups - 1
       Select Case dgItem
          Case dgRepetition
-            Sheets(2).Cells(RowIndex, FirstColumn + i) = Groups(i).Repetition
+            Sheets(2).Cells(RowIndex, FirstColumn + i) = Repetitions(i)
          Case dgDegree
-            Sheets(2).Cells(RowIndex, FirstColumn + i) = Groups(i).Degree
+            Sheets(2).Cells(RowIndex, FirstColumn + i) = Degrees(i)
       End Select
    Next i
 End Sub
@@ -116,7 +119,7 @@ Public Function getInfo() As String
    Dim i As Integer
    getInfo = vbLf & "Number of groups: " & NumberOfGroups & vbLf & "Degrees: "
    For i = 0 To NumberOfGroups - 1
-      getInfo = getInfo & " " & Groups(i).Degree & "[" & Groups(i).Repetition & "]"
+      getInfo = getInfo & " " & Degrees(i) & "[" & Repetitions(i) & "]"
    Next i
 End Function
 
@@ -130,5 +133,6 @@ End Sub
 ' Destructor
 
 Private Sub Class_Terminate()
-   Erase Groups
+   Erase Degrees
+   Erase Repetitions
 End Sub

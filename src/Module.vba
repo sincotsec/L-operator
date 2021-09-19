@@ -6,11 +6,6 @@ Enum dgItem
    dgDegree = 1
 End Enum
 
-Type Group
-   Degree As Integer
-   Repetition As Integer
-End Type
-
 Function getMaximum(Number1 As Integer, Number2 As Integer) As Integer
    getMaximum = Number2
    If Number1 >= Number2 Then getMaximum = Number1
