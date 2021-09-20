@@ -127,7 +127,6 @@ Public Sub setColumns(LastColumnOfPreviousOperator As Integer, parHue As Integer
    FirstColumn = LastColumnOfPreviousOperator + 1
    LastColumn = LastColumnOfPreviousOperator + NumberOfGroups
    Hue = parHue
-   If Hue > 360 Then Hue = Hue - 360
 End Sub
 
 ' Destructor
