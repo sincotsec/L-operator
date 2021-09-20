@@ -46,7 +46,6 @@ End Sub
 Public Function getFactorGroupIndexes(ByVal DenominatorGroupIndex As Integer) As Integer()
    Dim i As Integer
    Dim TempIndex As Integer
-   Dim IndexString As String
    Dim FactorGroupsIndexes() As Integer
    ReDim FactorGroupsIndexes(NumberOfFactors)
    TempIndex = DenominatorGroupIndex
@@ -55,9 +54,6 @@ Public Function getFactorGroupIndexes(ByVal DenominatorGroupIndex As Integer) As
       TempIndex = TempIndex \ Factors(i).NumberOfGroups
    Next i
    FactorGroupsIndexes(0) = TempIndex
-   For i = 0 To NumberOfFactors - 1
-      IndexString = IndexString & " " & FactorGroupsIndexes(i) & " "
-   Next i
    getFactorGroupIndexes = FactorGroupsIndexes()
    Erase FactorGroupsIndexes
 End Function
