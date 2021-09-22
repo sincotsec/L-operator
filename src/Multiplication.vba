@@ -18,6 +18,7 @@ Dim Denominator As Operator
 Dim Numerator As Operator
 
 Dim Conformity() As Integer
+Dim EqObj As Equation
 
 Dim UpperBounds() As Integer
 Dim LowerBounds() As Integer
@@ -41,6 +42,10 @@ Public Sub allocateMemory(parNumberOfFactors As Integer, parNumberOfDegrees As I
       Factors(i).groupDegreesFromOperator StringFactors(i), Conformity
       Factors(i).groupRepetitionsFromOperator StringFactors(i), Conformity
    Next i
+   Set EqObj = New Equation
+   EqObj.allocateMemory NumberOfFactors, NumberOfDegrees
+   EqObj.fillArray Factors
+   MsgBox EqObj.getInfo
 End Sub
 
 Public Function getFactorGroupIndexes(ByVal DenominatorGroupIndex As Integer) As Integer()
@@ -278,6 +283,7 @@ Private Sub Class_Terminate()
    Set Factors(NumberOfFactors + 1) = Nothing
    Set Denominator = Nothing
    Set Numerator = Nothing
+   Set EqObj = Nothing
    Erase Factors
    Erase StringFactors
    Erase Conformity
