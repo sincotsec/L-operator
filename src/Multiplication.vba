@@ -45,7 +45,11 @@ Public Sub allocateMemory(parNumberOfFactors As Integer, parNumberOfDegrees As I
    Set EqObj = New Equation
    EqObj.allocateMemory NumberOfFactors, NumberOfDegrees
    EqObj.fillArray Factors
-   MsgBox EqObj.getInfo
+   EqObj.prepareSolution
+   For i = 0 To 4
+   EqObj.fillUnknowns
+   Debug.Print EqObj.getUnknownInfo
+   Next i
 End Sub
 
 Public Function getFactorGroupIndexes(ByVal DenominatorGroupIndex As Integer) As Integer()
