@@ -20,36 +20,34 @@ Dim Numerator As Operator
 Dim Conformity() As Integer
 Dim EqObj As Equation
 
-Dim UpperBounds() As Integer
-Dim LowerBounds() As Integer
-Dim DiminishingGroupIndex As Integer
-
 Const MaxRow = 1500
 
 ' Methods
 
 Public Sub allocateMemory(parNumberOfFactors As Integer, parNumberOfDegrees As Integer)
-   Dim i As Integer
    NumberOfFactors = parNumberOfFactors
    NumberOfDegrees = parNumberOfDegrees
    ReDim StringFactors(NumberOfFactors - 1)
    ReDim Factors(NumberOfFactors + 1)
    Set Numerator = Factors(NumberOfFactors)
    Set Denominator = Factors(NumberOfFactors + 1)
+End Sub
+
+Public Sub fillFactors()
+   Dim i As Integer
    For i = 0 To NumberOfFactors - 1
       StringFactors(i).allocateMemory NumberOfDegrees
       StringFactors(i).fillStringFactor 3 + i
       Factors(i).groupDegreesFromOperator StringFactors(i), Conformity
       Factors(i).groupRepetitionsFromOperator StringFactors(i), Conformity
    Next i
+End Sub
+
+Public Sub prepareEquation()
    Set EqObj = New Equation
    EqObj.allocateMemory NumberOfFactors, NumberOfDegrees
    EqObj.fillArray Factors
    EqObj.prepareSolution
-   For i = 0 To 4
-   EqObj.fillUnknowns
-   Debug.Print EqObj.getUnknownInfo
-   Next i
 End Sub
 
 Public Function getFactorGroupIndexes(ByVal DenominatorGroupIndex As Integer) As Integer()
@@ -130,106 +128,14 @@ Public Sub setColumns()
    printPointersOfDenominator
 End Sub
 
-Function isFirstIndex(FactorIndex As Integer, ByVal DenominatorGroupIndex As Integer) As Boolean
-   Dim FactorGroupIndexes() As Integer
-   Dim i As Integer
-   FactorGroupIndexes = getFactorGroupIndexes(DenominatorGroupIndex)
-   isFirstIndex = True
-   For i = 0 To NumberOfFactors - 1
-      If (i <> FactorIndex) And (FactorGroupIndexes(i) <> 0) Then
-         isFirstIndex = False
-         Exit For
-      End If
-   Next i
-End Function
-
-Private Function getPreviousIndex(FactorIndex As Integer, ByVal DenominatorGroupIndex As Integer) As Integer
-   Dim i As Integer
-   Dim PreviousFactorGroupIndexes() As Integer
-   ReDim PreviousFactorGroupIndexes(NumberOfFactors)
-   PreviousFactorGroupIndexes = getFactorGroupIndexes(DenominatorGroupIndex)
-   For i = NumberOfFactors - 1 To 0 Step -1
-      If (i <> FactorIndex) And (PreviousFactorGroupIndexes(i) > 0) Then
-         PreviousFactorGroupIndexes(i) = PreviousFactorGroupIndexes(i) - 1
-         Exit For
-      ElseIf (i <> FactorIndex) And (PreviousFactorGroupIndexes(i) = 0) Then
-         PreviousFactorGroupIndexes(i) = Factors(i).NumberOfGroups - 1
-      End If
-   Next i
-   getPreviousIndex = getDenominatorGroupIndex(PreviousFactorGroupIndexes)
-End Function
-
-Public Function getRepetition(GroupIndex As Integer) As Integer
-   Dim FactorIndex As Integer
-   Dim PreviousIndex As Integer
-   Dim FactorGroupIndexes() As Integer
-   FactorGroupIndexes = getFactorGroupIndexes(GroupIndex)
-   For FactorIndex = 0 To NumberOfFactors - 1
-      If isFirstIndex(FactorIndex, GroupIndex) Then
-         UpperBounds(FactorIndex, GroupIndex) = Factors(FactorIndex).Repetition(FactorGroupIndexes(FactorIndex))
-      Else
-         PreviousIndex = getPreviousIndex(FactorIndex, GroupIndex)
-         UpperBounds(FactorIndex, GroupIndex) = UpperBounds(FactorIndex, PreviousIndex) - Denominator.Repetition(PreviousIndex)
-      End If
-   Next FactorIndex
-   getRepetition = UpperBounds(0, GroupIndex)
-   For FactorIndex = 0 To NumberOfFactors - 1
-      getRepetition = getMinimum(getRepetition, UpperBounds(FactorIndex, GroupIndex))
-   Next FactorIndex
-   Erase FactorGroupIndexes
-End Function
-
-Public Function getMu(DenominatorGroupIndex As Integer) As Integer
-   Dim FactorIndex As Integer
-   Dim GroupIndex As Integer
-   Dim LettersASum As Integer
-   Dim TempIndexes() As Integer
-   Dim FactorGroupIndexes() As Integer
-   FactorGroupIndexes = getFactorGroupIndexes(DenominatorGroupIndex)
-   ReDim TempIndexes(NumberOfFactors)
-   getMu = (1 - NumberOfFactors) * NumberOfDegrees
-   LettersASum = 0
-   For GroupIndex = 0 To FactorGroupIndexes(0)
-      LettersASum = LettersASum + Factors(0).Repetition(GroupIndex)
-   Next GroupIndex
-   getMu = getMu + (NumberOfFactors - 2) * LettersASum + 2 * UpperBounds(0, DenominatorGroupIndex)
-   For FactorIndex = 0 To NumberOfFactors - 1
-      TempIndexes(FactorIndex) = 0
-   Next FactorIndex
-   For FactorIndex = 0 To NumberOfFactors - 1
-      For GroupIndex = 0 To FactorGroupIndexes(FactorIndex)
-         getMu = getMu + UpperBounds(FactorIndex, getDenominatorGroupIndex(TempIndexes))
-         TempIndexes(FactorIndex) = TempIndexes(FactorIndex) + 1
-      Next GroupIndex
-      TempIndexes(FactorIndex) = TempIndexes(FactorIndex) - 1
-      getMu = getMu - UpperBounds(0, getDenominatorGroupIndex(TempIndexes))
-   Next FactorIndex
-End Function
-
 Public Sub fillRepetitionsOfDenominator()
    Dim GroupIndex As Integer
-   If DiminishingGroupIndex <> -1 Then
-      Denominator.Repetition(DiminishingGroupIndex) = Denominator.Repetition(DiminishingGroupIndex) - 1
-   End If
+   Dim UnknownArray() As Integer
+   UnknownArray = EqObj.getUnknownArray
    For GroupIndex = 0 To Denominator.NumberOfGroups - 1
-      If GroupIndex > DiminishingGroupIndex Then
-         Denominator.Repetition(GroupIndex) = getRepetition(GroupIndex)
-         LowerBounds(GroupIndex) = getMu(GroupIndex)
-         If LowerBounds(GroupIndex) < 0 Then LowerBounds(GroupIndex) = 0
-      End If
+      Denominator.Repetition(GroupIndex) = UnknownArray(GroupIndex)
    Next GroupIndex
 End Sub
-
-Public Function getDiminishingNumberIndex() As Integer
-   Dim GroupIndex As Integer
-   getDiminishingNumberIndex = -1
-   For GroupIndex = Denominator.NumberOfGroups - 1 To 0 Step -1
-      If Denominator.Repetition(GroupIndex) > LowerBounds(GroupIndex) Then
-         getDiminishingNumberIndex = GroupIndex
-         Exit For
-      End If
-   Next GroupIndex
-End Function
 
 Public Sub prepareSheetBefore()
    ActiveWindow.WindowState = xlMaximized
@@ -251,19 +157,16 @@ End Sub
 Public Sub doMultiplication()
    Dim FactorIndex As Integer
    Dim LastRow As Long
-   ReDim UpperBounds(NumberOfFactors, Denominator.NumberOfGroups)
-   ReDim LowerBounds(Denominator.NumberOfGroups)
    LastRow = NumberOfFactors + 1
-   DiminishingGroupIndex = -1
    Do
+      EqObj.fillUnknowns
       Call fillRepetitionsOfDenominator
-      DiminishingGroupIndex = getDiminishingNumberIndex()
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
       LastRow = LastRow + 1
       For FactorIndex = 0 To NumberOfFactors + 1
          Factors(FactorIndex).printItemOfGroup dgRepetition, LastRow
       Next FactorIndex
-   Loop Until (LastRow >= MaxRow Or DiminishingGroupIndex = -1)
+   Loop Until (LastRow >= MaxRow Or EqObj.DiminishingUnknownIndex = -1)
 End Sub
 
 Public Sub prepareSheetAfter()
@@ -291,6 +194,4 @@ Private Sub Class_Terminate()
    Erase Factors
    Erase StringFactors
    Erase Conformity
-   Erase UpperBounds
-   Erase LowerBounds
 End Sub

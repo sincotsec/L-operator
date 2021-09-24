@@ -17,7 +17,7 @@ Dim Unknowns() As Integer
 Dim NumberOfUnknowns As Integer
 Dim UpperBounds() As Integer
 Dim LowerBounds() As Integer
-Dim DiminishingUnknownIndex As Integer
+Public DiminishingUnknownIndex As Integer
 
 Public Sub allocateMemory(NumberOfFactors As Integer, NumberOfDegrees As Integer)
    NumberOfLayers = NumberOfFactors
@@ -206,3 +206,14 @@ Public Function getUnknownInfo() As String
    DebugString = DebugString & " | " & DiminishingUnknownIndex
    getUnknownInfo = DebugString
 End Function
+
+Public Function getUnknownArray() As Integer()
+   getUnknownArray = Unknowns()
+End Function
+
+' Destructor
+
+Private Sub Class_Terminate()
+   Erase UpperBounds
+   Erase LowerBounds
+End Sub
