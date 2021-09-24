@@ -50,30 +50,6 @@ Public Sub prepareEquation()
    EqObj.prepareSolution
 End Sub
 
-Public Function getFactorGroupIndexes(ByVal DenominatorGroupIndex As Integer) As Integer()
-   Dim i As Integer
-   Dim TempIndex As Integer
-   Dim FactorGroupsIndexes() As Integer
-   ReDim FactorGroupsIndexes(NumberOfFactors)
-   TempIndex = DenominatorGroupIndex
-   For i = NumberOfFactors - 1 To 1 Step -1
-      FactorGroupsIndexes(i) = TempIndex Mod Factors(i).NumberOfGroups
-      TempIndex = TempIndex \ Factors(i).NumberOfGroups
-   Next i
-   FactorGroupsIndexes(0) = TempIndex
-   getFactorGroupIndexes = FactorGroupsIndexes()
-   Erase FactorGroupsIndexes
-End Function
-
-Public Function getDenominatorGroupIndex(ByRef FactorGroupIndexes() As Integer) As Integer
-   Dim i As Integer
-   getDenominatorGroupIndex = FactorGroupIndexes(0)
-   For i = 1 To NumberOfFactors - 1
-      getDenominatorGroupIndex = getDenominatorGroupIndex * Factors(i).NumberOfGroups
-      getDenominatorGroupIndex = getDenominatorGroupIndex + FactorGroupIndexes(i)
-   Next i
-End Function
-
 Public Sub fillDegreesOfDenominator()
    Dim FactorIndex As Integer
    Dim GroupIndex As Integer
@@ -88,18 +64,6 @@ Public Sub fillDegreesOfDenominator()
    Next GroupIndex
    Erase FactorGroupIndexes
    Numerator.groupDegreesFromOperator Denominator, Conformity
-End Sub
-
-Public Sub printPointersOfDenominator()
-   Dim i As Integer
-   Dim j As Integer
-   Dim FactorGroupIndexes() As Integer
-   For i = 0 To Denominator.NumberOfGroups - 1
-      FactorGroupIndexes = getFactorGroupIndexes(i)
-      For j = 0 To NumberOfFactors - 1
-         Sheets(2).Cells(j + 1, Denominator.FirstColumn + i) = Factors(j).Degree(FactorGroupIndexes(j))
-      Next j
-   Next i
 End Sub
 
 Public Sub setColumns()
