@@ -108,7 +108,7 @@ Public Sub setColumns()
    Dim ColumnIndex As Integer
    Dim HueNumber As Integer
    Dim TitleRow As Integer
-   TitleRow = NumberOfFactors + 1
+   TitleRow = 1
    ColumnIndex = 0
    HueNumber = WorksheetFunction.RandBetween(0, 360)
    For i = 0 To NumberOfFactors + 1
@@ -119,7 +119,6 @@ Public Sub setColumns()
       HueNumber = HueNumber + 45
       If HueNumber > 360 Then HueNumber = HueNumber - 360
    Next i
-   printPointersOfDenominator
 End Sub
 
 Public Sub fillRepetitionsOfDenominator()
@@ -151,7 +150,7 @@ End Sub
 Public Sub doMultiplication()
    Dim FactorIndex As Integer
    Dim LastRow As Long
-   LastRow = NumberOfFactors + 1
+   LastRow = 1
    Do
       EqObj.fillUnknowns
       Call fillRepetitionsOfDenominator
@@ -166,7 +165,7 @@ End Sub
 Public Sub prepareSheetAfter()
    Sheets(2).Select
    ActiveWindow.WindowState = xlMaximized
-   Cells(NumberOfFactors + 2, 1).Select
+   Cells(2, 1).Select
    ActiveWindow.FreezePanes = False
    ActiveWindow.FreezePanes = True
    Sheets(2).Cells.EntireColumn.AutoFit
