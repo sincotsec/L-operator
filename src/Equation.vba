@@ -14,7 +14,7 @@ Public SumOfLetters As Integer
 Dim Letters() As Variant
 Dim NumberOfSections() As Integer
 Dim Unknowns() As Integer
-Dim NumberOfUnknowns As Integer
+Public NumberOfUnknowns As Integer
 Dim UpperBounds() As Integer
 Dim LowerBounds() As Integer
 Public DiminishingUnknownIndex As Integer
@@ -54,6 +54,18 @@ Public Sub fillArray(ByRef FactorsArray() As Operator)
       Letters(i) = SecondArray
    Next i
    Erase SecondArray
+End Sub
+
+Public Sub prepareSolution()
+   Dim i As Integer
+   NumberOfUnknowns = 1
+   For i = 0 To NumberOfLayers - 1
+      NumberOfUnknowns = NumberOfUnknowns * NumberOfSections(i)
+   Next i
+   ReDim Unknowns(NumberOfUnknowns - 1)
+   ReDim UpperBounds(NumberOfLayers - 1, NumberOfUnknowns - 1)
+   ReDim LowerBounds(NumberOfUnknowns - 1)
+   DiminishingUnknownIndex = -1
 End Sub
 
 Public Function getLetterIndexes(ByVal UnknownIndex As Integer) As Integer()
@@ -169,18 +181,6 @@ Public Function getDiminishingUnknownIndex() As Integer
       End If
    Next UnknownIndex
 End Function
-
-Public Sub prepareSolution()
-   Dim i As Integer
-   NumberOfUnknowns = 1
-   For i = 0 To NumberOfLayers - 1
-      NumberOfUnknowns = NumberOfUnknowns * NumberOfSections(i)
-   Next i
-   ReDim Unknowns(NumberOfUnknowns - 1)
-   ReDim UpperBounds(NumberOfLayers - 1, NumberOfUnknowns - 1)
-   ReDim LowerBounds(NumberOfUnknowns - 1)
-   DiminishingUnknownIndex = -1
-End Sub
 
 Public Sub fillUnknowns()
    Dim UnknownIndex As Integer

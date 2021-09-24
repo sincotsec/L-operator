@@ -77,15 +77,9 @@ End Function
 Public Sub fillDegreesOfDenominator()
    Dim FactorIndex As Integer
    Dim GroupIndex As Integer
-   Dim NumberOfDenominatorGroups As Integer
    Dim FactorGroupIndexes() As Integer
    
-   NumberOfDenominatorGroups = 1
-   For FactorIndex = 0 To NumberOfFactors - 1
-      NumberOfDenominatorGroups = NumberOfDenominatorGroups * Factors(FactorIndex).NumberOfGroups
-   Next FactorIndex
-   Denominator.allocateMemory NumberOfDenominatorGroups
-   
+   Denominator.allocateMemory EqObj.NumberOfUnknowns
    For GroupIndex = 0 To Denominator.NumberOfGroups - 1
       FactorGroupIndexes = getFactorGroupIndexes(GroupIndex)
       For FactorIndex = 0 To NumberOfFactors - 1
