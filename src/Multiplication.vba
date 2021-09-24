@@ -160,7 +160,7 @@ Public Sub doMultiplication()
       For FactorIndex = 0 To NumberOfFactors + 1
          Factors(FactorIndex).printItemOfGroup dgRepetition, LastRow
       Next FactorIndex
-   Loop Until (LastRow >= MaxRow Or EqObj.DiminishingUnknownIndex = -1)
+   Loop Until (LastRow >= MaxRow Or EqObj.isDone())
 End Sub
 
 Public Sub prepareSheetAfter()

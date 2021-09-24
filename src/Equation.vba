@@ -211,6 +211,11 @@ Public Function getUnknownArray() As Integer()
    getUnknownArray = Unknowns()
 End Function
 
+Public Function isDone() As Boolean
+   isDone = False
+   If DiminishingUnknownIndex = -1 Then isDone = True
+End Function
+
 ' Destructor
 
 Private Sub Class_Terminate()
