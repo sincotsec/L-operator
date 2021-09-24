@@ -78,14 +78,13 @@ Public Sub fillDegreesOfDenominator()
    Dim FactorIndex As Integer
    Dim GroupIndex As Integer
    Dim FactorGroupIndexes() As Integer
-   
    Denominator.allocateMemory EqObj.NumberOfUnknowns
    For GroupIndex = 0 To Denominator.NumberOfGroups - 1
-      FactorGroupIndexes = getFactorGroupIndexes(GroupIndex)
+      FactorGroupIndexes = EqObj.getLetterIndexes(GroupIndex)
       For FactorIndex = 0 To NumberOfFactors - 1
          Denominator.Degree(GroupIndex) = Denominator.Degree(GroupIndex) + Factors(FactorIndex).Degree(FactorGroupIndexes(FactorIndex))
-         Denominator.Repetition(GroupIndex) = 1
       Next FactorIndex
+      Denominator.Repetition(GroupIndex) = 1
    Next GroupIndex
    Erase FactorGroupIndexes
    Numerator.groupDegreesFromOperator Denominator, Conformity
