@@ -221,4 +221,7 @@ End Function
 Private Sub Class_Terminate()
    Erase UpperBounds
    Erase LowerBounds
+   Erase Letters
+   Erase NumberOfSections
+   Erase Unknowns
 End Sub

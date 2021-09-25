@@ -91,6 +91,7 @@ Public Sub fillRepetitionsOfDenominator()
    For GroupIndex = 0 To Denominator.NumberOfGroups - 1
       Denominator.Repetition(GroupIndex) = UnknownArray(GroupIndex)
    Next GroupIndex
+   Erase UnknownArray
 End Sub
 
 Public Sub prepareSheetBefore()
