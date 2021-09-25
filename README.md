@@ -11,7 +11,9 @@ Module.vba
 Equation.vba
 Multiplication.vba
 Operator.vba
-```.
+```
+- Common.vba
+- InputTable.vba
 3. Запустите макрос `fillInputSheet`.
 4. На листе `StringFactors` заполните степени операторов. Если нужно другое количество операторов или степеней,
 измените поля `Number of factors` и `Number of degrees` и запустите макрос `redrawTable`.
