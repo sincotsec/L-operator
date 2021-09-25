@@ -41,8 +41,8 @@ End Property
 
 Public Sub allocateMemory(parNumberOfGroups As Integer)
    NumberOfGroups = parNumberOfGroups
-   ReDim Degrees(NumberOfGroups)
-   ReDim Repetitions(NumberOfGroups)
+   ReDim Degrees(NumberOfGroups - 1)
+   ReDim Repetitions(NumberOfGroups - 1)
 End Sub
 
 Public Sub fillStringFactor(SheetRow As Integer)
@@ -59,7 +59,7 @@ Public Sub groupDegreesFromOperator(OperatorFrom As Operator, ConformityArray() 
    Dim j As Integer
    Dim TemporaryOperator As Operator
    Set TemporaryOperator = New Operator
-   ReDim ConformityArray(OperatorFrom.NumberOfGroups)
+   ReDim ConformityArray(OperatorFrom.NumberOfGroups - 1)
    TemporaryOperator.allocateMemory OperatorFrom.NumberOfGroups
    NumberOfGroups = 0
    For i = 0 To OperatorFrom.NumberOfGroups - 1
@@ -77,9 +77,8 @@ Public Sub groupDegreesFromOperator(OperatorFrom As Operator, ConformityArray() 
          ConformityArray(i) = NumberOfGroups - 1
       End If
    Next i
-
-   ReDim Degrees(NumberOfGroups)
-   ReDim Repetitions(NumberOfGroups)
+   ReDim Degrees(NumberOfGroups - 1)
+   ReDim Repetitions(NumberOfGroups - 1)
    For i = 0 To NumberOfGroups - 1
       Degrees(i) = TemporaryOperator.Degree(i)
    Next i
