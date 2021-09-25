@@ -9,15 +9,23 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public NumberOfLayers As Integer
-Public SumOfLetters As Integer
+Dim NumberOfLayers As Integer
+Dim SumOfLetters As Integer
 Dim Letters() As Variant
 Dim NumberOfSections() As Integer
 Dim Unknowns() As Integer
-Public NumberOfUnknowns As Integer
+Dim mNumberOfUnknowns As Integer
 Dim UpperBounds() As Integer
 Dim LowerBounds() As Integer
-Public DiminishingUnknownIndex As Integer
+Dim DiminishingUnknownIndex As Integer
+
+' Property Get
+
+Public Property Get NumberOfUnknowns()
+   NumberOfUnknowns = mNumberOfUnknowns
+End Property
+
+' Methods
 
 Public Sub allocateMemory(NumberOfFactors As Integer, NumberOfDegrees As Integer)
    NumberOfLayers = NumberOfFactors
@@ -37,7 +45,7 @@ Public Function getInfo() As String
          DebugString = DebugString & " " & Letters(i)(j)
       Next j
    Next i
-   DebugString = DebugString & vbLf & "NumberOfUnknowns = " & NumberOfUnknowns
+   DebugString = DebugString & vbLf & "NumberOfUnknowns = " & mNumberOfUnknowns
    getInfo = DebugString
 End Function
 
@@ -58,13 +66,13 @@ End Sub
 
 Public Sub prepareSolution()
    Dim i As Integer
-   NumberOfUnknowns = 1
+   mNumberOfUnknowns = 1
    For i = 0 To NumberOfLayers - 1
-      NumberOfUnknowns = NumberOfUnknowns * NumberOfSections(i)
+      mNumberOfUnknowns = mNumberOfUnknowns * NumberOfSections(i)
    Next i
-   ReDim Unknowns(NumberOfUnknowns - 1)
-   ReDim UpperBounds(NumberOfLayers - 1, NumberOfUnknowns - 1)
-   ReDim LowerBounds(NumberOfUnknowns - 1)
+   ReDim Unknowns(mNumberOfUnknowns - 1)
+   ReDim UpperBounds(NumberOfLayers - 1, mNumberOfUnknowns - 1)
+   ReDim LowerBounds(mNumberOfUnknowns - 1)
    DiminishingUnknownIndex = -1
 End Sub
 
@@ -174,7 +182,7 @@ End Function
 Public Function getDiminishingUnknownIndex() As Integer
    Dim UnknownIndex As Integer
    getDiminishingUnknownIndex = -1
-   For UnknownIndex = NumberOfUnknowns - 1 To 0 Step -1
+   For UnknownIndex = mNumberOfUnknowns - 1 To 0 Step -1
       If Unknowns(UnknownIndex) > LowerBounds(UnknownIndex) Then
          getDiminishingUnknownIndex = UnknownIndex
          Exit For
@@ -187,7 +195,7 @@ Public Sub fillUnknowns()
    If DiminishingUnknownIndex <> -1 Then
       Unknowns(DiminishingUnknownIndex) = Unknowns(DiminishingUnknownIndex) - 1
    End If
-   For UnknownIndex = 0 To NumberOfUnknowns - 1
+   For UnknownIndex = 0 To mNumberOfUnknowns - 1
       If UnknownIndex > DiminishingUnknownIndex Then
          Unknowns(UnknownIndex) = getUnknown(UnknownIndex)
          LowerBounds(UnknownIndex) = getMu(UnknownIndex)
@@ -200,7 +208,7 @@ End Sub
 Public Function getUnknownInfo() As String
    Dim i As Integer
    Dim DebugString As String
-   For i = 0 To NumberOfUnknowns - 1
+   For i = 0 To mNumberOfUnknowns - 1
       DebugString = DebugString & " " & Unknowns(i)
    Next i
    DebugString = DebugString & " | " & DiminishingUnknownIndex

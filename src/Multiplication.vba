@@ -9,8 +9,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public NumberOfFactors As Integer
-Public NumberOfDegrees As Integer
+Dim NumberOfFactors As Integer
+Dim NumberOfDegrees As Integer
 
 Dim Factors() As New Operator
 Dim StringFactors() As New Operator

@@ -9,15 +9,19 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public NumberOfGroups As Integer
+Dim mNumberOfGroups As Integer
 Dim Degrees() As Integer
 Dim Repetitions() As Integer
 
-Public FirstColumn As Integer
-Public LastColumn As Integer
-Public Hue As Double
+Dim FirstColumn As Integer
+Dim mLastColumn As Integer
+Dim Hue As Double
 
 ' Property Get
+
+Public Property Get NumberOfGroups() As Integer
+   NumberOfGroups = mNumberOfGroups
+End Property
 
 Public Property Get Degree(GroupIndex As Integer) As Integer
    Degree = Degrees(GroupIndex)
@@ -25,6 +29,10 @@ End Property
 
 Public Property Get Repetition(GroupIndex As Integer) As Integer
    Repetition = Repetitions(GroupIndex)
+End Property
+
+Public Property Get LastColumn() As Integer
+   LastColumn = mLastColumn
 End Property
 
 ' Property Let
@@ -40,14 +48,14 @@ End Property
 ' Methods
 
 Public Sub allocateMemory(parNumberOfGroups As Integer)
-   NumberOfGroups = parNumberOfGroups
-   ReDim Degrees(NumberOfGroups - 1)
-   ReDim Repetitions(NumberOfGroups - 1)
+   mNumberOfGroups = parNumberOfGroups
+   ReDim Degrees(mNumberOfGroups - 1)
+   ReDim Repetitions(mNumberOfGroups - 1)
 End Sub
 
 Public Sub fillStringFactor(SheetRow As Integer)
    Dim i As Integer
-   For i = 0 To NumberOfGroups - 1
+   For i = 0 To mNumberOfGroups - 1
       Degrees(i) = Sheets(1).Cells(SheetRow, 3 + i)
       Repetitions(i) = 1
    Next i
@@ -61,10 +69,10 @@ Public Sub groupDegreesFromOperator(OperatorFrom As Operator, ConformityArray() 
    Set TemporaryOperator = New Operator
    ReDim ConformityArray(OperatorFrom.NumberOfGroups - 1)
    TemporaryOperator.allocateMemory OperatorFrom.NumberOfGroups
-   NumberOfGroups = 0
+   mNumberOfGroups = 0
    For i = 0 To OperatorFrom.NumberOfGroups - 1
       isFound = False
-      For j = 0 To NumberOfGroups - 1
+      For j = 0 To mNumberOfGroups - 1
          If TemporaryOperator.Degree(j) = OperatorFrom.Degree(i) Then
             ConformityArray(i) = j
             isFound = True
@@ -72,14 +80,14 @@ Public Sub groupDegreesFromOperator(OperatorFrom As Operator, ConformityArray() 
          End If
       Next j
       If (Not isFound) Then
-         NumberOfGroups = NumberOfGroups + 1
-         TemporaryOperator.Degree(NumberOfGroups - 1) = OperatorFrom.Degree(i)
-         ConformityArray(i) = NumberOfGroups - 1
+         mNumberOfGroups = mNumberOfGroups + 1
+         TemporaryOperator.Degree(mNumberOfGroups - 1) = OperatorFrom.Degree(i)
+         ConformityArray(i) = mNumberOfGroups - 1
       End If
    Next i
-   ReDim Degrees(NumberOfGroups - 1)
-   ReDim Repetitions(NumberOfGroups - 1)
-   For i = 0 To NumberOfGroups - 1
+   ReDim Degrees(mNumberOfGroups - 1)
+   ReDim Repetitions(mNumberOfGroups - 1)
+   For i = 0 To mNumberOfGroups - 1
       Degrees(i) = TemporaryOperator.Degree(i)
    Next i
    Set TemporaryOperator = Nothing
@@ -87,7 +95,7 @@ End Sub
 
 Public Sub groupRepetitionsFromOperator(OperatorFrom As Operator, ConformityArray() As Integer)
    Dim GroupIndex As Integer
-   For GroupIndex = 0 To NumberOfGroups - 1
+   For GroupIndex = 0 To mNumberOfGroups - 1
       Repetitions(GroupIndex) = 0
    Next GroupIndex
    For GroupIndex = 0 To OperatorFrom.NumberOfGroups - 1
@@ -104,7 +112,7 @@ End Sub
 
 Public Sub printItemOfGroup(dgItem As Integer, ByVal RowIndex As Integer)
    Dim i As Integer
-   For i = 0 To NumberOfGroups - 1
+   For i = 0 To mNumberOfGroups - 1
       Select Case dgItem
          Case dgRepetition
             Sheets(2).Cells(RowIndex, FirstColumn + i) = Repetitions(i)
@@ -116,15 +124,15 @@ End Sub
 
 Public Function getInfo() As String
    Dim i As Integer
-   getInfo = vbLf & "Number of groups: " & NumberOfGroups & vbLf & "Degrees: "
-   For i = 0 To NumberOfGroups - 1
+   getInfo = vbLf & "Number of groups: " & mNumberOfGroups & vbLf & "Degrees: "
+   For i = 0 To mNumberOfGroups - 1
       getInfo = getInfo & " " & Degrees(i) & "[" & Repetitions(i) & "]"
    Next i
 End Function
 
 Public Sub setColumns(LastColumnOfPreviousOperator As Integer, parHue As Integer)
    FirstColumn = LastColumnOfPreviousOperator + 1
-   LastColumn = LastColumnOfPreviousOperator + NumberOfGroups
+   mLastColumn = LastColumnOfPreviousOperator + mNumberOfGroups
    Hue = parHue
 End Sub
 
