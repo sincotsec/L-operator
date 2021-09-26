@@ -66,12 +66,24 @@ Public Sub fillDegreesOfDenominator()
    Numerator.groupDegreesFromOperator Denominator, Conformity
 End Sub
 
+Public Sub printPointersOfDenominator()
+   Dim i As Integer
+   Dim j As Integer
+   Dim FactorGroupIndexes() As Integer
+   For i = 0 To Denominator.NumberOfGroups - 1
+      FactorGroupIndexes = EqObj.getLetterIndexes(i)
+      For j = 0 To NumberOfFactors - 1
+         Sheets(2).Cells(j + 1, Denominator.FirstColumn + i) = Factors(j).Degree(FactorGroupIndexes(j))
+      Next j
+   Next i
+End Sub
+
 Public Sub setColumns()
    Dim i As Integer
    Dim ColumnIndex As Integer
    Dim HueNumber As Integer
    Dim TitleRow As Integer
-   TitleRow = 1
+   TitleRow = NumberOfFactors + 1
    ColumnIndex = 0
    HueNumber = WorksheetFunction.RandBetween(0, 360)
    For i = 0 To NumberOfFactors + 1
@@ -82,6 +94,7 @@ Public Sub setColumns()
       HueNumber = HueNumber + 45
       If HueNumber > 360 Then HueNumber = HueNumber - 360
    Next i
+   printPointersOfDenominator
 End Sub
 
 Public Sub fillRepetitionsOfDenominator()
@@ -114,7 +127,7 @@ End Sub
 Public Sub doMultiplication()
    Dim FactorIndex As Integer
    Dim LastRow As Long
-   LastRow = 1
+   LastRow = NumberOfFactors + 1
    Do
       EqObj.fillUnknowns
       Call fillRepetitionsOfDenominator
@@ -129,7 +142,7 @@ End Sub
 Public Sub prepareSheetAfter()
    Sheets(2).Select
    ActiveWindow.WindowState = xlMaximized
-   Cells(2, 1).Select
+   Cells(NumberOfFactors + 2, 1).Select
    ActiveWindow.FreezePanes = False
    ActiveWindow.FreezePanes = True
    Sheets(2).Cells.EntireColumn.AutoFit
