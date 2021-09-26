@@ -91,7 +91,7 @@ Public Sub setColumns()
       Factors(i).prepareTitle TitleRow
       Factors(i).printItemOfGroup dgDegree, TitleRow
       ColumnIndex = Factors(i).LastColumn
-      HueNumber = HueNumber + 45
+      HueNumber = HueNumber + 30
       If HueNumber > 360 Then HueNumber = HueNumber - 360
    Next i
    printPointersOfDenominator
