@@ -13,9 +13,9 @@ Dim mNumberOfGroups As Integer
 Dim Degrees() As Integer
 Dim Repetitions() As Integer
 
-Dim FirstColumn As Integer
+Dim mFirstColumn As Integer
 Dim mLastColumn As Integer
-Dim Hue As Double
+Dim mHue As Double
 
 ' Property Get
 
@@ -29,6 +29,10 @@ End Property
 
 Public Property Get Repetition(GroupIndex As Integer) As Integer
    Repetition = Repetitions(GroupIndex)
+End Property
+
+Public Property Get FirstColumn() As Integer
+   FirstColumn = mFirstColumn
 End Property
 
 Public Property Get LastColumn() As Integer
@@ -106,7 +110,7 @@ End Sub
 Public Sub prepareTitle(ByVal RowIndex As Integer)
    With Range(Sheets(2).Cells(RowIndex, FirstColumn), Sheets(2).Cells(RowIndex, LastColumn))
       .Font.Bold = True
-      .EntireColumn.Interior.Color = ColorFromHSL(Hue, 100, 60)
+      .EntireColumn.Interior.Color = ColorFromHSL(mHue, 100, 60)
    End With
 End Sub
 
@@ -131,9 +135,9 @@ Public Function getInfo() As String
 End Function
 
 Public Sub setColumns(LastColumnOfPreviousOperator As Integer, parHue As Integer)
-   FirstColumn = LastColumnOfPreviousOperator + 1
+   mFirstColumn = LastColumnOfPreviousOperator + 1
    mLastColumn = LastColumnOfPreviousOperator + mNumberOfGroups
-   Hue = parHue
+   mHue = parHue
 End Sub
 
 ' Destructor
