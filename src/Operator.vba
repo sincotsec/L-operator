@@ -65,6 +65,17 @@ Public Sub fillStringFactor(SheetRow As Integer)
    Next i
 End Sub
 
+Public Sub getDegreeString()
+   Dim DebugString As String
+   Dim i As Integer, j As Integer
+   For i = 0 To mNumberOfGroups - 1
+      For j = 1 To Repetitions(i)
+         DebugString = DebugString & " " & Degrees(i)
+      Next j
+   Next i
+   Debug.Print DebugString
+End Sub
+
 Public Sub groupDegreesFromOperator(OperatorFrom As Operator, ConformityArray() As Integer)
    Dim isFound As Boolean
    Dim i As Integer

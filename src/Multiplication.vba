@@ -132,6 +132,7 @@ Public Sub doMultiplication()
       EqObj.fillUnknowns
       Call fillRepetitionsOfDenominator
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
+      Numerator.getDegreeString
       LastRow = LastRow + 1
       For FactorIndex = 0 To NumberOfFactors + 1
          Factors(FactorIndex).printItemOfGroup dgRepetition, LastRow
