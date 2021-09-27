@@ -127,17 +127,23 @@ End Sub
 Public Sub doMultiplication()
    Dim FactorIndex As Integer
    Dim LastRow As Long
+   Dim MP As Operator
    LastRow = NumberOfFactors + 1
+   Set MP = New Operator
+   MP.allocateMemory NumberOfDegrees
+   MP.setColumns Denominator.LastColumn, 120
    Do
       EqObj.fillUnknowns
       Call fillRepetitionsOfDenominator
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
-      Numerator.getDegreeString
+      MP.degroupDegreesFromOperator Numerator
       LastRow = LastRow + 1
       For FactorIndex = 0 To NumberOfFactors + 1
          Factors(FactorIndex).printItemOfGroup dgRepetition, LastRow
       Next FactorIndex
+      MP.printItemOfGroup dgDegree, LastRow
    Loop Until (LastRow >= MaxRow Or EqObj.isDone())
+   Set MP = Nothing
 End Sub
 
 Public Sub prepareSheetAfter()

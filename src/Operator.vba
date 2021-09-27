@@ -108,6 +108,20 @@ Public Sub groupDegreesFromOperator(OperatorFrom As Operator, ConformityArray() 
    Set TemporaryOperator = Nothing
 End Sub
 
+Public Sub degroupDegreesFromOperator(OperatorFrom As Operator)
+   Dim i As Integer
+   Dim j As Integer
+   Dim k As Integer
+   k = 0
+   For i = 0 To OperatorFrom.NumberOfGroups - 1
+      For j = 1 To OperatorFrom.Repetition(i)
+         Degrees(k) = OperatorFrom.Degree(i)
+         k = k + 1
+      Next j
+   Next i
+   Debug.Print getInfo()
+End Sub
+
 Public Sub groupRepetitionsFromOperator(OperatorFrom As Operator, ConformityArray() As Integer)
    Dim GroupIndex As Integer
    For GroupIndex = 0 To mNumberOfGroups - 1
