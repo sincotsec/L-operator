@@ -16,6 +16,7 @@ Dim Factors() As New Operator
 Dim StringFactors() As New Operator
 Dim Denominator As Operator
 Dim Numerator As Operator
+Dim Result As Operator
 
 Dim Conformity() As Integer
 Dim EqObj As Equation
@@ -28,9 +29,10 @@ Public Sub allocateMemory(parNumberOfFactors As Integer, parNumberOfDegrees As I
    NumberOfFactors = parNumberOfFactors
    NumberOfDegrees = parNumberOfDegrees
    ReDim StringFactors(NumberOfFactors - 1)
-   ReDim Factors(NumberOfFactors + 1)
+   ReDim Factors(NumberOfFactors + 2)
    Set Numerator = Factors(NumberOfFactors)
    Set Denominator = Factors(NumberOfFactors + 1)
+   Set Result = Factors(NumberOfFactors + 2)
 End Sub
 
 Public Sub fillFactors()
@@ -64,6 +66,7 @@ Public Sub fillDegreesOfDenominator()
    Next GroupIndex
    Erase FactorGroupIndexes
    Numerator.groupDegreesFromOperator Denominator, Conformity
+   Result.allocateMemory NumberOfDegrees
 End Sub
 
 Public Sub printPointersOfDenominator()
@@ -86,13 +89,15 @@ Public Sub setColumns()
    TitleRow = NumberOfFactors + 1
    ColumnIndex = 0
    HueNumber = WorksheetFunction.RandBetween(0, 360)
-   For i = 0 To NumberOfFactors + 1
+   For i = 0 To NumberOfFactors + 2
       Factors(i).setColumns ColumnIndex, HueNumber
       Factors(i).prepareTitle TitleRow
-      Factors(i).printItemOfGroup dgDegree, TitleRow
       ColumnIndex = Factors(i).LastColumn
       HueNumber = HueNumber + 30
       If HueNumber > 360 Then HueNumber = HueNumber - 360
+   Next i
+   For i = 0 To NumberOfFactors + 1
+      Factors(i).printItemOfGroup dgDegree, TitleRow
    Next i
    printPointersOfDenominator
 End Sub
@@ -127,23 +132,18 @@ End Sub
 Public Sub doMultiplication()
    Dim FactorIndex As Integer
    Dim LastRow As Long
-   Dim MP As Operator
    LastRow = NumberOfFactors + 1
-   Set MP = New Operator
-   MP.allocateMemory NumberOfDegrees
-   MP.setColumns Denominator.LastColumn, 120
    Do
       EqObj.fillUnknowns
       Call fillRepetitionsOfDenominator
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
-      MP.degroupDegreesFromOperator Numerator
+      Result.degroupDegreesFromOperator Numerator
       LastRow = LastRow + 1
       For FactorIndex = 0 To NumberOfFactors + 1
          Factors(FactorIndex).printItemOfGroup dgRepetition, LastRow
       Next FactorIndex
-      MP.printItemOfGroup dgDegree, LastRow
+      Result.printItemOfGroup dgDegree, LastRow
    Loop Until (LastRow >= MaxRow Or EqObj.isDone())
-   Set MP = Nothing
 End Sub
 
 Public Sub prepareSheetAfter()
@@ -161,12 +161,13 @@ Private Sub Class_Terminate()
    Dim FactorIndex As Integer
    For FactorIndex = 0 To NumberOfFactors - 1
       Set StringFactors(FactorIndex) = Nothing
+   Next FactorIndex
+   For FactorIndex = 0 To NumberOfFactors + 2
       Set Factors(FactorIndex) = Nothing
    Next FactorIndex
-   Set Factors(NumberOfFactors) = Nothing
-   Set Factors(NumberOfFactors + 1) = Nothing
    Set Denominator = Nothing
    Set Numerator = Nothing
+   Set Result = Nothing
    Set EqObj = Nothing
    Erase Factors
    Erase StringFactors
