@@ -123,7 +123,7 @@ Public Sub prepareSheetBefore()
       .Font.ColorIndex = xlAutomatic
       .Font.Bold = False
       .Font.Size = 15
-      .Font.Name = "Arial Narrow"
+      .Font.Name = "Century Gothic"
       .HorizontalAlignment = xlCenter
       .VerticalAlignment = xlCenter
    End With
