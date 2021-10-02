@@ -89,15 +89,43 @@ Public Sub setColumns()
    TitleRow = NumberOfFactors + 1
    ColumnIndex = 0
    HueNumber = WorksheetFunction.RandBetween(0, 360)
-   For i = 0 To NumberOfFactors + 2
-      Factors(i).setColumns ColumnIndex, HueNumber
-      Factors(i).prepareTitle TitleRow
-      ColumnIndex = Factors(i).LastColumn
-      HueNumber = HueNumber + 30
-      If HueNumber > 360 Then HueNumber = HueNumber - 360
-   Next i
-   For i = 0 To NumberOfFactors + 1
-      Factors(i).printItemOfGroup dgDegree, TitleRow
+'   For i = 0 To NumberOfFactors + 2
+'      Factors(i).setColumns ColumnIndex, HueNumber
+'      Factors(i).prepareTitle TitleRow
+'      ColumnIndex = Factors(i).LastColumn
+'      HueNumber = HueNumber + 30
+'      If HueNumber > 360 Then HueNumber = HueNumber - 360
+'   Next i
+   StringFactors(0).setColumns ColumnIndex, HueNumber
+   StringFactors(0).prepareTitle TitleRow
+   ColumnIndex = StringFactors(0).LastColumn
+   HueNumber = HueNumber + 30
+   If HueNumber > 360 Then HueNumber = HueNumber - 360
+   
+   Numerator.setColumns ColumnIndex, HueNumber
+   Numerator.prepareTitle TitleRow
+   ColumnIndex = Numerator.LastColumn
+   HueNumber = HueNumber + 30
+   If HueNumber > 360 Then HueNumber = HueNumber - 360
+   
+   Denominator.setColumns ColumnIndex, HueNumber
+   Denominator.prepareTitle TitleRow
+   ColumnIndex = Denominator.LastColumn
+   HueNumber = HueNumber + 30
+   If HueNumber > 360 Then HueNumber = HueNumber - 360
+   
+   Result.setColumns ColumnIndex, HueNumber
+   Result.prepareTitle TitleRow
+   ColumnIndex = Result.LastColumn
+   HueNumber = HueNumber + 30
+   If HueNumber > 360 Then HueNumber = HueNumber - 360
+
+   Numerator.printItemOfGroup dgDegree, TitleRow
+   Denominator.printItemOfGroup dgDegree, TitleRow
+   ColumnIndex = 0
+   For i = 0 To NumberOfFactors - 1
+      StringFactors(i).setColumns ColumnIndex, 0
+      StringFactors(i).printItemOfGroup dgDegree, i + 1
    Next i
    printPointersOfDenominator
 End Sub
@@ -139,9 +167,11 @@ Public Sub doMultiplication()
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
       Result.degroupDegreesFromOperator Numerator
       LastRow = LastRow + 1
-      For FactorIndex = 0 To NumberOfFactors + 1
-         Factors(FactorIndex).printItemOfGroup dgRepetition, LastRow
-      Next FactorIndex
+'      For FactorIndex = 0 To NumberOfFactors + 1
+'         Factors(FactorIndex).printItemOfGroup dgRepetition, LastRow
+'      Next FactorIndex
+      Numerator.printItemOfGroup dgRepetition, LastRow
+      Denominator.printItemOfGroup dgRepetition, LastRow
       Result.printItemOfGroup dgDegree, LastRow
    Loop Until (LastRow >= MaxRow Or EqObj.isDone())
 End Sub
