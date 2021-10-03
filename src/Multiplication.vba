@@ -14,6 +14,7 @@ Dim NumberOfDegrees As Integer
 
 Dim Factors() As New Operator
 Dim StringFactors() As New Operator
+Dim ColumnOperators() As Operator
 Dim Denominator As Operator
 Dim Numerator As Operator
 Dim Result As Operator
@@ -29,10 +30,15 @@ Public Sub allocateMemory(parNumberOfFactors As Integer, parNumberOfDegrees As I
    NumberOfFactors = parNumberOfFactors
    NumberOfDegrees = parNumberOfDegrees
    ReDim StringFactors(NumberOfFactors - 1)
-   ReDim Factors(NumberOfFactors + 2)
-   Set Numerator = Factors(NumberOfFactors)
-   Set Denominator = Factors(NumberOfFactors + 1)
-   Set Result = Factors(NumberOfFactors + 2)
+   ReDim Factors(NumberOfFactors - 1)
+   Set Numerator = New Operator
+   Set Denominator = New Operator
+   Set Result = New Operator
+   ReDim ColumnOperators(3)
+   Set ColumnOperators(0) = StringFactors(0)
+   Set ColumnOperators(1) = Numerator
+   Set ColumnOperators(2) = Denominator
+   Set ColumnOperators(3) = Result
 End Sub
 
 Public Sub fillFactors()
@@ -89,37 +95,13 @@ Public Sub setColumns()
    TitleRow = NumberOfFactors + 1
    ColumnIndex = 0
    HueNumber = WorksheetFunction.RandBetween(0, 360)
-'   For i = 0 To NumberOfFactors + 2
-'      Factors(i).setColumns ColumnIndex, HueNumber
-'      Factors(i).prepareTitle TitleRow
-'      ColumnIndex = Factors(i).LastColumn
-'      HueNumber = HueNumber + 30
-'      If HueNumber > 360 Then HueNumber = HueNumber - 360
-'   Next i
-   StringFactors(0).setColumns ColumnIndex, HueNumber
-   StringFactors(0).prepareTitle TitleRow
-   ColumnIndex = StringFactors(0).LastColumn
-   HueNumber = HueNumber + 30
-   If HueNumber > 360 Then HueNumber = HueNumber - 360
-   
-   Numerator.setColumns ColumnIndex, HueNumber
-   Numerator.prepareTitle TitleRow
-   ColumnIndex = Numerator.LastColumn
-   HueNumber = HueNumber + 30
-   If HueNumber > 360 Then HueNumber = HueNumber - 360
-   
-   Denominator.setColumns ColumnIndex, HueNumber
-   Denominator.prepareTitle TitleRow
-   ColumnIndex = Denominator.LastColumn
-   HueNumber = HueNumber + 30
-   If HueNumber > 360 Then HueNumber = HueNumber - 360
-   
-   Result.setColumns ColumnIndex, HueNumber
-   Result.prepareTitle TitleRow
-   ColumnIndex = Result.LastColumn
-   HueNumber = HueNumber + 30
-   If HueNumber > 360 Then HueNumber = HueNumber - 360
-
+   For i = 0 To 3
+      ColumnOperators(i).setColumns ColumnIndex, HueNumber
+      ColumnOperators(i).prepareTitle TitleRow
+      ColumnIndex = ColumnOperators(i).LastColumn
+      HueNumber = HueNumber + 30
+      If HueNumber > 360 Then HueNumber = HueNumber - 360
+   Next i
    Numerator.printItemOfGroup dgDegree, TitleRow
    Denominator.printItemOfGroup dgDegree, TitleRow
    ColumnIndex = 0
@@ -158,7 +140,6 @@ Public Sub prepareSheetBefore()
 End Sub
 
 Public Sub doMultiplication()
-   Dim FactorIndex As Integer
    Dim LastRow As Long
    LastRow = NumberOfFactors + 1
    Do
@@ -167,9 +148,6 @@ Public Sub doMultiplication()
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
       Result.degroupDegreesFromOperator Numerator
       LastRow = LastRow + 1
-'      For FactorIndex = 0 To NumberOfFactors + 1
-'         Factors(FactorIndex).printItemOfGroup dgRepetition, LastRow
-'      Next FactorIndex
       Numerator.printItemOfGroup dgRepetition, LastRow
       Denominator.printItemOfGroup dgRepetition, LastRow
       Result.printItemOfGroup dgDegree, LastRow
@@ -189,17 +167,20 @@ End Sub
 
 Private Sub Class_Terminate()
    Dim FactorIndex As Integer
+   Dim Index As Integer
    For FactorIndex = 0 To NumberOfFactors - 1
       Set StringFactors(FactorIndex) = Nothing
-   Next FactorIndex
-   For FactorIndex = 0 To NumberOfFactors + 2
       Set Factors(FactorIndex) = Nothing
    Next FactorIndex
+   For Index = 0 To 3
+      Set ColumnOperators(Index) = Nothing
+   Next Index
    Set Denominator = Nothing
    Set Numerator = Nothing
    Set Result = Nothing
    Set EqObj = Nothing
    Erase Factors
    Erase StringFactors
+   Erase ColumnOperators
    Erase Conformity
 End Sub
