@@ -124,12 +124,12 @@ Public Sub doMultiplication()
    Cells(NumberOfFactors + 1, 1).EntireRow.Font.Bold = True
    printStringFactors
    LastRow = NumberOfFactors + 1
-   LastColumn = NumberOfDegrees + 3
+   LastColumn = NumberOfDegrees + 4
    LastColumn = Numerator.printItemOfGroup(dgDegree, False, LastRow, LastColumn) + 1
    printPointersOfDenominator LastColumn
    LastColumn = Denominator.printItemOfGroup(dgDegree, False, LastRow, LastColumn)
    Do
-      LastColumn = NumberOfDegrees + 2
+      LastColumn = NumberOfDegrees + 3
       EqObj.fillUnknowns
       fillRepetitionsOfDenominator
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
