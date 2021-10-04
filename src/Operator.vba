@@ -13,10 +13,6 @@ Dim mNumberOfGroups As Integer
 Dim Degrees() As Integer
 Dim Repetitions() As Integer
 
-Dim mFirstColumn As Integer
-Dim mLastColumn As Integer
-Dim mHue As Double
-
 ' Property Get
 
 Public Property Get NumberOfGroups() As Integer
@@ -132,24 +128,21 @@ Public Sub groupRepetitionsFromOperator(OperatorFrom As Operator, ConformityArra
    Next GroupIndex
 End Sub
 
-Public Sub prepareTitle(ByVal RowIndex As Integer)
-   With Range(Sheets(2).Cells(RowIndex, FirstColumn), Sheets(2).Cells(RowIndex, LastColumn))
-      .Font.Bold = True
-      .EntireColumn.Interior.Color = ColorFromHSL(mHue, 100, 60)
-   End With
-End Sub
-
-Public Sub printItemOfGroup(dgItem As Integer, ByVal RowIndex As Integer)
+Public Function printItemOfGroup(dgItem As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer) As Integer
    Dim i As Integer
+   Dim Factorial As String
+   Factorial = ""
+   If dgFactorial Then Factorial = "!"
    For i = 0 To mNumberOfGroups - 1
       Select Case dgItem
          Case dgRepetition
-            Sheets(2).Cells(RowIndex, FirstColumn + i) = Repetitions(i)
+            Sheets(2).Cells(RowIndex, ColumnIndex + i) = Repetitions(i) & Factorial
          Case dgDegree
-            Sheets(2).Cells(RowIndex, FirstColumn + i) = Degrees(i)
+            Sheets(2).Cells(RowIndex, ColumnIndex + i) = Degrees(i) & Factorial
       End Select
    Next i
-End Sub
+   printItemOfGroup = ColumnIndex + mNumberOfGroups
+End Function
 
 Public Function getInfo() As String
    Dim i As Integer
@@ -158,12 +151,6 @@ Public Function getInfo() As String
       getInfo = getInfo & " " & Degrees(i) & "[" & Repetitions(i) & "]"
    Next i
 End Function
-
-Public Sub setColumns(LastColumnOfPreviousOperator As Integer, parHue As Integer)
-   mFirstColumn = LastColumnOfPreviousOperator + 1
-   mLastColumn = LastColumnOfPreviousOperator + mNumberOfGroups
-   mHue = parHue
-End Sub
 
 ' Destructor
 

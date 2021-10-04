@@ -75,41 +75,25 @@ Public Sub fillDegreesOfDenominator()
    Result.allocateMemory NumberOfDegrees
 End Sub
 
-Public Sub printPointersOfDenominator()
+Public Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
    Dim i As Integer
    Dim j As Integer
    Dim FactorGroupIndexes() As Integer
    For i = 0 To Denominator.NumberOfGroups - 1
       FactorGroupIndexes = EqObj.getLetterIndexes(i)
       For j = 0 To NumberOfFactors - 1
-         Sheets(2).Cells(j + 1, Denominator.FirstColumn + i) = Factors(j).Degree(FactorGroupIndexes(j))
+         Sheets(2).Cells(j + 1, ColumnIndex + i) = Factors(j).Degree(FactorGroupIndexes(j))
       Next j
    Next i
 End Sub
 
-Public Sub setColumns()
+Public Sub printStringFactors()
    Dim i As Integer
-   Dim ColumnIndex As Integer
-   Dim HueNumber As Integer
-   Dim TitleRow As Integer
-   TitleRow = NumberOfFactors + 1
-   ColumnIndex = 0
-   HueNumber = WorksheetFunction.RandBetween(0, 360)
-   For i = 0 To 3
-      ColumnOperators(i).setColumns ColumnIndex, HueNumber
-      ColumnOperators(i).prepareTitle TitleRow
-      ColumnIndex = ColumnOperators(i).LastColumn
-      HueNumber = HueNumber + 30
-      If HueNumber > 360 Then HueNumber = HueNumber - 360
-   Next i
-   Numerator.printItemOfGroup dgDegree, TitleRow
-   Denominator.printItemOfGroup dgDegree, TitleRow
-   ColumnIndex = 0
    For i = 0 To NumberOfFactors - 1
-      StringFactors(i).setColumns ColumnIndex, 0
-      StringFactors(i).printItemOfGroup dgDegree, i + 1
+      Cells(i + 1, 1) = "L["
+      StringFactors(i).printItemOfGroup dgDegree, False, i + 1, 2
+      Cells(i + 1, NumberOfDegrees + 2) = "]"
    Next i
-   printPointersOfDenominator
 End Sub
 
 Public Sub fillRepetitionsOfDenominator()
@@ -129,7 +113,7 @@ Public Sub prepareSheetBefore()
       .Clear
       .ColumnWidth = 2
       .Interior.Pattern = xlNone
-      .Interior.Color = ColorFromHSL(WorksheetFunction.RandBetween(0, 360), 70, 40)
+      .Interior.Color = ColorFromHSL(WorksheetFunction.RandBetween(0, 360), 85, 60)
       .Font.ColorIndex = xlAutomatic
       .Font.Bold = False
       .Font.Size = 15
@@ -140,17 +124,34 @@ Public Sub prepareSheetBefore()
 End Sub
 
 Public Sub doMultiplication()
+   Dim i As Integer
    Dim LastRow As Long
+   Dim LastColumn As Integer
+   Sheets(2).Select
+   Cells(NumberOfFactors + 1, 1).EntireRow.Font.Bold = True
+   printStringFactors
    LastRow = NumberOfFactors + 1
+   LastColumn = NumberOfDegrees + 3
+   LastColumn = Numerator.printItemOfGroup(dgDegree, False, LastRow, LastColumn) + 1
+   printPointersOfDenominator LastColumn
+   LastColumn = Denominator.printItemOfGroup(dgDegree, False, LastRow, LastColumn)
    Do
+      LastColumn = NumberOfDegrees + 2
       EqObj.fillUnknowns
-      Call fillRepetitionsOfDenominator
+      fillRepetitionsOfDenominator
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
       Result.degroupDegreesFromOperator Numerator
       LastRow = LastRow + 1
-      Numerator.printItemOfGroup dgRepetition, LastRow
-      Denominator.printItemOfGroup dgRepetition, LastRow
-      Result.printItemOfGroup dgDegree, LastRow
+      Cells(LastRow, LastColumn) = "("
+      LastColumn = LastColumn + 1
+      LastColumn = Numerator.printItemOfGroup(dgRepetition, True, LastRow, LastColumn)
+      Cells(LastRow, LastColumn) = ") : ("
+      LastColumn = LastColumn + 1
+      LastColumn = Denominator.printItemOfGroup(dgRepetition, True, LastRow, LastColumn)
+      Cells(LastRow, LastColumn) = ") L["
+      LastColumn = LastColumn + 1
+      LastColumn = Result.printItemOfGroup(dgDegree, False, LastRow, LastColumn)
+      Cells(LastRow, LastColumn) = "]"
    Loop Until (LastRow >= MaxRow Or EqObj.isDone())
 End Sub
 

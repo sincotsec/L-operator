@@ -12,7 +12,6 @@ Sub multiplyOperators()
    Cls.fillFactors
    Cls.prepareEquation
    Cls.fillDegreesOfDenominator
-   Cls.setColumns
    Cls.doMultiplication
    Cls.prepareSheetAfter
    Set Cls = Nothing
