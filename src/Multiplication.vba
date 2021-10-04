@@ -14,7 +14,6 @@ Dim NumberOfDegrees As Integer
 
 Dim Factors() As New Operator
 Dim StringFactors() As New Operator
-Dim ColumnOperators() As Operator
 Dim Denominator As Operator
 Dim Numerator As Operator
 Dim Result As Operator
@@ -34,11 +33,6 @@ Public Sub allocateMemory(parNumberOfFactors As Integer, parNumberOfDegrees As I
    Set Numerator = New Operator
    Set Denominator = New Operator
    Set Result = New Operator
-   ReDim ColumnOperators(3)
-   Set ColumnOperators(0) = StringFactors(0)
-   Set ColumnOperators(1) = Numerator
-   Set ColumnOperators(2) = Denominator
-   Set ColumnOperators(3) = Result
 End Sub
 
 Public Sub fillFactors()
@@ -124,7 +118,6 @@ Public Sub prepareSheetBefore()
 End Sub
 
 Public Sub doMultiplication()
-   Dim i As Integer
    Dim LastRow As Long
    Dim LastColumn As Integer
    Sheets(2).Select
@@ -173,15 +166,11 @@ Private Sub Class_Terminate()
       Set StringFactors(FactorIndex) = Nothing
       Set Factors(FactorIndex) = Nothing
    Next FactorIndex
-   For Index = 0 To 3
-      Set ColumnOperators(Index) = Nothing
-   Next Index
    Set Denominator = Nothing
    Set Numerator = Nothing
    Set Result = Nothing
    Set EqObj = Nothing
    Erase Factors
    Erase StringFactors
-   Erase ColumnOperators
    Erase Conformity
 End Sub
