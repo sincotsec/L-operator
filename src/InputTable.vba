@@ -4,7 +4,7 @@ Option Explicit
 Sub fillInputSheet()
    If ActiveWorkbook.Worksheets.Count = 1 Then ActiveWorkbook.Worksheets.Add
    Sheets(1).Select
-   Sheets(1).Name = "StringFactors"
+   Sheets(1).Name = "String Factors"
    Sheets(2).Name = "Result"
    Cells.Clear
    Call fillTitle(2, 9)
