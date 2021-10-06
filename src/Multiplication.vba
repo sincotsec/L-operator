@@ -151,6 +151,7 @@ End Sub
 Public Sub prepareSheetAfter()
    Sheets(2).Select
    ActiveWindow.WindowState = xlMaximized
+   ActiveWindow.ScrollColumn = 1
    Cells(NumberOfFactors + 2, 1).Select
    ActiveWindow.FreezePanes = False
    ActiveWindow.FreezePanes = True
