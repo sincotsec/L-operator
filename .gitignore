@@ -2,4 +2,6 @@
 ~$*
 *.xlsx
 *.xlsm
-# src/Export.vba
+src/Лист1.vba
+src/Лист2.vba
+src/ЭтаКнига.vba
