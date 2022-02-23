@@ -27,13 +27,13 @@ Public Property Get Repetition(GroupIndex As Integer) As Integer
    Repetition = Repetitions(GroupIndex)
 End Property
 
-Public Property Get FirstColumn() As Integer
-   FirstColumn = mFirstColumn
-End Property
+'Public Property Get FirstColumn() As Integer
+'   FirstColumn = mFirstColumn
+'End Property
 
-Public Property Get LastColumn() As Integer
-   LastColumn = mLastColumn
-End Property
+'Public Property Get LastColumn() As Integer
+'   LastColumn = mLastColumn
+'End Property
 
 ' Property Let
 
