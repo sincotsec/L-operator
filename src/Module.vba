@@ -5,8 +5,8 @@ Sub multiplyOperators()
    Application.Calculation = xlCalculationManual
    Application.ScreenUpdating = False
    Application.EnableEvents = False
-   Dim Cls As Multiplication
-   Set Cls = New Multiplication
+   Dim Cls As Union
+   Set Cls = New Union
    Cls.prepareSheetBefore
    Cls.allocateMemory Sheets(1).Cells(1, 2), Sheets(1).Cells(2, 2)
    Cls.fillFactors
