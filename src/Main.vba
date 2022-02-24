@@ -1,4 +1,4 @@
-Attribute VB_Name = "Module"
+Attribute VB_Name = "Main"
 Option Explicit
 
 Sub multiplyOperators()
