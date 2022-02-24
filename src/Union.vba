@@ -19,7 +19,7 @@ Dim Numerator As Operator
 Dim Result As Operator
 
 Dim Conformity() As Integer
-Dim EqObj As Equation
+Dim EqObj As EquationSystem
 
 Const MaxRow = 1500
 
@@ -46,7 +46,7 @@ Public Sub fillFactors()
 End Sub
 
 Public Sub prepareEquation()
-   Set EqObj = New Equation
+   Set EqObj = New EquationSystem
    EqObj.allocateMemory NumberOfFactors, NumberOfDegrees
    EqObj.fillArray Factors
    EqObj.prepareSolution
