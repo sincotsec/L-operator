@@ -107,7 +107,7 @@ Public Sub prepareSheetBefore()
       .Clear
       .ColumnWidth = 2
       .Interior.Pattern = xlNone
-      .Interior.Color = ColorFromHSL(WorksheetFunction.RandBetween(0, 360), 85, 60)
+      '.Interior.Color = vbWhite
       .Font.ColorIndex = xlAutomatic
       .Font.Bold = False
       .Font.Size = 15
