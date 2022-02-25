@@ -19,7 +19,7 @@ Dim Numerator As Operator
 Dim Result As Operator
 
 Dim Conformity() As Integer
-Dim EqObj As EquationSystem
+Dim ESO As EquationSystem
 
 Const MaxRow = 1500
 
@@ -46,19 +46,19 @@ Public Sub fillFactors()
 End Sub
 
 Public Sub prepareEquation()
-   Set EqObj = New EquationSystem
-   EqObj.allocateMemory NumberOfFactors, NumberOfDegrees
-   EqObj.fillArray Factors
-   EqObj.prepareSolution
+   Set ESO = New EquationSystem
+   ESO.allocateMemory NumberOfFactors, NumberOfDegrees
+   ESO.fillArray Factors
+   ESO.prepareSolution
 End Sub
 
 Public Sub fillDegreesOfDenominator()
    Dim FactorIndex As Integer
    Dim GroupIndex As Integer
    Dim FactorGroupIndexes() As Integer
-   Denominator.allocateMemory EqObj.NumberOfUnknowns
+   Denominator.allocateMemory ESO.NumberOfUnknowns
    For GroupIndex = 0 To Denominator.NumberOfGroups - 1
-      FactorGroupIndexes = EqObj.getLetterIndexes(GroupIndex)
+      FactorGroupIndexes = ESO.getLetterIndexes(GroupIndex)
       For FactorIndex = 0 To NumberOfFactors - 1
          Denominator.Degree(GroupIndex) = Denominator.Degree(GroupIndex) + Factors(FactorIndex).Degree(FactorGroupIndexes(FactorIndex))
       Next FactorIndex
@@ -74,7 +74,7 @@ Public Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
    Dim j As Integer
    Dim FactorGroupIndexes() As Integer
    For i = 0 To Denominator.NumberOfGroups - 1
-      FactorGroupIndexes = EqObj.getLetterIndexes(i)
+      FactorGroupIndexes = ESO.getLetterIndexes(i)
       For j = 0 To NumberOfFactors - 1
          Sheets(2).Cells(j + 1, ColumnIndex + i) = Factors(j).Degree(FactorGroupIndexes(j))
       Next j
@@ -93,7 +93,7 @@ End Sub
 Public Sub fillRepetitionsOfDenominator()
    Dim GroupIndex As Integer
    Dim UnknownArray() As Integer
-   UnknownArray = EqObj.getUnknownArray
+   UnknownArray = ESO.getUnknownArray
    For GroupIndex = 0 To Denominator.NumberOfGroups - 1
       Denominator.Repetition(GroupIndex) = UnknownArray(GroupIndex)
    Next GroupIndex
@@ -130,7 +130,7 @@ Public Sub doMultiplication()
    LastColumn = Denominator.printItemOfGroup(dgDegree, False, LastRow, LastColumn)
    Do
       LastColumn = NumberOfDegrees + 3
-      EqObj.fillUnknowns
+      ESO.fillUnknowns
       fillRepetitionsOfDenominator
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
       Result.degroupDegreesFromOperator Numerator
@@ -145,7 +145,7 @@ Public Sub doMultiplication()
       LastColumn = LastColumn + 1
       LastColumn = Result.printItemOfGroup(dgDegree, False, LastRow, LastColumn)
       Cells(LastRow, LastColumn) = "]"
-   Loop Until (LastRow >= MaxRow Or EqObj.isDone())
+   Loop Until (LastRow >= MaxRow Or ESO.isDone())
 End Sub
 
 Public Sub prepareSheetAfter()
@@ -170,7 +170,7 @@ Private Sub Class_Terminate()
    Set Denominator = Nothing
    Set Numerator = Nothing
    Set Result = Nothing
-   Set EqObj = Nothing
+   Set ESO = Nothing
    Erase Factors
    Erase StringFactors
    Erase Conformity
