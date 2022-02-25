@@ -34,21 +34,6 @@ Public Sub allocateMemory(NumberOfFactors As Integer, NumberOfDegrees As Integer
    ReDim NumberOfSections(NumberOfLayers - 1)
 End Sub
 
-Public Function getInfo() As String
-   Dim DebugString As String
-   Dim i As Integer, j As Integer
-   DebugString = "NumberOfLayers = " & NumberOfLayers _
-      & vbLf & "SumOfLetters = " & SumOfLetters
-   For i = 0 To NumberOfLayers - 1
-      DebugString = DebugString & vbLf & i & ":"
-      For j = 0 To NumberOfSections(i) - 1
-         DebugString = DebugString & " " & Letters(i)(j)
-      Next j
-   Next i
-   DebugString = DebugString & vbLf & "NumberOfUnknowns = " & mNumberOfUnknowns
-   getInfo = DebugString
-End Function
-
 Public Sub fillArray(ByRef FactorsArray() As Operator)
    Dim DebugString As String
    Dim i As Integer, j As Integer
@@ -205,6 +190,32 @@ Public Sub fillUnknowns()
    DiminishingUnknownIndex = getDiminishingUnknownIndex()
 End Sub
 
+Public Function getUnknownArray() As Integer()
+   getUnknownArray = Unknowns()
+End Function
+
+Public Function isDone() As Boolean
+   isDone = False
+   If DiminishingUnknownIndex = -1 Then isDone = True
+End Function
+
+' String functions
+
+Public Function getInfo() As String
+   Dim DebugString As String
+   Dim i As Integer, j As Integer
+   DebugString = "NumberOfLayers = " & NumberOfLayers _
+      & vbLf & "SumOfLetters = " & SumOfLetters
+   For i = 0 To NumberOfLayers - 1
+      DebugString = DebugString & vbLf & i & ":"
+      For j = 0 To NumberOfSections(i) - 1
+         DebugString = DebugString & " " & Letters(i)(j)
+      Next j
+   Next i
+   DebugString = DebugString & vbLf & "NumberOfUnknowns = " & mNumberOfUnknowns
+   getInfo = DebugString
+End Function
+
 Public Function getUnknownInfo() As String
    Dim i As Integer
    Dim DebugString As String
@@ -213,15 +224,6 @@ Public Function getUnknownInfo() As String
    Next i
    DebugString = DebugString & " | " & DiminishingUnknownIndex
    getUnknownInfo = DebugString
-End Function
-
-Public Function getUnknownArray() As Integer()
-   getUnknownArray = Unknowns()
-End Function
-
-Public Function isDone() As Boolean
-   isDone = False
-   If DiminishingUnknownIndex = -1 Then isDone = True
 End Function
 
 ' Destructor

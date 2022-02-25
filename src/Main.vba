@@ -2,9 +2,9 @@ Attribute VB_Name = "Main"
 Option Explicit
 
 Sub multiplyOperators()
-   Application.Calculation = xlCalculationManual
-   Application.ScreenUpdating = False
-   Application.EnableEvents = False
+'   Application.Calculation = xlCalculationManual
+'   Application.ScreenUpdating = False
+'   Application.EnableEvents = False
    Dim Cls As Union
    Set Cls = New Union
    Cls.prepareSheetBefore
@@ -15,7 +15,7 @@ Sub multiplyOperators()
    Cls.doMultiplication
    Cls.prepareSheetAfter
    Set Cls = Nothing
-   Application.Calculation = xlCalculationAutomatic
-   Application.ScreenUpdating = True
-   Application.EnableEvents = True
+'   Application.Calculation = xlCalculationAutomatic
+'   Application.ScreenUpdating = True
+'   Application.EnableEvents = True
 End Sub
