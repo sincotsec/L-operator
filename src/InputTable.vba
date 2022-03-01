@@ -19,7 +19,7 @@ End Sub
 
 Sub fillInputSheet()
    Sheets(1).Select
-   Sheets(1).Name = "Sheet 1"
+   Sheets(1).Name = "L-operator"
    Call prepareSheetBefore
    Call fillTitle(2, 9)
    Call redrawTable
