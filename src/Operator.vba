@@ -27,14 +27,6 @@ Public Property Get Repetition(GroupIndex As Integer) As Integer
    Repetition = Repetitions(GroupIndex)
 End Property
 
-'Public Property Get FirstColumn() As Integer
-'   FirstColumn = mFirstColumn
-'End Property
-
-'Public Property Get LastColumn() As Integer
-'   LastColumn = mLastColumn
-'End Property
-
 ' Property Let
 
 Public Property Let Degree(GroupIndex As Integer, Value As Integer)
@@ -56,7 +48,7 @@ End Sub
 Public Sub fillStringFactor(SheetRow As Integer)
    Dim i As Integer
    For i = 0 To mNumberOfGroups - 1
-      Degrees(i) = Sheets(1).Cells(SheetRow, 3 + i)
+      Degrees(i) = Sheets(1).Cells(SheetRow, 4 + i)
       Repetitions(i) = 1
    Next i
 End Sub
@@ -104,7 +96,7 @@ Public Sub degroupDegreesFromOperator(OperatorFrom As Operator)
          k = k + 1
       Next j
    Next i
-   Debug.Print getInfo()
+   'Debug.Print getInfo()
 End Sub
 
 Public Sub groupRepetitionsFromOperator(OperatorFrom As Operator, ConformityArray() As Integer)

@@ -19,7 +19,7 @@ Private Sub fillTitle(NumberOfFactors As Integer, NumberOfDegrees As Integer)
       .HorizontalAlignment = xlCenter
       .VerticalAlignment = xlCenter
    End With
-   Range(Cells(1, 1), Cells(2, NumberOfDegrees + 2)).Borders(xlEdgeBottom).LineStyle = xlContinuous
+   Range(Cells(1, 1), Cells(2, 2)).Borders(xlEdgeBottom).LineStyle = xlContinuous
    Range("A1") = "Number of factors": Range("B1") = NumberOfFactors
    Range("A2") = "Number of degrees": Range("B2") = NumberOfDegrees
    Range("A1:A2").Font.Size = 12
@@ -30,15 +30,16 @@ End Sub
 Private Sub fillString(FactorIndex As Integer, NumberOfDegrees As Integer)
    Dim i As Integer
    Sheets(1).Select
-   With Range(Cells(FactorIndex + 2, 1), Cells(FactorIndex + 2, NumberOfDegrees + 2))
+   With Range(Cells(FactorIndex, 3), Cells(FactorIndex, NumberOfDegrees + 4))
       .HorizontalAlignment = xlCenter
       .VerticalAlignment = xlCenter
       .Font.Name = "Arial Narrow"
       .Font.Size = 18
+      .ColumnWidth = 5
    End With
-   Cells(FactorIndex + 2, 2).Borders(xlEdgeRight).LineStyle = xlContinuous
-   Cells(FactorIndex + 2, 1) = "Factor " & FactorIndex
-   Range(Cells(FactorIndex + 2, 3), Cells(FactorIndex + 2, NumberOfDegrees + 2)) = 0
+   Cells(FactorIndex, 3) = "L["
+   Range(Cells(FactorIndex, 4), Cells(FactorIndex, NumberOfDegrees + 4)) = 0
+   Cells(FactorIndex, NumberOfDegrees + 4) = "]"
 End Sub
 
 Sub redrawTable()

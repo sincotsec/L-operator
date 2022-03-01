@@ -39,7 +39,7 @@ Public Sub fillFactors()
    Dim i As Integer
    For i = 0 To NumberOfFactors - 1
       StringFactors(i).allocateMemory NumberOfDegrees
-      StringFactors(i).fillStringFactor 3 + i
+      StringFactors(i).fillStringFactor 1 + i
       Factors(i).groupDegreesFromOperator StringFactors(i), Conformity
       Factors(i).groupRepetitionsFromOperator StringFactors(i), Conformity
    Next i
@@ -84,9 +84,9 @@ End Sub
 Public Sub printStringFactors()
    Dim i As Integer
    For i = 0 To NumberOfFactors - 1
-      Cells(i + 1, 1) = "L["
-      StringFactors(i).printItemOfGroup dgDegree, False, i + 1, 2
-      Cells(i + 1, NumberOfDegrees + 2) = "]"
+      Cells(i + 1, 4) = "L["
+      StringFactors(i).printItemOfGroup dgDegree, False, i + 1, 5
+      Cells(i + 1, NumberOfDegrees + 5) = "]"
    Next i
 End Sub
 
@@ -122,14 +122,18 @@ Public Sub doMultiplication()
    Dim LastColumn As Integer
    Sheets(2).Select
    Cells(NumberOfFactors + 1, 1).EntireRow.Font.Bold = True
+   Range("A1") = "Number of factors"
+   Range("B1") = NumberOfFactors
+   Range("A2") = "Number of degrees"
+   Range("B2") = NumberOfDegrees
    printStringFactors
    LastRow = NumberOfFactors + 1
-   LastColumn = NumberOfDegrees + 4
+   LastColumn = NumberOfDegrees + 7
    LastColumn = Numerator.printItemOfGroup(dgDegree, False, LastRow, LastColumn) + 1
    printPointersOfDenominator LastColumn
    LastColumn = Denominator.printItemOfGroup(dgDegree, False, LastRow, LastColumn)
    Do
-      LastColumn = NumberOfDegrees + 3
+      LastColumn = NumberOfDegrees + 6
       ESO.fillUnknowns
       fillRepetitionsOfDenominator
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
