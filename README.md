@@ -6,14 +6,14 @@
 2. В редакторе Visual Basic импортируйте модули из файлов:
 ```plaintext
 Common.vba
+EquationSystem.vba
 InputTable.vba
-Module.vba
-Equation.vba
-Multiplication.vba
+Main.vba
 Operator.vba
+Union.vba
 ```
 3. Запустите макрос `fillInputSheet`.
-4. На листе `String Factors` заполните степени операторов.
+4. На листе заполните степени операторов.
 Если нужно другое количество операторов или степеней,
 измените поля `Number of factors` и `Number of degrees` и запустите макрос `redrawTable`.
 5. Запустите макрос `multiplyOperators`.
