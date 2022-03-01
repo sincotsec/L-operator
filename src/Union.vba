@@ -76,7 +76,7 @@ Public Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
    For i = 0 To Denominator.NumberOfGroups - 1
       FactorGroupIndexes = ESO.getLetterIndexes(i)
       For j = 0 To NumberOfFactors - 1
-         Sheets(2).Cells(j + 1, ColumnIndex + i) = Factors(j).Degree(FactorGroupIndexes(j))
+         Sheets(1).Cells(j + 1, ColumnIndex + i) = Factors(j).Degree(FactorGroupIndexes(j))
       Next j
    Next i
 End Sub
@@ -100,27 +100,10 @@ Public Sub fillRepetitionsOfDenominator()
    Erase UnknownArray
 End Sub
 
-Public Sub prepareSheetBefore()
-   ActiveWindow.WindowState = xlMaximized
-   ActiveWindow.FreezePanes = False
-   With Sheets(2).Cells
-      .Clear
-      .ColumnWidth = 2
-      .Interior.Pattern = xlNone
-      '.Interior.Color = vbWhite
-      .Font.ColorIndex = xlAutomatic
-      .Font.Bold = False
-      .Font.Size = 15
-      .Font.Name = "Century Gothic"
-      .HorizontalAlignment = xlCenter
-      .VerticalAlignment = xlCenter
-   End With
-End Sub
-
 Public Sub doMultiplication()
    Dim LastRow As Long
    Dim LastColumn As Integer
-   Sheets(2).Select
+   Sheets(1).Select
    Cells(NumberOfFactors + 1, 1).EntireRow.Font.Bold = True
    Range("A1") = "Number of factors"
    Range("B1") = NumberOfFactors
@@ -153,13 +136,13 @@ Public Sub doMultiplication()
 End Sub
 
 Public Sub prepareSheetAfter()
-   Sheets(2).Select
+   Sheets(1).Select
    ActiveWindow.WindowState = xlMaximized
    ActiveWindow.ScrollColumn = 1
    Cells(NumberOfFactors + 2, 1).Select
    ActiveWindow.FreezePanes = False
    ActiveWindow.FreezePanes = True
-   Sheets(2).Cells.EntireColumn.AutoFit
+   Sheets(1).Cells.EntireColumn.AutoFit
 End Sub
 
 ' Destructor

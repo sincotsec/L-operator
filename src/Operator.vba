@@ -48,7 +48,7 @@ End Sub
 Public Sub fillStringFactor(SheetRow As Integer)
    Dim i As Integer
    For i = 0 To mNumberOfGroups - 1
-      Degrees(i) = Sheets(1).Cells(SheetRow, 4 + i)
+      Degrees(i) = Sheets(1).Cells(SheetRow, 5 + i)
       Repetitions(i) = 1
    Next i
 End Sub
@@ -117,9 +117,9 @@ Public Function printItemOfGroup(dgItem As Integer, ByVal dgFactorial As Boolean
    For i = 0 To mNumberOfGroups - 1
       Select Case dgItem
          Case dgRepetition
-            Sheets(2).Cells(RowIndex, ColumnIndex + i) = Repetitions(i) & Factorial
+            Sheets(1).Cells(RowIndex, ColumnIndex + i) = Repetitions(i) & Factorial
          Case dgDegree
-            Sheets(2).Cells(RowIndex, ColumnIndex + i) = Degrees(i) & Factorial
+            Sheets(1).Cells(RowIndex, ColumnIndex + i) = Degrees(i) & Factorial
       End Select
    Next i
    printItemOfGroup = ColumnIndex + mNumberOfGroups
