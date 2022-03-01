@@ -35,8 +35,8 @@ Public Sub allocateMemory(NumberOfFactors As Integer, NumberOfDegrees As Integer
 End Sub
 
 Public Sub fillArray(ByRef FactorsArray() As Operator)
-   Dim DebugString As String
-   Dim i As Integer, j As Integer
+   Dim i As Integer
+   Dim j As Integer
    Dim SecondArray() As Integer
    For i = 0 To NumberOfLayers - 1
       NumberOfSections(i) = FactorsArray(i).NumberOfGroups
@@ -204,8 +204,7 @@ End Function
 Public Function getInfo() As String
    Dim DebugString As String
    Dim i As Integer, j As Integer
-   DebugString = "NumberOfLayers = " & NumberOfLayers _
-      & vbLf & "SumOfLetters = " & SumOfLetters
+   DebugString = "NumberOfLayers = " & NumberOfLayers & vbLf & "SumOfLetters = " & SumOfLetters
    For i = 0 To NumberOfLayers - 1
       DebugString = DebugString & vbLf & i & ":"
       For j = 0 To NumberOfSections(i) - 1
