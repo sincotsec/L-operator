@@ -225,6 +225,21 @@ Public Function getUnknownInfo() As String
    getUnknownInfo = DebugString
 End Function
 
+Public Function getLetterInfo() As String
+    Dim DebugString As String
+    Dim i As Integer
+    Dim j As Integer
+    DebugString = "Array of letters" & vbLf
+    For i = 0 To NumberOfLayers - 1
+        DebugString = DebugString & "Factor " & i + 1 & ". Groups: " & NumberOfSections(i) & ". Repetitions:"
+        For j = 0 To NumberOfSections(i) - 1
+            DebugString = DebugString & " " & Letters(i)(j)
+        Next j
+        DebugString = DebugString & vbLf
+    Next i
+    getLetterInfo = DebugString
+End Function
+
 ' Destructor
 
 Private Sub Class_Terminate()

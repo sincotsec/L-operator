@@ -50,6 +50,7 @@ Public Sub prepareEquation()
    ESO.allocateMemory NumberOfFactors, NumberOfDegrees
    ESO.fillArray Factors
    ESO.prepareSolution
+   MsgBox ESO.getLetterInfo
 End Sub
 
 Public Sub fillDegreesOfDenominator()
