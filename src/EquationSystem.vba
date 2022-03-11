@@ -12,12 +12,15 @@ Option Explicit
 Dim NumberOfLayers As Integer
 Dim SumOfLetters As Integer
 Dim Letters() As Variant
+Dim Degrees() As Variant
 Dim NumberOfSections() As Integer
+
 Dim Unknowns() As Integer
 Dim mNumberOfUnknowns As Integer
 Dim UpperBounds() As Integer
 Dim LowerBounds() As Integer
 Dim DiminishingUnknownIndex As Integer
+
 
 ' Property Get
 
@@ -31,8 +34,94 @@ Public Sub allocateMemory(NumberOfFactors As Integer, NumberOfDegrees As Integer
    NumberOfLayers = NumberOfFactors
    SumOfLetters = NumberOfDegrees
    ReDim Letters(NumberOfLayers - 1)
+   ReDim Degrees(NumberOfLayers - 1)
    ReDim NumberOfSections(NumberOfLayers - 1)
 End Sub
+
+Public Sub fillArrays()
+    Dim UngroupedDegrees() As Integer
+    Dim TempArray() As Integer
+    Dim LayerIndex As Integer
+    Dim DegreeIndex As Integer
+    Dim ConformityArray() As Integer
+    Dim isFound As Boolean
+    Dim SectionIndex As Integer
+    ReDim UngroupedDegrees(NumberOfLayers - 1, SumOfLetters - 1)
+    ReDim ConformityArray(SumOfLetters - 1)
+    For LayerIndex = 0 To NumberOfLayers - 1
+        For DegreeIndex = 0 To SumOfLetters - 1
+            UngroupedDegrees(LayerIndex, DegreeIndex) = Cells(1 + LayerIndex, 5 + DegreeIndex)
+        Next DegreeIndex
+        ReDim TempArray(SumOfLetters - 1)
+        
+        Degrees(LayerIndex) = TempArray
+        Letters(LayerIndex) = TempArray
+        NumberOfSections(LayerIndex) = 0
+        For DegreeIndex = 0 To SumOfLetters - 1
+            isFound = False
+            For SectionIndex = 0 To NumberOfSections(LayerIndex) - 1
+                If Degrees(LayerIndex)(SectionIndex) = UngroupedDegrees(LayerIndex, DegreeIndex) Then
+                    ConformityArray(DegreeIndex) = SectionIndex
+                    isFound = True
+                    Exit For
+                End If
+            Next SectionIndex
+            If (Not isFound) Then
+                NumberOfSections(LayerIndex) = NumberOfSections(LayerIndex) + 1
+                Degrees(LayerIndex)(NumberOfSections(LayerIndex) - 1) = UngroupedDegrees(LayerIndex, DegreeIndex)
+                ConformityArray(DegreeIndex) = NumberOfSections(LayerIndex) - 1
+            End If
+            Letters(LayerIndex)(ConformityArray(DegreeIndex)) = Letters(LayerIndex)(ConformityArray(DegreeIndex)) + 1
+        Next DegreeIndex
+    Next LayerIndex
+    Erase UngroupedDegrees
+    Erase TempArray
+    Erase ConformityArray
+End Sub
+
+'Public Sub groupDegrees(OperatorFrom() As Integer, ArrayTo() As Integer, Iter As Integer)
+'   Dim isFound As Boolean
+'   Dim i As Integer
+'   Dim j As Integer
+'   Dim ConformityArray() As Integer
+'
+'   Dim TemporaryOperator As Operator
+'   Set TemporaryOperator = New Operator
+'   ReDim ConformityArray(SumOfLetters - 1)
+'   TemporaryOperator.allocateMemory OperatorFrom.NumberOfGroups
+'   mNumberOfGroups = 0
+'   For i = 0 To OperatorFrom.NumberOfGroups - 1
+'      isFound = False
+'      For j = 0 To mNumberOfGroups - 1
+'         If TemporaryOperator.Degree(j) = OperatorFrom.Degree(i) Then
+'            ConformityArray(i) = j
+'            isFound = True
+'            Exit For
+'         End If
+'      Next j
+'      If (Not isFound) Then
+'         mNumberOfGroups = mNumberOfGroups + 1
+'         TemporaryOperator.Degree(mNumberOfGroups - 1) = OperatorFrom.Degree(i)
+'         ConformityArray(i) = mNumberOfGroups - 1
+'      End If
+'   Next i
+'   ReDim Degrees(mNumberOfGroups - 1)
+'   ReDim Repetitions(mNumberOfGroups - 1)
+'   For i = 0 To mNumberOfGroups - 1
+'      Degrees(i) = TemporaryOperator.Degree(i)
+'   Next i
+'   Set TemporaryOperator = Nothing
+'End Sub
+
+'Public Sub groupRepetitionsFromOperator(OperatorFrom As Operator, ConformityArray() As Integer)
+'   Dim GroupIndex As Integer
+'   For GroupIndex = 0 To mNumberOfGroups - 1
+'      Repetitions(GroupIndex) = 0
+'   Next GroupIndex
+'   For GroupIndex = 0 To OperatorFrom.NumberOfGroups - 1
+'      Repetitions(ConformityArray(GroupIndex)) = Repetitions(ConformityArray(GroupIndex)) + OperatorFrom.Repetition(GroupIndex)
+'   Next GroupIndex
+'End Sub
 
 Public Sub fillArray(ByRef FactorsArray() As Operator)
    Dim i As Integer
@@ -246,6 +335,7 @@ Private Sub Class_Terminate()
    Erase UpperBounds
    Erase LowerBounds
    Erase Letters
+   Erase Degrees
    Erase NumberOfSections
    Erase Unknowns
 End Sub

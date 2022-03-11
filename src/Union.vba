@@ -48,9 +48,13 @@ End Sub
 Public Sub prepareEquation()
    Set ESO = New EquationSystem
    ESO.allocateMemory NumberOfFactors, NumberOfDegrees
-   ESO.fillArray Factors
-   ESO.prepareSolution
+   ESO.fillArrays
    MsgBox ESO.getLetterInfo
+   'ESO.fillArray Factors
+   'MsgBox ESO.getLetterInfo
+   
+   ESO.prepareSolution
+   
 End Sub
 
 Public Sub fillDegreesOfDenominator()
