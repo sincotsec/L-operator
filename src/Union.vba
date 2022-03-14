@@ -47,10 +47,7 @@ End Sub
 
 Public Sub prepareEquation()
    Set ESO = New EquationSystem
-   ESO.allocateMemory NumberOfFactors, NumberOfDegrees
-   ESO.fillArrays
-   MsgBox ESO.getLetterInfo
-   'ESO.fillArray Factors
+   ESO.fillArrays NumberOfFactors, NumberOfDegrees
    'MsgBox ESO.getLetterInfo
    
    ESO.prepareSolution

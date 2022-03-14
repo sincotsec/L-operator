@@ -30,15 +30,7 @@ End Property
 
 ' Methods
 
-Public Sub allocateMemory(NumberOfFactors As Integer, NumberOfDegrees As Integer)
-   NumberOfLayers = NumberOfFactors
-   SumOfLetters = NumberOfDegrees
-   ReDim Letters(NumberOfLayers - 1)
-   ReDim Degrees(NumberOfLayers - 1)
-   ReDim NumberOfSections(NumberOfLayers - 1)
-End Sub
-
-Public Sub fillArrays()
+Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
     Dim UngroupedDegrees() As Integer
     Dim TempArray() As Integer
     Dim LayerIndex As Integer
@@ -46,6 +38,13 @@ Public Sub fillArrays()
     Dim ConformityArray() As Integer
     Dim isFound As Boolean
     Dim SectionIndex As Integer
+    
+    NumberOfLayers = NumberOfFactors
+    SumOfLetters = NumberOfDegrees
+    
+    ReDim Letters(NumberOfLayers - 1)
+    ReDim Degrees(NumberOfLayers - 1)
+    ReDim NumberOfSections(NumberOfLayers - 1)
     ReDim UngroupedDegrees(NumberOfLayers - 1, SumOfLetters - 1)
     ReDim ConformityArray(SumOfLetters - 1)
     For LayerIndex = 0 To NumberOfLayers - 1
