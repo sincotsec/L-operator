@@ -51,6 +51,7 @@ Public Sub prepareEquation()
    'MsgBox ESO.getLetterInfo
    
    ESO.prepareSolution
+   ESO.fillDegreesOfDenominator
    
 End Sub
 
@@ -113,6 +114,7 @@ Public Sub doMultiplication()
    Range("A2") = "Number of degrees"
    Range("B2") = NumberOfDegrees
    printStringFactors
+   
    LastRow = NumberOfFactors + 1
    LastColumn = NumberOfDegrees + 7
    LastColumn = Numerator.printItemOfGroup(dgDegree, False, LastRow, LastColumn) + 1
@@ -121,6 +123,7 @@ Public Sub doMultiplication()
    Do
       LastColumn = NumberOfDegrees + 6
       ESO.fillUnknowns
+      ESO.printUnknowns
       fillRepetitionsOfDenominator
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
       Result.degroupDegreesFromOperator Numerator

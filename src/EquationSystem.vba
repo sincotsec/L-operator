@@ -21,6 +21,12 @@ Dim UpperBounds() As Integer
 Dim LowerBounds() As Integer
 Dim DiminishingUnknownIndex As Integer
 
+Dim NumeratorDegrees() As Integer
+Dim NumeratorRepetitions() As Integer
+Dim ResultDegrees() As Integer
+Dim DenominatorDegrees() As Integer
+
+Dim NumberOfNumeratorDegrees As Integer
 
 ' Property Get
 
@@ -78,63 +84,46 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
     Erase ConformityArray
 End Sub
 
-'Public Sub groupDegrees(OperatorFrom() As Integer, ArrayTo() As Integer, Iter As Integer)
-'   Dim isFound As Boolean
-'   Dim i As Integer
-'   Dim j As Integer
-'   Dim ConformityArray() As Integer
-'
-'   Dim TemporaryOperator As Operator
-'   Set TemporaryOperator = New Operator
-'   ReDim ConformityArray(SumOfLetters - 1)
-'   TemporaryOperator.allocateMemory OperatorFrom.NumberOfGroups
-'   mNumberOfGroups = 0
-'   For i = 0 To OperatorFrom.NumberOfGroups - 1
-'      isFound = False
-'      For j = 0 To mNumberOfGroups - 1
-'         If TemporaryOperator.Degree(j) = OperatorFrom.Degree(i) Then
-'            ConformityArray(i) = j
-'            isFound = True
-'            Exit For
-'         End If
-'      Next j
-'      If (Not isFound) Then
-'         mNumberOfGroups = mNumberOfGroups + 1
-'         TemporaryOperator.Degree(mNumberOfGroups - 1) = OperatorFrom.Degree(i)
-'         ConformityArray(i) = mNumberOfGroups - 1
-'      End If
-'   Next i
-'   ReDim Degrees(mNumberOfGroups - 1)
-'   ReDim Repetitions(mNumberOfGroups - 1)
-'   For i = 0 To mNumberOfGroups - 1
-'      Degrees(i) = TemporaryOperator.Degree(i)
-'   Next i
-'   Set TemporaryOperator = Nothing
-'End Sub
+Public Sub fillDegreesOfDenominator()
+   Dim FactorIndex As Integer
+   Dim GroupIndex As Integer
+   Dim FactorGroupIndexes() As Integer
+   ReDim DenominatorDegrees(mNumberOfUnknowns - 1)
+   For GroupIndex = 0 To mNumberOfUnknowns - 1
+      FactorGroupIndexes = getLetterIndexes(GroupIndex)
+      For FactorIndex = 0 To NumberOfLayers - 1
+         DenominatorDegrees(GroupIndex) = DenominatorDegrees(GroupIndex) + Degrees(FactorIndex)(FactorGroupIndexes(FactorIndex))
+      Next FactorIndex
+   Next GroupIndex
+   Erase FactorGroupIndexes
+   groupDegrees
+   'Result.allocateMemory NumberOfDegrees
+End Sub
 
-'Public Sub groupRepetitionsFromOperator(OperatorFrom As Operator, ConformityArray() As Integer)
-'   Dim GroupIndex As Integer
-'   For GroupIndex = 0 To mNumberOfGroups - 1
-'      Repetitions(GroupIndex) = 0
-'   Next GroupIndex
-'   For GroupIndex = 0 To OperatorFrom.NumberOfGroups - 1
-'      Repetitions(ConformityArray(GroupIndex)) = Repetitions(ConformityArray(GroupIndex)) + OperatorFrom.Repetition(GroupIndex)
-'   Next GroupIndex
-'End Sub
-
-Public Sub fillArray(ByRef FactorsArray() As Operator)
-   Dim i As Integer
-   Dim j As Integer
-   Dim SecondArray() As Integer
-   For i = 0 To NumberOfLayers - 1
-      NumberOfSections(i) = FactorsArray(i).NumberOfGroups
-      ReDim SecondArray(NumberOfSections(i) - 1)
-      For j = 0 To NumberOfSections(i) - 1
-         SecondArray(j) = FactorsArray(i).Repetition(j)
-      Next j
-      Letters(i) = SecondArray
-   Next i
-   Erase SecondArray
+Public Sub groupDegrees()
+    Dim DegreeIndex As Integer
+    Dim ConformityArray() As Integer
+    Dim isFound As Boolean
+    Dim SectionIndex As Integer
+    ReDim ConformityArray(mNumberOfUnknowns - 1)
+    ReDim NumeratorDegrees(mNumberOfUnknowns - 1)
+    NumberOfNumeratorDegrees = 0
+    For DegreeIndex = 0 To mNumberOfUnknowns - 1
+        isFound = False
+        For SectionIndex = 0 To NumberOfNumeratorDegrees - 1
+            If NumeratorDegrees(SectionIndex) = DenominatorDegrees(DegreeIndex) Then
+                ConformityArray(DegreeIndex) = SectionIndex
+                isFound = True
+                Exit For
+            End If
+        Next SectionIndex
+        If (Not isFound) Then
+            NumberOfNumeratorDegrees = NumberOfNumeratorDegrees + 1
+            NumeratorDegrees(NumberOfNumeratorDegrees - 1) = DenominatorDegrees(DegreeIndex)
+            ConformityArray(DegreeIndex) = NumberOfNumeratorDegrees - 1
+        End If
+    Next DegreeIndex
+    Erase ConformityArray
 End Sub
 
 Public Sub prepareSolution()
@@ -287,6 +276,23 @@ Public Function isDone() As Boolean
    If DiminishingUnknownIndex = -1 Then isDone = True
 End Function
 
+' Print functions
+
+Public Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
+    Dim i As Integer
+    Dim Factorial As String
+    Factorial = ""
+    If dgFactorial Then Factorial = "!"
+    For i = 0 To dgSize - 1
+        Sheets(1).Cells(RowIndex, ColumnIndex + i) = dgArray(i) & Factorial
+    Next i
+End Sub
+
+Public Sub printUnknowns()
+    Call printArray(NumeratorDegrees, NumberOfNumeratorDegrees, False, 13, 1)
+End Sub
+
+
 ' String functions
 
 Public Function getInfo() As String
@@ -331,10 +337,14 @@ End Function
 ' Destructor
 
 Private Sub Class_Terminate()
-   Erase UpperBounds
-   Erase LowerBounds
-   Erase Letters
-   Erase Degrees
-   Erase NumberOfSections
-   Erase Unknowns
+    Erase UpperBounds
+    Erase LowerBounds
+    Erase Letters
+    Erase Degrees
+    Erase NumberOfSections
+    Erase Unknowns
+    Erase NumeratorDegrees
+    Erase NumeratorRepetitions
+    Erase ResultDegrees
+    Erase DenominatorDegrees
 End Sub
