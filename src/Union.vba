@@ -106,6 +106,7 @@ Public Sub doMultiplication()
    Dim LastRow As Long
    Dim LastColumn As Integer
    Sheets(1).Select
+   Call prepareSheetBefore
    Cells(NumberOfFactors + 1, 1).EntireRow.Font.Bold = True
    Range("A1") = "Number of factors"
    Range("B1") = NumberOfFactors
