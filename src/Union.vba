@@ -48,11 +48,8 @@ End Sub
 Public Sub prepareEquation()
    Set ESO = New EquationSystem
    ESO.fillArrays NumberOfFactors, NumberOfDegrees
-   'MsgBox ESO.getLetterInfo
-   
    ESO.prepareSolution
    ESO.fillDegreesOfDenominator
-   
 End Sub
 
 Public Sub fillDegreesOfDenominator()
@@ -70,18 +67,6 @@ Public Sub fillDegreesOfDenominator()
    Erase FactorGroupIndexes
    Numerator.groupDegreesFromOperator Denominator, Conformity
    Result.allocateMemory NumberOfDegrees
-End Sub
-
-Public Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
-   Dim i As Integer
-   Dim j As Integer
-   Dim FactorGroupIndexes() As Integer
-   For i = 0 To Denominator.NumberOfGroups - 1
-      FactorGroupIndexes = ESO.getLetterIndexes(i)
-      For j = 0 To NumberOfFactors - 1
-         Sheets(1).Cells(j + 1, ColumnIndex + i) = Factors(j).Degree(FactorGroupIndexes(j))
-      Next j
-   Next i
 End Sub
 
 Public Sub printStringFactors()
@@ -117,26 +102,29 @@ Public Sub doMultiplication()
    
    LastRow = NumberOfFactors + 1
    LastColumn = NumberOfDegrees + 7
-   LastColumn = Numerator.printItemOfGroup(dgDegree, False, LastRow, LastColumn) + 1
-   printPointersOfDenominator LastColumn
-   LastColumn = Denominator.printItemOfGroup(dgDegree, False, LastRow, LastColumn)
+   ESO.printNumeratorDegrees LastRow, LastColumn
+   LastColumn = LastColumn + Numerator.NumberOfGroups + 1
+   ESO.printPointersOfDenominator LastColumn
+   ESO.printDenominatorDegrees LastRow, LastColumn
+   LastColumn = LastColumn + Denominator.NumberOfGroups
    Do
       LastColumn = NumberOfDegrees + 6
       ESO.fillUnknowns
-      ESO.printUnknowns
+      
       fillRepetitionsOfDenominator
       Numerator.groupRepetitionsFromOperator Denominator, Conformity
       Result.degroupDegreesFromOperator Numerator
       LastRow = LastRow + 1
       Cells(LastRow, LastColumn) = "("
-      LastColumn = LastColumn + 1
-      LastColumn = Numerator.printItemOfGroup(dgRepetition, True, LastRow, LastColumn)
+      'ESO.printNumeratorRepetitions LastRow + 13, LastColumn + 1
+      Numerator.printItemOfGroup dgRepetition, True, LastRow, LastColumn + 1
+      LastColumn = LastColumn + Numerator.NumberOfGroups + 1
       Cells(LastRow, LastColumn) = ") : ("
-      LastColumn = LastColumn + 1
-      LastColumn = Denominator.printItemOfGroup(dgRepetition, True, LastRow, LastColumn)
+      ESO.printUnknowns LastRow, LastColumn + 1
+      LastColumn = LastColumn + ESO.NumberOfUnknowns + 1
       Cells(LastRow, LastColumn) = ") L["
-      LastColumn = LastColumn + 1
-      LastColumn = Result.printItemOfGroup(dgDegree, False, LastRow, LastColumn)
+      Result.printItemOfGroup dgDegree, False, LastRow, LastColumn + 1
+      LastColumn = LastColumn + Result.NumberOfGroups + 1
       Cells(LastRow, LastColumn) = "]"
    Loop Until (LastRow >= MaxRow Or ESO.isDone())
 End Sub

@@ -288,8 +288,33 @@ Public Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactorial
     Next i
 End Sub
 
-Public Sub printUnknowns()
-    Call printArray(NumeratorDegrees, NumberOfNumeratorDegrees, False, 13, 1)
+Public Sub printUnknowns(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
+    Call printArray(Unknowns, mNumberOfUnknowns, True, RowIndex, ColumnIndex)
+End Sub
+
+Public Sub printNumeratorRepetitions(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
+    Call printArray(NumeratorRepetitions, NumberOfNumeratorDegrees, True, RowIndex, ColumnIndex)
+End Sub
+
+Public Sub printNumeratorDegrees(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
+    Call printArray(NumeratorDegrees, NumberOfNumeratorDegrees, False, RowIndex, ColumnIndex)
+End Sub
+
+Public Sub printDenominatorDegrees(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
+    Call printArray(DenominatorDegrees, NumberOfUnknowns, False, RowIndex, ColumnIndex)
+End Sub
+
+Public Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
+   Dim i As Integer
+   Dim j As Integer
+   Dim FactorGroupIndexes() As Integer
+   For i = 0 To mNumberOfUnknowns - 1
+      FactorGroupIndexes = getLetterIndexes(i)
+      For j = 0 To NumberOfLayers - 1
+         'Sheets(1).Cells(j + 1, ColumnIndex + i) = Factors(j).Degree(FactorGroupIndexes(j))
+         Sheets(1).Cells(j + 1, ColumnIndex + i) = Degrees(j)(FactorGroupIndexes(j))
+      Next j
+   Next i
 End Sub
 
 

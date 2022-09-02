@@ -109,7 +109,23 @@ Public Sub groupRepetitionsFromOperator(OperatorFrom As Operator, ConformityArra
    Next GroupIndex
 End Sub
 
-Public Function printItemOfGroup(dgItem As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer) As Integer
+'Public Function printItemOfGroup(dgItem As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer) As Integer
+'   Dim i As Integer
+'   Dim Factorial As String
+'   Factorial = ""
+'   If dgFactorial Then Factorial = "!"
+'   For i = 0 To mNumberOfGroups - 1
+'      Select Case dgItem
+'         Case dgRepetition
+'            Sheets(1).Cells(RowIndex, ColumnIndex + i) = Repetitions(i) & Factorial
+'         Case dgDegree
+'            Sheets(1).Cells(RowIndex, ColumnIndex + i) = Degrees(i) & Factorial
+'      End Select
+'   Next i
+'   printItemOfGroup = ColumnIndex + mNumberOfGroups
+'End Function
+
+Public Sub printItemOfGroup(dgItem As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
    Dim i As Integer
    Dim Factorial As String
    Factorial = ""
@@ -122,8 +138,7 @@ Public Function printItemOfGroup(dgItem As Integer, ByVal dgFactorial As Boolean
             Sheets(1).Cells(RowIndex, ColumnIndex + i) = Degrees(i) & Factorial
       End Select
    Next i
-   printItemOfGroup = ColumnIndex + mNumberOfGroups
-End Function
+End Sub
 
 'String Functions
 
