@@ -125,45 +125,45 @@ End Sub
 '   printItemOfGroup = ColumnIndex + mNumberOfGroups
 'End Function
 
-Public Sub printItemOfGroup(dgItem As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
-   Dim i As Integer
-   Dim Factorial As String
-   Factorial = ""
-   If dgFactorial Then Factorial = "!"
-   For i = 0 To mNumberOfGroups - 1
-      Select Case dgItem
-         Case dgRepetition
-            Sheets(1).Cells(RowIndex, ColumnIndex + i) = Repetitions(i) & Factorial
-         Case dgDegree
-            Sheets(1).Cells(RowIndex, ColumnIndex + i) = Degrees(i) & Factorial
-      End Select
-   Next i
-End Sub
+'Public Sub printItemOfGroup(dgItem As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
+'   Dim i As Integer
+'   Dim Factorial As String
+'   Factorial = ""
+'   If dgFactorial Then Factorial = "!"
+'   For i = 0 To mNumberOfGroups - 1
+'      Select Case dgItem
+'         Case dgRepetition
+'            Sheets(1).Cells(RowIndex, ColumnIndex + i) = Repetitions(i) & Factorial
+'         Case dgDegree
+'            Sheets(1).Cells(RowIndex, ColumnIndex + i) = Degrees(i) & Factorial
+'      End Select
+'   Next i
+'End Sub
 
 'String Functions
 
-Public Function getDegreeString() As String
-   Dim DebugString As String
-   Dim i As Integer, j As Integer
-   For i = 0 To mNumberOfGroups - 1
-      For j = 1 To Repetitions(i)
-         DebugString = DebugString & " " & Degrees(i)
-      Next j
-   Next i
-   getDegreeString = DebugString
-End Function
-
-Public Function getInfo() As String
-   Dim i As Integer
-   getInfo = vbLf & "Number of groups: " & mNumberOfGroups & vbLf & "Degrees: "
-   For i = 0 To mNumberOfGroups - 1
-      getInfo = getInfo & " " & Degrees(i) & "[" & Repetitions(i) & "]"
-   Next i
-End Function
+'Public Function getDegreeString() As String
+'   Dim DebugString As String
+'   Dim i As Integer, j As Integer
+'   For i = 0 To mNumberOfGroups - 1
+'      For j = 1 To Repetitions(i)
+'         DebugString = DebugString & " " & Degrees(i)
+'      Next j
+'   Next i
+'   getDegreeString = DebugString
+'End Function
+'
+'Public Function getInfo() As String
+'   Dim i As Integer
+'   getInfo = vbLf & "Number of groups: " & mNumberOfGroups & vbLf & "Degrees: "
+'   For i = 0 To mNumberOfGroups - 1
+'      getInfo = getInfo & " " & Degrees(i) & "[" & Repetitions(i) & "]"
+'   Next i
+'End Function
 
 ' Destructor
 
-Private Sub Class_Terminate()
-   Erase Degrees
-   Erase Repetitions
-End Sub
+'Private Sub Class_Terminate()
+'   Erase Degrees
+'   Erase Repetitions
+'End Sub

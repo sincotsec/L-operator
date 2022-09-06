@@ -1,10 +1,10 @@
 Attribute VB_Name = "Common"
 Option Explicit
 
-Enum dgItem
-   dgRepetition = 0
-   dgDegree = 1
-End Enum
+'Enum dgItem
+'   dgRepetition = 0
+'   dgDegree = 1
+'End Enum
 
 Function getMaximum(Number1 As Integer, Number2 As Integer) As Integer
    getMaximum = Number2

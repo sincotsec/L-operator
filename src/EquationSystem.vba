@@ -28,20 +28,27 @@ Dim DenominatorDegrees() As Integer
 
 Dim NumberOfNumeratorDegrees As Integer
 
+Dim ConformityArray() As Integer
+Dim UngroupedDegrees() As Integer
+
 ' Property Get
 
 Public Property Get NumberOfUnknowns()
    NumberOfUnknowns = mNumberOfUnknowns
 End Property
 
+Public Property Get getNumberOfNumeratorDegrees()
+   getNumberOfNumeratorDegrees = NumberOfNumeratorDegrees
+End Property
+
 ' Methods
 
 Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
-    Dim UngroupedDegrees() As Integer
+    'Dim UngroupedDegrees() As Integer
     Dim TempArray() As Integer
     Dim LayerIndex As Integer
     Dim DegreeIndex As Integer
-    Dim ConformityArray() As Integer
+    'Dim ConformityArray() As Integer
     Dim isFound As Boolean
     Dim SectionIndex As Integer
     
@@ -79,9 +86,8 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
             Letters(LayerIndex)(ConformityArray(DegreeIndex)) = Letters(LayerIndex)(ConformityArray(DegreeIndex)) + 1
         Next DegreeIndex
     Next LayerIndex
-    Erase UngroupedDegrees
     Erase TempArray
-    Erase ConformityArray
+    'Erase ConformityArray
 End Sub
 
 Public Sub fillDegreesOfDenominator()
@@ -102,7 +108,7 @@ End Sub
 
 Public Sub groupDegrees()
     Dim DegreeIndex As Integer
-    Dim ConformityArray() As Integer
+    'Dim ConformityArray() As Integer
     Dim isFound As Boolean
     Dim SectionIndex As Integer
     ReDim ConformityArray(mNumberOfUnknowns - 1)
@@ -123,7 +129,7 @@ Public Sub groupDegrees()
             ConformityArray(DegreeIndex) = NumberOfNumeratorDegrees - 1
         End If
     Next DegreeIndex
-    Erase ConformityArray
+    'Erase ConformityArray
 End Sub
 
 Public Sub prepareSolution()
@@ -300,6 +306,10 @@ Public Sub printNumeratorDegrees(ByVal RowIndex As Integer, ByVal ColumnIndex As
     Call printArray(NumeratorDegrees, NumberOfNumeratorDegrees, False, RowIndex, ColumnIndex)
 End Sub
 
+Public Sub printResultDegrees(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
+    Call printArray(ResultDegrees, SumOfLetters, False, RowIndex, ColumnIndex)
+End Sub
+
 Public Sub printDenominatorDegrees(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
     Call printArray(DenominatorDegrees, NumberOfUnknowns, False, RowIndex, ColumnIndex)
 End Sub
@@ -311,10 +321,47 @@ Public Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
    For i = 0 To mNumberOfUnknowns - 1
       FactorGroupIndexes = getLetterIndexes(i)
       For j = 0 To NumberOfLayers - 1
-         'Sheets(1).Cells(j + 1, ColumnIndex + i) = Factors(j).Degree(FactorGroupIndexes(j))
          Sheets(1).Cells(j + 1, ColumnIndex + i) = Degrees(j)(FactorGroupIndexes(j))
       Next j
    Next i
+End Sub
+
+Public Sub printUngroupedDegrees()
+   Dim i As Integer
+   Dim j As Integer
+   For i = 0 To NumberOfLayers - 1
+      Cells(i + 1, 4) = "L["
+      For j = 0 To SumOfLetters - 1
+         Sheets(1).Cells(i + 1, 5 + j) = UngroupedDegrees(i, j)
+      Next j
+      Cells(i + 1, SumOfLetters + 5) = "]"
+   Next i
+End Sub
+
+Public Sub groupRepetitionsFromDenominator()
+   Dim GroupIndex As Integer
+   ReDim NumeratorRepetitions(NumberOfNumeratorDegrees - 1)
+   For GroupIndex = 0 To NumberOfNumeratorDegrees - 1
+      NumeratorRepetitions(GroupIndex) = 0
+   Next GroupIndex
+   For GroupIndex = 0 To mNumberOfUnknowns - 1
+      NumeratorRepetitions(ConformityArray(GroupIndex)) = NumeratorRepetitions(ConformityArray(GroupIndex)) + Unknowns(GroupIndex)
+   Next GroupIndex
+End Sub
+
+Public Sub fillDegreesOfResult()
+   Dim i As Integer
+   Dim j As Integer
+   Dim k As Integer
+   ReDim ResultDegrees(SumOfLetters - 1)
+   k = 0
+   For i = 0 To NumberOfNumeratorDegrees - 1
+      For j = 1 To NumeratorRepetitions(i)
+         ResultDegrees(k) = NumeratorDegrees(i)
+         k = k + 1
+      Next j
+   Next i
+   'Debug.Print getInfo()
 End Sub
 
 
@@ -372,4 +419,6 @@ Private Sub Class_Terminate()
     Erase NumeratorRepetitions
     Erase ResultDegrees
     Erase DenominatorDegrees
+    Erase ConformityArray
+    Erase UngroupedDegrees
 End Sub
