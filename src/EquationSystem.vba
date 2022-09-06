@@ -103,7 +103,6 @@ Public Sub fillDegreesOfDenominator()
    Next GroupIndex
    Erase FactorGroupIndexes
    groupDegrees
-   'Result.allocateMemory NumberOfDegrees
 End Sub
 
 Public Sub groupDegrees()

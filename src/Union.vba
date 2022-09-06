@@ -11,14 +11,6 @@ Option Explicit
 
 Dim NumberOfFactors As Integer
 Dim NumberOfDegrees As Integer
-
-'Dim Factors() As New Operator
-'Dim StringFactors() As New Operator
-'Dim Denominator As Operator
-'Dim Numerator As Operator
-'Dim Result As Operator
-
-'Dim Conformity() As Integer
 Dim ESO As EquationSystem
 
 Const MaxRow = 1500
@@ -28,22 +20,7 @@ Const MaxRow = 1500
 Public Sub allocateMemory(parNumberOfFactors As Integer, parNumberOfDegrees As Integer)
    NumberOfFactors = parNumberOfFactors
    NumberOfDegrees = parNumberOfDegrees
-'   ReDim StringFactors(NumberOfFactors - 1)
-'   ReDim Factors(NumberOfFactors - 1)
-'   Set Numerator = New Operator
-'   Set Denominator = New Operator
-'   Set Result = New Operator
 End Sub
-
-'Public Sub fillFactors()
-'   Dim i As Integer
-'   For i = 0 To NumberOfFactors - 1
-'      StringFactors(i).allocateMemory NumberOfDegrees
-'      StringFactors(i).fillStringFactor 1 + i
-'      Factors(i).groupDegreesFromOperator StringFactors(i), Conformity
-'      Factors(i).groupRepetitionsFromOperator StringFactors(i), Conformity
-'   Next i
-'End Sub
 
 Public Sub prepareEquation()
    Set ESO = New EquationSystem
@@ -51,42 +28,6 @@ Public Sub prepareEquation()
    ESO.prepareSolution
    ESO.fillDegreesOfDenominator
 End Sub
-
-'Public Sub fillDegreesOfDenominator()
-'   Dim FactorIndex As Integer
-'   Dim GroupIndex As Integer
-'   Dim FactorGroupIndexes() As Integer
-'   Denominator.allocateMemory ESO.NumberOfUnknowns
-'   For GroupIndex = 0 To Denominator.NumberOfGroups - 1
-'      FactorGroupIndexes = ESO.getLetterIndexes(GroupIndex)
-'      For FactorIndex = 0 To NumberOfFactors - 1
-'         Denominator.Degree(GroupIndex) = Denominator.Degree(GroupIndex) + Factors(FactorIndex).Degree(FactorGroupIndexes(FactorIndex))
-'      Next FactorIndex
-'      Denominator.Repetition(GroupIndex) = 1
-'   Next GroupIndex
-'   Erase FactorGroupIndexes
-'   Numerator.groupDegreesFromOperator Denominator, Conformity
-'   Result.allocateMemory NumberOfDegrees
-'End Sub
-
-'Public Sub printStringFactors()
-'   Dim i As Integer
-'   For i = 0 To NumberOfFactors - 1
-'      Cells(i + 1, 4) = "L["
-'      StringFactors(i).printItemOfGroup dgDegree, False, i + 1, 5
-'      Cells(i + 1, NumberOfDegrees + 5) = "]"
-'   Next i
-'End Sub
-
-'Public Sub fillRepetitionsOfDenominator()
-'   Dim GroupIndex As Integer
-'   Dim UnknownArray() As Integer
-'   UnknownArray = ESO.getUnknownArray
-'   For GroupIndex = 0 To Denominator.NumberOfGroups - 1
-'      Denominator.Repetition(GroupIndex) = UnknownArray(GroupIndex)
-'   Next GroupIndex
-'   Erase UnknownArray
-'End Sub
 
 Public Sub doMultiplication()
    Dim LastRow As Long
@@ -139,17 +80,5 @@ End Sub
 ' Destructor
 
 Private Sub Class_Terminate()
-'   Dim FactorIndex As Integer
-'   Dim Index As Integer
-'   For FactorIndex = 0 To NumberOfFactors - 1
-'      Set StringFactors(FactorIndex) = Nothing
-'      Set Factors(FactorIndex) = Nothing
-'   Next FactorIndex
-'   Set Denominator = Nothing
-'   Set Numerator = Nothing
-'   Set Result = Nothing
    Set ESO = Nothing
-'   Erase Factors
-'   Erase StringFactors
-'   Erase Conformity
 End Sub
