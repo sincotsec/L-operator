@@ -9,3 +9,9 @@ Sub multiplyOperators()
    Cls.prepareSheetAfter
    Set Cls = Nothing
 End Sub
+
+Sub testOtherWay()
+   Dim ESO As EquationSystem
+   Const MaxRow = 1500
+   Set ESO = Nothing
+End Sub
