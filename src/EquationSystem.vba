@@ -41,6 +41,14 @@ Public Property Get getNumberOfNumeratorDegrees()
    getNumberOfNumeratorDegrees = NumberOfNumeratorDegrees
 End Property
 
+Public Property Get getSumOfLetters()
+   getSumOfLetters = SumOfLetters
+End Property
+
+Public Property Get getNumberOfLayers()
+   getNumberOfLayers = NumberOfLayers
+End Property
+
 ' Methods
 
 Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
