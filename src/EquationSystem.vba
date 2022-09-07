@@ -18,7 +18,7 @@ Dim Degrees() As Variant
 Dim NumberOfSections() As Integer
 
 Dim Unknowns() As Integer
-Dim mNumberOfUnknowns As Integer
+Dim NumberOfUnknowns As Integer
 Dim UpperBounds() As Integer
 Dim LowerBounds() As Integer
 Dim DiminishingUnknownIndex As Integer
@@ -32,24 +32,6 @@ Dim NumberOfNumeratorDegrees As Integer
 
 Dim ConformityArray() As Integer
 Dim UngroupedDegrees() As Integer
-
-' Property Get
-
-Public Property Get NumberOfUnknowns()
-   NumberOfUnknowns = mNumberOfUnknowns
-End Property
-
-Public Property Get getNumberOfNumeratorDegrees()
-   getNumberOfNumeratorDegrees = NumberOfNumeratorDegrees
-End Property
-
-Public Property Get getSumOfLetters()
-   getSumOfLetters = SumOfLetters
-End Property
-
-Public Property Get getNumberOfLayers()
-   getNumberOfLayers = NumberOfLayers
-End Property
 
 ' Methods
 
@@ -104,8 +86,8 @@ Public Sub fillDegreesOfDenominator()
    Dim FactorIndex As Integer
    Dim GroupIndex As Integer
    Dim FactorGroupIndexes() As Integer
-   ReDim DenominatorDegrees(mNumberOfUnknowns - 1)
-   For GroupIndex = 0 To mNumberOfUnknowns - 1
+   ReDim DenominatorDegrees(NumberOfUnknowns - 1)
+   For GroupIndex = 0 To NumberOfUnknowns - 1
       FactorGroupIndexes = getLetterIndexes(GroupIndex)
       For FactorIndex = 0 To NumberOfLayers - 1
          DenominatorDegrees(GroupIndex) = DenominatorDegrees(GroupIndex) + Degrees(FactorIndex)(FactorGroupIndexes(FactorIndex))
@@ -120,10 +102,10 @@ Public Sub groupDegrees()
     'Dim ConformityArray() As Integer
     Dim isFound As Boolean
     Dim SectionIndex As Integer
-    ReDim ConformityArray(mNumberOfUnknowns - 1)
-    ReDim NumeratorDegrees(mNumberOfUnknowns - 1)
+    ReDim ConformityArray(NumberOfUnknowns - 1)
+    ReDim NumeratorDegrees(NumberOfUnknowns - 1)
     NumberOfNumeratorDegrees = 0
-    For DegreeIndex = 0 To mNumberOfUnknowns - 1
+    For DegreeIndex = 0 To NumberOfUnknowns - 1
         isFound = False
         For SectionIndex = 0 To NumberOfNumeratorDegrees - 1
             If NumeratorDegrees(SectionIndex) = DenominatorDegrees(DegreeIndex) Then
@@ -143,13 +125,13 @@ End Sub
 
 Public Sub prepareSolution()
    Dim i As Integer
-   mNumberOfUnknowns = 1
+   NumberOfUnknowns = 1
    For i = 0 To NumberOfLayers - 1
-      mNumberOfUnknowns = mNumberOfUnknowns * NumberOfSections(i)
+      NumberOfUnknowns = NumberOfUnknowns * NumberOfSections(i)
    Next i
-   ReDim Unknowns(mNumberOfUnknowns - 1)
-   ReDim UpperBounds(NumberOfLayers - 1, mNumberOfUnknowns - 1)
-   ReDim LowerBounds(mNumberOfUnknowns - 1)
+   ReDim Unknowns(NumberOfUnknowns - 1)
+   ReDim UpperBounds(NumberOfLayers - 1, NumberOfUnknowns - 1)
+   ReDim LowerBounds(NumberOfUnknowns - 1)
    DiminishingUnknownIndex = -1
 End Sub
 
@@ -259,7 +241,7 @@ End Function
 Public Function getDiminishingUnknownIndex() As Integer
    Dim UnknownIndex As Integer
    getDiminishingUnknownIndex = -1
-   For UnknownIndex = mNumberOfUnknowns - 1 To 0 Step -1
+   For UnknownIndex = NumberOfUnknowns - 1 To 0 Step -1
       If Unknowns(UnknownIndex) > LowerBounds(UnknownIndex) Then
          getDiminishingUnknownIndex = UnknownIndex
          Exit For
@@ -272,7 +254,7 @@ Public Sub fillUnknowns()
    If DiminishingUnknownIndex <> -1 Then
       Unknowns(DiminishingUnknownIndex) = Unknowns(DiminishingUnknownIndex) - 1
    End If
-   For UnknownIndex = 0 To mNumberOfUnknowns - 1
+   For UnknownIndex = 0 To NumberOfUnknowns - 1
       If UnknownIndex > DiminishingUnknownIndex Then
          Unknowns(UnknownIndex) = getUnknown(UnknownIndex)
          LowerBounds(UnknownIndex) = getMu(UnknownIndex)
@@ -304,7 +286,7 @@ Public Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactorial
 End Sub
 
 Public Sub printUnknowns(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
-    Call printArray(Unknowns, mNumberOfUnknowns, True, RowIndex, ColumnIndex)
+    Call printArray(Unknowns, NumberOfUnknowns, True, RowIndex, ColumnIndex)
 End Sub
 
 Public Sub printNumeratorRepetitions(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
@@ -327,7 +309,7 @@ Public Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
    Dim i As Integer
    Dim j As Integer
    Dim FactorGroupIndexes() As Integer
-   For i = 0 To mNumberOfUnknowns - 1
+   For i = 0 To NumberOfUnknowns - 1
       FactorGroupIndexes = getLetterIndexes(i)
       For j = 0 To NumberOfLayers - 1
          Sheets(1).Cells(j + 1, ColumnIndex + i) = Degrees(j)(FactorGroupIndexes(j))
@@ -353,7 +335,7 @@ Public Sub groupRepetitionsFromDenominator()
    For GroupIndex = 0 To NumberOfNumeratorDegrees - 1
       NumeratorRepetitions(GroupIndex) = 0
    Next GroupIndex
-   For GroupIndex = 0 To mNumberOfUnknowns - 1
+   For GroupIndex = 0 To NumberOfUnknowns - 1
       NumeratorRepetitions(ConformityArray(GroupIndex)) = NumeratorRepetitions(ConformityArray(GroupIndex)) + Unknowns(GroupIndex)
    Next GroupIndex
 End Sub
@@ -391,7 +373,7 @@ Public Sub doMultiplication()
    LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
    printPointersOfDenominator LastColumn
    printDenominatorDegrees LastRow, LastColumn
-   LastColumn = LastColumn + mNumberOfUnknowns
+   LastColumn = LastColumn + NumberOfUnknowns
    Do
       LastColumn = SumOfLetters + 6
       fillUnknowns
@@ -403,7 +385,7 @@ Public Sub doMultiplication()
       LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
       Cells(LastRow, LastColumn) = ") : ("
       printUnknowns LastRow, LastColumn + 1
-      LastColumn = LastColumn + mNumberOfUnknowns + 1
+      LastColumn = LastColumn + NumberOfUnknowns + 1
       Cells(LastRow, LastColumn) = ") L["
       printResultDegrees LastRow, LastColumn + 1
       LastColumn = LastColumn + SumOfLetters + 1
@@ -431,14 +413,14 @@ Public Function getInfo() As String
          DebugString = DebugString & " " & Letters(i)(j)
       Next j
    Next i
-   DebugString = DebugString & vbLf & "NumberOfUnknowns = " & mNumberOfUnknowns
+   DebugString = DebugString & vbLf & "NumberOfUnknowns = " & NumberOfUnknowns
    getInfo = DebugString
 End Function
 
 Public Function getUnknownInfo() As String
    Dim i As Integer
    Dim DebugString As String
-   For i = 0 To mNumberOfUnknowns - 1
+   For i = 0 To NumberOfUnknowns - 1
       DebugString = DebugString & " " & Unknowns(i)
    Next i
    DebugString = DebugString & " | " & DiminishingUnknownIndex
