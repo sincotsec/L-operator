@@ -36,11 +36,9 @@ Dim UngroupedDegrees() As Integer
 ' Methods
 
 Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
-    'Dim UngroupedDegrees() As Integer
     Dim TempArray() As Integer
     Dim LayerIndex As Integer
     Dim DegreeIndex As Integer
-    'Dim ConformityArray() As Integer
     Dim isFound As Boolean
     Dim SectionIndex As Integer
     
@@ -79,7 +77,6 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
         Next DegreeIndex
     Next LayerIndex
     Erase TempArray
-    'Erase ConformityArray
 End Sub
 
 Public Sub fillDegreesOfDenominator()
@@ -99,7 +96,6 @@ End Sub
 
 Public Sub groupDegrees()
     Dim DegreeIndex As Integer
-    'Dim ConformityArray() As Integer
     Dim isFound As Boolean
     Dim SectionIndex As Integer
     ReDim ConformityArray(NumberOfUnknowns - 1)
@@ -120,7 +116,6 @@ Public Sub groupDegrees()
             ConformityArray(DegreeIndex) = NumberOfNumeratorDegrees - 1
         End If
     Next DegreeIndex
-    'Erase ConformityArray
 End Sub
 
 Public Sub prepareSolution()
@@ -264,15 +259,6 @@ Public Sub fillUnknowns()
    DiminishingUnknownIndex = getDiminishingUnknownIndex()
 End Sub
 
-Public Function getUnknownArray() As Integer()
-   getUnknownArray = Unknowns()
-End Function
-
-Public Function isDone() As Boolean
-   isDone = False
-   If DiminishingUnknownIndex = -1 Then isDone = True
-End Function
-
 ' Print functions
 
 Public Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
@@ -390,7 +376,7 @@ Public Sub doMultiplication()
       printResultDegrees LastRow, LastColumn + 1
       LastColumn = LastColumn + SumOfLetters + 1
       Cells(LastRow, LastColumn) = "]"
-   Loop Until (LastRow >= MaxRow Or isDone())
+   Loop Until (LastRow >= MaxRow Or DiminishingUnknownIndex = -1)
    
    Sheets(1).Select
    ActiveWindow.WindowState = xlMaximized
