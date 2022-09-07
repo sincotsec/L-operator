@@ -9,6 +9,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+Const MaxRow = 1500
+
 Dim NumberOfLayers As Integer
 Dim SumOfLetters As Integer
 Dim Letters() As Variant
@@ -371,6 +373,51 @@ Public Sub fillDegreesOfResult()
    'Debug.Print getInfo()
 End Sub
 
+Public Sub doMultiplication()
+   Dim LastRow As Long
+   Dim LastColumn As Integer
+   Sheets(1).Select
+   Call prepareSheetBefore
+   Cells(NumberOfLayers + 1, 1).EntireRow.Font.Bold = True
+   Range("A1") = "Number of factors"
+   Range("B1") = NumberOfLayers
+   Range("A2") = "Number of degrees"
+   Range("B2") = SumOfLetters
+   printUngroupedDegrees
+
+   LastRow = NumberOfLayers + 1
+   LastColumn = SumOfLetters + 7
+   printNumeratorDegrees LastRow, LastColumn
+   LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
+   printPointersOfDenominator LastColumn
+   printDenominatorDegrees LastRow, LastColumn
+   LastColumn = LastColumn + mNumberOfUnknowns
+   Do
+      LastColumn = SumOfLetters + 6
+      fillUnknowns
+      groupRepetitionsFromDenominator
+      fillDegreesOfResult
+      LastRow = LastRow + 1
+      Cells(LastRow, LastColumn) = "("
+      printNumeratorRepetitions LastRow, LastColumn + 1
+      LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
+      Cells(LastRow, LastColumn) = ") : ("
+      printUnknowns LastRow, LastColumn + 1
+      LastColumn = LastColumn + mNumberOfUnknowns + 1
+      Cells(LastRow, LastColumn) = ") L["
+      printResultDegrees LastRow, LastColumn + 1
+      LastColumn = LastColumn + SumOfLetters + 1
+      Cells(LastRow, LastColumn) = "]"
+   Loop Until (LastRow >= MaxRow Or isDone())
+   
+   Sheets(1).Select
+   ActiveWindow.WindowState = xlMaximized
+   ActiveWindow.ScrollColumn = 1
+   Cells(NumberOfLayers + 2, 1).Select
+   ActiveWindow.FreezePanes = False
+   ActiveWindow.FreezePanes = True
+   Sheets(1).Cells.EntireColumn.AutoFit
+End Sub
 
 ' String functions
 
