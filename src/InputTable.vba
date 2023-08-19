@@ -1,7 +1,7 @@
 Attribute VB_Name = "InputTable"
 Option Explicit
 
-Private Sub prepareSheetBefore()
+Public Sub prepareSheetBefore()
    ActiveWindow.WindowState = xlMaximized
    ActiveWindow.FreezePanes = False
    With Sheets(1).Cells
