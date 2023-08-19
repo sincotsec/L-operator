@@ -327,17 +327,17 @@ Public Sub groupRepetitionsFromDenominator()
 End Sub
 
 Public Sub fillDegreesOfResult()
-   Dim i As Integer
+   Dim GroupIndex As Integer
    Dim j As Integer
    Dim k As Integer
    ReDim ResultDegrees(SumOfLetters - 1)
    k = 0
-   For i = 0 To NumberOfNumeratorDegrees - 1
-      For j = 1 To NumeratorRepetitions(i)
-         ResultDegrees(k) = NumeratorDegrees(i)
+   For GroupIndex = 0 To NumberOfNumeratorDegrees - 1
+      For j = 1 To NumeratorRepetitions(GroupIndex)
+         ResultDegrees(k) = NumeratorDegrees(GroupIndex)
          k = k + 1
       Next j
-   Next i
+   Next GroupIndex
    'Debug.Print getInfo()
 End Sub
 
