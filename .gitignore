@@ -5,3 +5,6 @@
 src/Лист1.vba
 src/Лист2.vba
 src/ЭтаКнига.vba
+*.png
+*.svg
+*.gv
