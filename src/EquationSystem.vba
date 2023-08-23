@@ -271,26 +271,6 @@ Public Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactorial
     Next i
 End Sub
 
-Public Sub printUnknowns(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
-    Call printArray(Unknowns, NumberOfUnknowns, True, RowIndex, ColumnIndex)
-End Sub
-
-Public Sub printNumeratorRepetitions(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
-    Call printArray(NumeratorRepetitions, NumberOfNumeratorDegrees, True, RowIndex, ColumnIndex)
-End Sub
-
-Public Sub printNumeratorDegrees(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
-    Call printArray(NumeratorDegrees, NumberOfNumeratorDegrees, False, RowIndex, ColumnIndex)
-End Sub
-
-Public Sub printResultDegrees(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
-    Call printArray(ResultDegrees, SumOfLetters, False, RowIndex, ColumnIndex)
-End Sub
-
-Public Sub printDenominatorDegrees(ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
-    Call printArray(DenominatorDegrees, NumberOfUnknowns, False, RowIndex, ColumnIndex)
-End Sub
-
 Public Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
    Dim i As Integer
    Dim j As Integer
@@ -355,10 +335,10 @@ Public Sub doMultiplication()
 
    LastRow = NumberOfLayers + 1
    LastColumn = SumOfLetters + 7
-   printNumeratorDegrees LastRow, LastColumn
+   printArray NumeratorDegrees, NumberOfNumeratorDegrees, False, LastRow, LastColumn
    LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
    printPointersOfDenominator LastColumn
-   printDenominatorDegrees LastRow, LastColumn
+   printArray DenominatorDegrees, NumberOfUnknowns, False, LastRow, LastColumn
    LastColumn = LastColumn + NumberOfUnknowns
    Do
       LastColumn = SumOfLetters + 6
@@ -367,13 +347,13 @@ Public Sub doMultiplication()
       fillDegreesOfResult
       LastRow = LastRow + 1
       Cells(LastRow, LastColumn) = "("
-      printNumeratorRepetitions LastRow, LastColumn + 1
+      printArray NumeratorRepetitions, NumberOfNumeratorDegrees, True, LastRow, LastColumn + 1
       LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
       Cells(LastRow, LastColumn) = ") : ("
-      printUnknowns LastRow, LastColumn + 1
+      printArray Unknowns, NumberOfUnknowns, True, LastRow, LastColumn + 1
       LastColumn = LastColumn + NumberOfUnknowns + 1
       Cells(LastRow, LastColumn) = ") L["
-      printResultDegrees LastRow, LastColumn + 1
+      printArray ResultDegrees, SumOfLetters, False, LastRow, LastColumn + 1
       LastColumn = LastColumn + SumOfLetters + 1
       Cells(LastRow, LastColumn) = "]"
    Loop Until (LastRow >= MaxRow Or DiminishingUnknownIndex = -1)
