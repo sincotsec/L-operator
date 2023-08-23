@@ -199,7 +199,7 @@ Public Function getUnknown(UnknownIndex As Integer) As Integer
    Next LayerIndex
    getUnknown = UpperBounds(0, UnknownIndex)
    For LayerIndex = 0 To NumberOfLayers - 1
-      getUnknown = getMinimum(getUnknown, UpperBounds(LayerIndex, UnknownIndex))
+      getUnknown = WorksheetFunction.Min(getUnknown, UpperBounds(LayerIndex, UnknownIndex))
    Next LayerIndex
    Erase LetterIndexes
 End Function
