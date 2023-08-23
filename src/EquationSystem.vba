@@ -91,7 +91,6 @@ Public Sub fillDegreesOfDenominator()
       Next FactorIndex
    Next GroupIndex
    Erase FactorGroupIndexes
-   groupDegrees
 End Sub
 
 Public Sub groupDegrees()
