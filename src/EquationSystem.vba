@@ -331,20 +331,20 @@ Public Sub doMultiplication()
    Range("A2") = "Number of degrees"
    Range("B2") = SumOfLetters
    printUngroupedDegrees
-
    LastRow = NumberOfLayers + 1
    LastColumn = SumOfLetters + 7
    printArray NumeratorDegrees, NumberOfNumeratorDegrees, False, LastRow, LastColumn
    LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
    printPointersOfDenominator LastColumn
    printArray DenominatorDegrees, NumberOfUnknowns, False, LastRow, LastColumn
-   LastColumn = LastColumn + NumberOfUnknowns
+   
    Do
-      LastColumn = SumOfLetters + 6
       fillUnknowns
       groupRepetitionsFromDenominator
       fillDegreesOfResult
+      
       LastRow = LastRow + 1
+      LastColumn = SumOfLetters + 6
       Cells(LastRow, LastColumn) = "("
       printArray NumeratorRepetitions, NumberOfNumeratorDegrees, True, LastRow, LastColumn + 1
       LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
@@ -357,7 +357,6 @@ Public Sub doMultiplication()
       Cells(LastRow, LastColumn) = "]"
    Loop Until (LastRow >= MaxRow Or DiminishingUnknownIndex = -1)
    
-   Sheets(1).Select
    ActiveWindow.WindowState = xlMaximized
    ActiveWindow.ScrollColumn = 1
    Cells(NumberOfLayers + 2, 1).Select
