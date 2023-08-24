@@ -171,6 +171,7 @@ Public Sub doMultiplication()
    Cells(NumberOfLayers + 2, 1).Select
    ActiveWindow.FreezePanes = False
    ActiveWindow.FreezePanes = True
+   Cells(NumberOfLayers + 1, 1).EntireRow.Borders(xlEdgeBottom).LineStyle = xlContinuous
    Sheets(1).Cells.EntireColumn.AutoFit
 End Sub
 
