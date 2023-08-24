@@ -73,7 +73,9 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
                 Degrees(LayerIndex)(NumberOfSections(LayerIndex) - 1) = UngroupedDegrees(LayerIndex, DegreeIndex)
                 ConformityArray(DegreeIndex) = NumberOfSections(LayerIndex) - 1
             End If
-            Letters(LayerIndex)(ConformityArray(DegreeIndex)) = Letters(LayerIndex)(ConformityArray(DegreeIndex)) + 1
+        Next DegreeIndex
+        For DegreeIndex = 0 To SumOfLetters - 1
+           Letters(LayerIndex)(ConformityArray(DegreeIndex)) = Letters(LayerIndex)(ConformityArray(DegreeIndex)) + 1
         Next DegreeIndex
     Next LayerIndex
     Erase TempArray
@@ -103,30 +105,32 @@ Public Sub fillDegreesOfDenominator()
       Next FactorIndex
    Next GroupIndex
    Erase FactorGroupIndexes
+   groupArrays DenominatorDegrees, NumberOfUnknowns, NumeratorDegrees, NumberOfNumeratorDegrees
 End Sub
 
-Public Sub groupDegrees()
-    Dim DegreeIndex As Integer
-    Dim isFound As Boolean
-    Dim SectionIndex As Integer
-    ReDim ConformityArray(NumberOfUnknowns - 1)
-    ReDim NumeratorDegrees(NumberOfUnknowns - 1)
-    NumberOfNumeratorDegrees = 0
-    For DegreeIndex = 0 To NumberOfUnknowns - 1
-        isFound = False
-        For SectionIndex = 0 To NumberOfNumeratorDegrees - 1
-            If NumeratorDegrees(SectionIndex) = DenominatorDegrees(DegreeIndex) Then
-                ConformityArray(DegreeIndex) = SectionIndex
-                isFound = True
-                Exit For
-            End If
-        Next SectionIndex
-        If (Not isFound) Then
-            NumberOfNumeratorDegrees = NumberOfNumeratorDegrees + 1
-            NumeratorDegrees(NumberOfNumeratorDegrees - 1) = DenominatorDegrees(DegreeIndex)
-            ConformityArray(DegreeIndex) = NumberOfNumeratorDegrees - 1
-        End If
-    Next DegreeIndex
+Private Sub groupArrays(ArrayFrom() As Integer, CountFrom As Integer, ArrayTo() As Integer, CountTo As Integer)
+   Dim isFound As Boolean
+   Dim IndexFrom As Integer
+   Dim IndexTo As Integer
+   
+   ReDim ConformityArray(CountFrom - 1)
+   ReDim ArrayTo(CountFrom - 1)
+   CountTo = 0
+   For IndexFrom = 0 To CountFrom - 1
+      isFound = False
+      For IndexTo = 0 To CountTo - 1
+         If ArrayTo(IndexTo) = ArrayFrom(IndexFrom) Then
+            ConformityArray(IndexFrom) = IndexTo
+            isFound = True
+            Exit For
+         End If
+      Next IndexTo
+      If (Not isFound) Then
+         CountTo = CountTo + 1
+         ArrayTo(CountTo - 1) = ArrayFrom(IndexFrom)
+         ConformityArray(IndexFrom) = CountTo - 1
+      End If
+   Next IndexFrom
 End Sub
 
 Public Sub doMultiplication()
