@@ -276,16 +276,16 @@ Private Function getMu(UnknownIndex As Integer) As Integer
    Erase TempIndexes
 End Function
 
-Private Function getDiminishingUnknownIndex() As Integer
+Private Sub fillDiminishingUnknownIndex()
    Dim UnknownIndex As Integer
-   getDiminishingUnknownIndex = -1
+   DiminishingUnknownIndex = -1
    For UnknownIndex = NumberOfUnknowns - 1 To 0 Step -1
       If Unknowns(UnknownIndex) > LowerBounds(UnknownIndex) Then
-         getDiminishingUnknownIndex = UnknownIndex
+         DiminishingUnknownIndex = UnknownIndex
          Exit For
       End If
    Next UnknownIndex
-End Function
+End Sub
 
 Private Sub fillUnknowns()
    Dim UnknownIndex As Integer
@@ -299,7 +299,7 @@ Private Sub fillUnknowns()
          If LowerBounds(UnknownIndex) < 0 Then LowerBounds(UnknownIndex) = 0
       End If
    Next UnknownIndex
-   DiminishingUnknownIndex = getDiminishingUnknownIndex()
+   fillDiminishingUnknownIndex
 End Sub
 
 Private Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
