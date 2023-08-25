@@ -147,7 +147,7 @@ Public Sub doMultiplication()
    Range("B1") = NumberOfLayers
    Range("A2") = "Number of degrees"
    Range("B2") = SumOfLetters
-   printUngroupedDegrees
+   printFactorDegrees
    LastRow = NumberOfLayers + 1
    LastColumn = SumOfLetters + 7
    printArray NumeratorDegrees, NumberOfNumeratorDegrees, False, LastRow, LastColumn
@@ -336,7 +336,7 @@ Private Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
    Next i
 End Sub
 
-Private Sub printUngroupedDegrees()
+Private Sub printFactorDegrees()
    Dim i As Integer
    Dim j As Integer
    For i = 0 To NumberOfLayers - 1
