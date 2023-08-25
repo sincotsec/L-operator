@@ -15,6 +15,7 @@ Dim NumberOfLayers As Integer
 Dim SumOfLetters As Integer
 Dim Letters() As Variant
 Dim Degrees() As Variant
+Dim FactorDegrees() As Variant
 Dim NumberOfSections() As Integer
 
 Dim Unknowns() As Integer
@@ -31,7 +32,7 @@ Dim DenominatorDegrees() As Integer
 Dim NumberOfNumeratorDegrees As Integer
 
 Dim ConformityArray() As Integer
-Dim UngroupedDegrees() As Integer
+
 
 ' Basic methods
 
@@ -48,21 +49,23 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
     ReDim Letters(NumberOfLayers - 1)
     ReDim Degrees(NumberOfLayers - 1)
     ReDim NumberOfSections(NumberOfLayers - 1)
-    ReDim UngroupedDegrees(NumberOfLayers - 1, SumOfLetters - 1)
+    ReDim FactorDegrees(NumberOfLayers - 1)
     ReDim ConformityArray(SumOfLetters - 1)
     For LayerIndex = 0 To NumberOfLayers - 1
-        For DegreeIndex = 0 To SumOfLetters - 1
-            UngroupedDegrees(LayerIndex, DegreeIndex) = Cells(1 + LayerIndex, 5 + DegreeIndex)
-        Next DegreeIndex
         ReDim TempArray(SumOfLetters - 1)
+        FactorDegrees(LayerIndex) = TempArray
+        For DegreeIndex = 0 To SumOfLetters - 1
+            FactorDegrees(LayerIndex)(DegreeIndex) = Cells(1 + LayerIndex, 5 + DegreeIndex)
+        Next DegreeIndex
         
+        ReDim TempArray(SumOfLetters - 1)
         Degrees(LayerIndex) = TempArray
         Letters(LayerIndex) = TempArray
         NumberOfSections(LayerIndex) = 0
         For DegreeIndex = 0 To SumOfLetters - 1
             isFound = False
             For SectionIndex = 0 To NumberOfSections(LayerIndex) - 1
-                If Degrees(LayerIndex)(SectionIndex) = UngroupedDegrees(LayerIndex, DegreeIndex) Then
+                If Degrees(LayerIndex)(SectionIndex) = FactorDegrees(LayerIndex)(DegreeIndex) Then
                     ConformityArray(DegreeIndex) = SectionIndex
                     isFound = True
                     Exit For
@@ -70,10 +73,11 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
             Next SectionIndex
             If (Not isFound) Then
                 NumberOfSections(LayerIndex) = NumberOfSections(LayerIndex) + 1
-                Degrees(LayerIndex)(NumberOfSections(LayerIndex) - 1) = UngroupedDegrees(LayerIndex, DegreeIndex)
+                Degrees(LayerIndex)(NumberOfSections(LayerIndex) - 1) = FactorDegrees(LayerIndex)(DegreeIndex)
                 ConformityArray(DegreeIndex) = NumberOfSections(LayerIndex) - 1
             End If
         Next DegreeIndex
+        
         For DegreeIndex = 0 To SumOfLetters - 1
            Letters(LayerIndex)(ConformityArray(DegreeIndex)) = Letters(LayerIndex)(ConformityArray(DegreeIndex)) + 1
         Next DegreeIndex
@@ -338,7 +342,7 @@ Private Sub printUngroupedDegrees()
    For i = 0 To NumberOfLayers - 1
       Cells(i + 1, 4) = "L["
       For j = 0 To SumOfLetters - 1
-         Sheets(1).Cells(i + 1, 5 + j) = UngroupedDegrees(i, j)
+         Sheets(1).Cells(i + 1, 5 + j) = FactorDegrees(i)(j)
       Next j
       Cells(i + 1, SumOfLetters + 5) = "]"
    Next i
@@ -425,5 +429,5 @@ Private Sub Class_Terminate()
     Erase ResultDegrees
     Erase DenominatorDegrees
     Erase ConformityArray
-    Erase UngroupedDegrees
+    Erase FactorDegrees
 End Sub
