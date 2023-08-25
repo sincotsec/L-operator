@@ -37,52 +37,40 @@ Dim ConformityArray() As Integer
 ' Basic methods
 
 Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
+    Dim TempArrayFrom() As Integer
+    Dim TempArrayTo() As Integer
     Dim TempArray() As Integer
     Dim LayerIndex As Integer
     Dim DegreeIndex As Integer
-    Dim isFound As Boolean
-    Dim SectionIndex As Integer
     
     NumberOfLayers = NumberOfFactors
     SumOfLetters = NumberOfDegrees
-    
     ReDim Letters(NumberOfLayers - 1)
     ReDim Degrees(NumberOfLayers - 1)
     ReDim NumberOfSections(NumberOfLayers - 1)
     ReDim FactorDegrees(NumberOfLayers - 1)
     ReDim ConformityArray(SumOfLetters - 1)
+    
     For LayerIndex = 0 To NumberOfLayers - 1
-        ReDim TempArray(SumOfLetters - 1)
-        FactorDegrees(LayerIndex) = TempArray
-        For DegreeIndex = 0 To SumOfLetters - 1
-            FactorDegrees(LayerIndex)(DegreeIndex) = Cells(1 + LayerIndex, 5 + DegreeIndex)
-        Next DegreeIndex
+       ReDim TempArray(SumOfLetters - 1)
+       FactorDegrees(LayerIndex) = TempArray
+       For DegreeIndex = 0 To SumOfLetters - 1
+          FactorDegrees(LayerIndex)(DegreeIndex) = Cells(1 + LayerIndex, 5 + DegreeIndex)
+       Next DegreeIndex
+    
+       TempArrayFrom = FactorDegrees(LayerIndex)
+       groupArrays TempArrayFrom, SumOfLetters, TempArrayTo, NumberOfSections(LayerIndex)
+       Degrees(LayerIndex) = TempArrayTo
         
-        ReDim TempArray(SumOfLetters - 1)
-        Degrees(LayerIndex) = TempArray
-        Letters(LayerIndex) = TempArray
-        NumberOfSections(LayerIndex) = 0
-        For DegreeIndex = 0 To SumOfLetters - 1
-            isFound = False
-            For SectionIndex = 0 To NumberOfSections(LayerIndex) - 1
-                If Degrees(LayerIndex)(SectionIndex) = FactorDegrees(LayerIndex)(DegreeIndex) Then
-                    ConformityArray(DegreeIndex) = SectionIndex
-                    isFound = True
-                    Exit For
-                End If
-            Next SectionIndex
-            If (Not isFound) Then
-                NumberOfSections(LayerIndex) = NumberOfSections(LayerIndex) + 1
-                Degrees(LayerIndex)(NumberOfSections(LayerIndex) - 1) = FactorDegrees(LayerIndex)(DegreeIndex)
-                ConformityArray(DegreeIndex) = NumberOfSections(LayerIndex) - 1
-            End If
-        Next DegreeIndex
-        
-        For DegreeIndex = 0 To SumOfLetters - 1
-           Letters(LayerIndex)(ConformityArray(DegreeIndex)) = Letters(LayerIndex)(ConformityArray(DegreeIndex)) + 1
-        Next DegreeIndex
+       Letters(LayerIndex) = TempArray
+       For DegreeIndex = 0 To SumOfLetters - 1
+          Letters(LayerIndex)(ConformityArray(DegreeIndex)) = Letters(LayerIndex)(ConformityArray(DegreeIndex)) + 1
+       Next DegreeIndex
     Next LayerIndex
+    
     Erase TempArray
+    Erase TempArrayFrom
+    Erase TempArrayTo
 End Sub
 
 Public Sub prepareSolution()
@@ -110,31 +98,6 @@ Public Sub fillDegreesOfDenominator()
    Next GroupIndex
    Erase FactorGroupIndexes
    groupArrays DenominatorDegrees, NumberOfUnknowns, NumeratorDegrees, NumberOfNumeratorDegrees
-End Sub
-
-Private Sub groupArrays(ArrayFrom() As Integer, CountFrom As Integer, ArrayTo() As Integer, CountTo As Integer)
-   Dim isFound As Boolean
-   Dim IndexFrom As Integer
-   Dim IndexTo As Integer
-   
-   ReDim ConformityArray(CountFrom - 1)
-   ReDim ArrayTo(CountFrom - 1)
-   CountTo = 0
-   For IndexFrom = 0 To CountFrom - 1
-      isFound = False
-      For IndexTo = 0 To CountTo - 1
-         If ArrayTo(IndexTo) = ArrayFrom(IndexFrom) Then
-            ConformityArray(IndexFrom) = IndexTo
-            isFound = True
-            Exit For
-         End If
-      Next IndexTo
-      If (Not isFound) Then
-         CountTo = CountTo + 1
-         ArrayTo(CountTo - 1) = ArrayFrom(IndexFrom)
-         ConformityArray(IndexFrom) = CountTo - 1
-      End If
-   Next IndexFrom
 End Sub
 
 Public Sub doMultiplication()
@@ -184,6 +147,31 @@ Public Sub doMultiplication()
 End Sub
 
 ' Intermediate methods
+
+Private Sub groupArrays(ArrayFrom() As Integer, CountFrom As Integer, ArrayTo() As Integer, CountTo As Integer)
+   Dim isFound As Boolean
+   Dim IndexFrom As Integer
+   Dim IndexTo As Integer
+   ReDim ConformityArray(CountFrom - 1)
+   ReDim ArrayTo(CountFrom - 1)
+   CountTo = 0
+   
+   For IndexFrom = 0 To CountFrom - 1
+      isFound = False
+      For IndexTo = 0 To CountTo - 1
+         If ArrayTo(IndexTo) = ArrayFrom(IndexFrom) Then
+            ConformityArray(IndexFrom) = IndexTo
+            isFound = True
+            Exit For
+         End If
+      Next IndexTo
+      If (Not isFound) Then
+         CountTo = CountTo + 1
+         ArrayTo(CountTo - 1) = ArrayFrom(IndexFrom)
+         ConformityArray(IndexFrom) = CountTo - 1
+      End If
+   Next IndexFrom
+End Sub
 
 Private Function getLetterIndexes(ByVal UnknownIndex As Integer) As Integer()
    Dim i As Integer
