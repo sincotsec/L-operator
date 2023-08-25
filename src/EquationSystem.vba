@@ -33,44 +33,43 @@ Dim NumberOfNumeratorDegrees As Integer
 
 Dim ConformityArray() As Integer
 
-
 ' Basic methods
 
 Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
-    Dim TempArrayFrom() As Integer
-    Dim TempArrayTo() As Integer
-    Dim TempArray() As Integer
-    Dim LayerIndex As Integer
-    Dim DegreeIndex As Integer
-    
-    NumberOfLayers = NumberOfFactors
-    SumOfLetters = NumberOfDegrees
-    ReDim Letters(NumberOfLayers - 1)
-    ReDim Degrees(NumberOfLayers - 1)
-    ReDim NumberOfSections(NumberOfLayers - 1)
-    ReDim FactorDegrees(NumberOfLayers - 1)
-    ReDim ConformityArray(SumOfLetters - 1)
-    
-    For LayerIndex = 0 To NumberOfLayers - 1
-       ReDim TempArray(SumOfLetters - 1)
-       FactorDegrees(LayerIndex) = TempArray
-       For DegreeIndex = 0 To SumOfLetters - 1
-          FactorDegrees(LayerIndex)(DegreeIndex) = Cells(1 + LayerIndex, 5 + DegreeIndex)
-       Next DegreeIndex
-    
-       TempArrayFrom = FactorDegrees(LayerIndex)
-       groupArrays TempArrayFrom, SumOfLetters, TempArrayTo, NumberOfSections(LayerIndex)
-       Degrees(LayerIndex) = TempArrayTo
-        
-       Letters(LayerIndex) = TempArray
-       For DegreeIndex = 0 To SumOfLetters - 1
-          Letters(LayerIndex)(ConformityArray(DegreeIndex)) = Letters(LayerIndex)(ConformityArray(DegreeIndex)) + 1
-       Next DegreeIndex
-    Next LayerIndex
-    
-    Erase TempArray
-    Erase TempArrayFrom
-    Erase TempArrayTo
+   Dim TempArrayFrom() As Integer
+   Dim TempArrayTo() As Integer
+   Dim TempArray() As Integer
+   Dim LayerIndex As Integer
+   Dim DegreeIndex As Integer
+
+   NumberOfLayers = NumberOfFactors
+   SumOfLetters = NumberOfDegrees
+   ReDim Letters(NumberOfLayers - 1)
+   ReDim Degrees(NumberOfLayers - 1)
+   ReDim NumberOfSections(NumberOfLayers - 1)
+   ReDim FactorDegrees(NumberOfLayers - 1)
+   ReDim ConformityArray(SumOfLetters - 1)
+
+   For LayerIndex = 0 To NumberOfLayers - 1
+      ReDim TempArray(SumOfLetters - 1)
+      FactorDegrees(LayerIndex) = TempArray
+      For DegreeIndex = 0 To SumOfLetters - 1
+         FactorDegrees(LayerIndex)(DegreeIndex) = Cells(1 + LayerIndex, 5 + DegreeIndex)
+      Next DegreeIndex
+
+      TempArrayFrom = FactorDegrees(LayerIndex)
+      groupArrays TempArrayFrom, SumOfLetters, TempArrayTo, NumberOfSections(LayerIndex)
+      Degrees(LayerIndex) = TempArrayTo
+
+      Letters(LayerIndex) = TempArray
+      For DegreeIndex = 0 To SumOfLetters - 1
+         Letters(LayerIndex)(ConformityArray(DegreeIndex)) = Letters(LayerIndex)(ConformityArray(DegreeIndex)) + 1
+      Next DegreeIndex
+   Next LayerIndex
+
+   Erase TempArray
+   Erase TempArrayFrom
+   Erase TempArrayTo
 End Sub
 
 Public Sub prepareSolution()
@@ -303,13 +302,13 @@ Private Sub fillUnknowns()
 End Sub
 
 Private Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
-    Dim i As Integer
-    Dim Factorial As String
-    Factorial = ""
-    If dgFactorial Then Factorial = "!"
-    For i = 0 To dgSize - 1
-        Sheets(1).Cells(RowIndex, ColumnIndex + i) = dgArray(i) & Factorial
-    Next i
+   Dim i As Integer
+   Dim Factorial As String
+   Factorial = ""
+   If dgFactorial Then Factorial = "!"
+   For i = 0 To dgSize - 1
+      Sheets(1).Cells(RowIndex, ColumnIndex + i) = dgArray(i) & Factorial
+   Next i
 End Sub
 
 Private Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
@@ -389,33 +388,33 @@ Public Function getUnknownInfo() As String
 End Function
 
 Public Function getLetterInfo() As String
-    Dim DebugString As String
-    Dim i As Integer
-    Dim j As Integer
-    DebugString = "Array of letters" & vbLf
-    For i = 0 To NumberOfLayers - 1
-        DebugString = DebugString & "Factor " & i + 1 & ". Groups: " & NumberOfSections(i) & ". Repetitions:"
-        For j = 0 To NumberOfSections(i) - 1
-            DebugString = DebugString & " " & Letters(i)(j)
-        Next j
-        DebugString = DebugString & vbLf
-    Next i
-    getLetterInfo = DebugString
+   Dim DebugString As String
+   Dim i As Integer
+   Dim j As Integer
+   DebugString = "Array of letters" & vbLf
+   For i = 0 To NumberOfLayers - 1
+      DebugString = DebugString & "Factor " & i + 1 & ". Groups: " & NumberOfSections(i) & ". Repetitions:"
+      For j = 0 To NumberOfSections(i) - 1
+         DebugString = DebugString & " " & Letters(i)(j)
+      Next j
+      DebugString = DebugString & vbLf
+   Next i
+   getLetterInfo = DebugString
 End Function
 
 ' Destructor
 
 Private Sub Class_Terminate()
-    Erase UpperBounds
-    Erase LowerBounds
-    Erase Letters
-    Erase Degrees
-    Erase NumberOfSections
-    Erase Unknowns
-    Erase NumeratorDegrees
-    Erase NumeratorRepetitions
-    Erase ResultDegrees
-    Erase DenominatorDegrees
-    Erase ConformityArray
-    Erase FactorDegrees
+   Erase UpperBounds
+   Erase LowerBounds
+   Erase Letters
+   Erase Degrees
+   Erase NumberOfSections
+   Erase Unknowns
+   Erase NumeratorDegrees
+   Erase NumeratorRepetitions
+   Erase ResultDegrees
+   Erase DenominatorDegrees
+   Erase ConformityArray
+   Erase FactorDegrees
 End Sub
