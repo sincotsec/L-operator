@@ -97,18 +97,16 @@ Public Sub fillLetters()
    Erase TempArray
 End Sub
 
-Public Sub prepareSolution()
-   Dim i As Integer
-   NumberOfUnknowns = 1
-   For i = 0 To NumberOfLayers - 1
-      NumberOfUnknowns = NumberOfUnknowns * NumberOfSections(i)
-   Next i
-End Sub
-
 Public Sub fillDenominatorDegrees()
    Dim FactorIndex As Integer
    Dim GroupIndex As Integer
    Dim FactorGroupIndexes() As Integer
+   
+   NumberOfUnknowns = 1
+   For FactorIndex = 0 To NumberOfLayers - 1
+      NumberOfUnknowns = NumberOfUnknowns * NumberOfSections(FactorIndex)
+   Next FactorIndex
+   
    ReDim DenominatorDegrees(NumberOfUnknowns - 1)
    For GroupIndex = 0 To NumberOfUnknowns - 1
       FactorGroupIndexes = getLetterIndexes(GroupIndex)

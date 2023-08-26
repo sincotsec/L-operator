@@ -7,7 +7,6 @@ Sub multiplyOperators()
    ESO.fillArrays Cells(1, 2), Cells(2, 2)
    ESO.fillDegrees
    ESO.fillLetters
-   ESO.prepareSolution
    ESO.fillDenominatorDegrees
    ESO.printHeaders
    ESO.doMultiplication
