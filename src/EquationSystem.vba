@@ -102,19 +102,27 @@ End Sub
 
 Public Sub printHeaders()
    Dim LastColumn As Integer
+   Dim LayerIndex As Integer
+   Dim TempArray() As Integer
    prepareSheetBefore
    Cells(NumberOfLayers + 1, 1).EntireRow.Font.Bold = True
    Range("A1") = "Number of factors"
    Range("B1") = NumberOfLayers
    Range("A2") = "Number of degrees"
    Range("B2") = SumOfLetters
-   printFactorDegrees
+   For LayerIndex = 0 To NumberOfLayers - 1
+      TempArray = FactorDegrees(LayerIndex)
+      Cells(LayerIndex + 1, 4) = "L["
+      printArray TempArray, SumOfLetters, False, LayerIndex + 1, 5
+      Cells(LayerIndex + 1, SumOfLetters + 5) = "]"
+   Next LayerIndex
    LastRow = NumberOfLayers + 1
    LastColumn = SumOfLetters + 7
    printArray NumeratorDegrees, NumberOfNumeratorDegrees, False, LastRow, LastColumn
    LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
    printPointersOfDenominator LastColumn
    printArray DenominatorDegrees, NumberOfUnknowns, False, LastRow, LastColumn
+   Erase TempArray
 End Sub
 
 Public Sub doMultiplication()
@@ -327,18 +335,6 @@ Private Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
       For j = 0 To NumberOfLayers - 1
          Cells(j + 1, ColumnIndex + i) = Degrees(j)(FactorGroupIndexes(j))
       Next j
-   Next i
-End Sub
-
-Private Sub printFactorDegrees()
-   Dim i As Integer
-   Dim j As Integer
-   For i = 0 To NumberOfLayers - 1
-      Cells(i + 1, 4) = "L["
-      For j = 0 To SumOfLetters - 1
-         Cells(i + 1, 5 + j) = FactorDegrees(i)(j)
-      Next j
-      Cells(i + 1, SumOfLetters + 5) = "]"
    Next i
 End Sub
 
