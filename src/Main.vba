@@ -9,5 +9,6 @@ Sub multiplyOperators()
    ESO.fillDegreesOfDenominator
    ESO.printHeaders
    ESO.doMultiplication
+   ESO.prepareSheetAfter
    Set ESO = Nothing
 End Sub

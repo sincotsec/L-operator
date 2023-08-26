@@ -121,7 +121,6 @@ Public Sub doMultiplication()
    Dim LastRow As Long
    Dim LastColumn As Integer
    LastRow = NumberOfLayers + 1
-   
    Do
       fillUnknowns
       groupRepetitionsFromDenominator
@@ -140,7 +139,9 @@ Public Sub doMultiplication()
       LastColumn = LastColumn + SumOfLetters + 1
       Cells(LastRow, LastColumn) = "]"
    Loop Until (LastRow >= MaxRow Or DiminishingUnknownIndex = -1)
-   
+End Sub
+
+Public Sub prepareSheetAfter()
    ActiveWindow.WindowState = xlMaximized
    ActiveWindow.ScrollColumn = 1
    Cells(NumberOfLayers + 2, 1).Select
