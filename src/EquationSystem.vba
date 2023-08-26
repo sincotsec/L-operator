@@ -103,10 +103,6 @@ Public Sub prepareSolution()
    For i = 0 To NumberOfLayers - 1
       NumberOfUnknowns = NumberOfUnknowns * NumberOfSections(i)
    Next i
-   ReDim Unknowns(NumberOfUnknowns - 1)
-   ReDim UpperBounds(NumberOfLayers - 1, NumberOfUnknowns - 1)
-   ReDim LowerBounds(NumberOfUnknowns - 1)
-   DiminishingUnknownIndex = -1
 End Sub
 
 Public Sub fillDenominatorDegrees()
@@ -153,6 +149,10 @@ Public Sub printHeaders()
 End Sub
 
 Public Sub doMultiplication()
+   ReDim Unknowns(NumberOfUnknowns - 1)
+   ReDim UpperBounds(NumberOfLayers - 1, NumberOfUnknowns - 1)
+   ReDim LowerBounds(NumberOfUnknowns - 1)
+   DiminishingUnknownIndex = -1
    Do
       fillUnknowns
       groupRepetitionsFromDenominator
