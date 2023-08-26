@@ -10,6 +10,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Const MaxRow = 1500
+Dim LastRow As Long
 
 Dim NumberOfLayers As Integer
 Dim SumOfLetters As Integer
@@ -100,7 +101,6 @@ Public Sub fillDegreesOfDenominator()
 End Sub
 
 Public Sub printHeaders()
-   Dim LastRow As Long
    Dim LastColumn As Integer
    prepareSheetBefore
    Cells(NumberOfLayers + 1, 1).EntireRow.Font.Bold = True
@@ -118,7 +118,6 @@ Public Sub printHeaders()
 End Sub
 
 Public Sub doMultiplication()
-   Dim LastRow As Long
    Dim LastColumn As Integer
    LastRow = NumberOfLayers + 1
    Do
