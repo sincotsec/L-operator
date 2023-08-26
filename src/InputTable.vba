@@ -4,7 +4,7 @@ Option Explicit
 Public Sub prepareSheetBefore()
    ActiveWindow.WindowState = xlMaximized
    ActiveWindow.FreezePanes = False
-   With Sheets(1).Cells
+   With Cells
       .Clear
       .ColumnWidth = 2
       .Interior.Pattern = xlNone
@@ -18,7 +18,6 @@ Public Sub prepareSheetBefore()
 End Sub
 
 Sub fillInputSheet()
-   Sheets(1).Select
    Sheets(1).Name = "L-operator"
    Call prepareSheetBefore
    Call fillTitle(2, 9)
@@ -34,14 +33,12 @@ End Sub
 
 Private Sub fillString(FactorIndex As Integer, NumberOfDegrees As Integer)
    Dim i As Integer
-   Sheets(1).Select
    Cells(FactorIndex, 4) = "L["
    Range(Cells(FactorIndex, 5), Cells(FactorIndex, NumberOfDegrees + 5)) = 0
    Cells(FactorIndex, NumberOfDegrees + 5) = "]"
 End Sub
 
 Sub redrawTable()
-   Sheets(1).Select
    Dim NumberOfFactors As Integer
    Dim NumberOfDegrees As Integer
    Dim i As Integer

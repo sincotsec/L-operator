@@ -102,7 +102,6 @@ End Sub
 Public Sub printHeaders()
    Dim LastRow As Long
    Dim LastColumn As Integer
-   Sheets(1).Select
    prepareSheetBefore
    Cells(NumberOfLayers + 1, 1).EntireRow.Font.Bold = True
    Range("A1") = "Number of factors"
@@ -121,7 +120,6 @@ End Sub
 Public Sub doMultiplication()
    Dim LastRow As Long
    Dim LastColumn As Integer
-   Sheets(1).Select
    LastRow = NumberOfLayers + 1
    
    Do
@@ -149,7 +147,7 @@ Public Sub doMultiplication()
    ActiveWindow.FreezePanes = False
    ActiveWindow.FreezePanes = True
    Cells(NumberOfLayers + 1, 1).EntireRow.Borders(xlEdgeBottom).LineStyle = xlContinuous
-   Sheets(1).Cells.EntireColumn.AutoFit
+   Cells.EntireColumn.AutoFit
 End Sub
 
 ' Intermediate methods
@@ -314,7 +312,7 @@ Private Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactoria
    Factorial = ""
    If dgFactorial Then Factorial = "!"
    For i = 0 To dgSize - 1
-      Sheets(1).Cells(RowIndex, ColumnIndex + i) = dgArray(i) & Factorial
+      Cells(RowIndex, ColumnIndex + i) = dgArray(i) & Factorial
    Next i
 End Sub
 
@@ -325,7 +323,7 @@ Private Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
    For i = 0 To NumberOfUnknowns - 1
       FactorGroupIndexes = getLetterIndexes(i)
       For j = 0 To NumberOfLayers - 1
-         Sheets(1).Cells(j + 1, ColumnIndex + i) = Degrees(j)(FactorGroupIndexes(j))
+         Cells(j + 1, ColumnIndex + i) = Degrees(j)(FactorGroupIndexes(j))
       Next j
    Next i
 End Sub
@@ -336,7 +334,7 @@ Private Sub printFactorDegrees()
    For i = 0 To NumberOfLayers - 1
       Cells(i + 1, 4) = "L["
       For j = 0 To SumOfLetters - 1
-         Sheets(1).Cells(i + 1, 5 + j) = FactorDegrees(i)(j)
+         Cells(i + 1, 5 + j) = FactorDegrees(i)(j)
       Next j
       Cells(i + 1, SumOfLetters + 5) = "]"
    Next i
