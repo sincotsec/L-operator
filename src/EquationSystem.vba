@@ -99,11 +99,11 @@ Public Sub fillDegreesOfDenominator()
    groupArrays DenominatorDegrees, NumberOfUnknowns, NumeratorDegrees, NumberOfNumeratorDegrees
 End Sub
 
-Public Sub doMultiplication()
+Public Sub printHeaders()
    Dim LastRow As Long
    Dim LastColumn As Integer
    Sheets(1).Select
-   Call prepareSheetBefore
+   prepareSheetBefore
    Cells(NumberOfLayers + 1, 1).EntireRow.Font.Bold = True
    Range("A1") = "Number of factors"
    Range("B1") = NumberOfLayers
@@ -116,6 +116,13 @@ Public Sub doMultiplication()
    LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
    printPointersOfDenominator LastColumn
    printArray DenominatorDegrees, NumberOfUnknowns, False, LastRow, LastColumn
+End Sub
+
+Public Sub doMultiplication()
+   Dim LastRow As Long
+   Dim LastColumn As Integer
+   Sheets(1).Select
+   LastRow = NumberOfLayers + 1
    
    Do
       fillUnknowns

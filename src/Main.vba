@@ -7,6 +7,7 @@ Sub multiplyOperators()
    ESO.fillArrays Sheets(1).Cells(1, 2), Sheets(1).Cells(2, 2)
    ESO.prepareSolution
    ESO.fillDegreesOfDenominator
+   ESO.printHeaders
    ESO.doMultiplication
    Set ESO = Nothing
 End Sub
