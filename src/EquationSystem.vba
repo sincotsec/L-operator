@@ -118,25 +118,11 @@ Public Sub printHeaders()
 End Sub
 
 Public Sub doMultiplication()
-   Dim LastColumn As Integer
-   LastRow = NumberOfLayers + 1
    Do
       fillUnknowns
       groupRepetitionsFromDenominator
       fillDegreesOfResult
-      
-      LastRow = LastRow + 1
-      LastColumn = SumOfLetters + 6
-      Cells(LastRow, LastColumn) = "("
-      printArray NumeratorRepetitions, NumberOfNumeratorDegrees, True, LastRow, LastColumn + 1
-      LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
-      Cells(LastRow, LastColumn) = ") : ("
-      printArray Unknowns, NumberOfUnknowns, True, LastRow, LastColumn + 1
-      LastColumn = LastColumn + NumberOfUnknowns + 1
-      Cells(LastRow, LastColumn) = ") L["
-      printArray ResultDegrees, SumOfLetters, False, LastRow, LastColumn + 1
-      LastColumn = LastColumn + SumOfLetters + 1
-      Cells(LastRow, LastColumn) = "]"
+      printTerm
    Loop Until (LastRow >= MaxRow Or DiminishingUnknownIndex = -1)
 End Sub
 
@@ -151,6 +137,22 @@ Public Sub prepareSheetAfter()
 End Sub
 
 ' Intermediate methods
+
+Private Sub printTerm()
+   Dim LastColumn As Integer
+   LastRow = LastRow + 1
+   LastColumn = SumOfLetters + 6
+   Cells(LastRow, LastColumn) = "("
+   printArray NumeratorRepetitions, NumberOfNumeratorDegrees, True, LastRow, LastColumn + 1
+   LastColumn = LastColumn + NumberOfNumeratorDegrees + 1
+   Cells(LastRow, LastColumn) = ") : ("
+   printArray Unknowns, NumberOfUnknowns, True, LastRow, LastColumn + 1
+   LastColumn = LastColumn + NumberOfUnknowns + 1
+   Cells(LastRow, LastColumn) = ") L["
+   printArray ResultDegrees, SumOfLetters, False, LastRow, LastColumn + 1
+   LastColumn = LastColumn + SumOfLetters + 1
+   Cells(LastRow, LastColumn) = "]"
+End Sub
 
 Private Sub groupArrays(ArrayFrom() As Integer, CountFrom As Integer, ArrayTo() As Integer, CountTo As Integer)
    Dim isFound As Boolean
