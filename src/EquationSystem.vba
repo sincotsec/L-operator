@@ -43,7 +43,6 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
 
    NumberOfLayers = NumberOfFactors
    SumOfLetters = NumberOfDegrees
-   ReDim Letters(NumberOfLayers - 1)
    ReDim FactorDegrees(NumberOfLayers - 1)
 
    For LayerIndex = 0 To NumberOfLayers - 1
@@ -80,6 +79,7 @@ Public Sub fillLetters()
    Dim LayerIndex As Integer
    Dim DegreeIndex As Integer
    Dim TempArray() As Integer
+   ReDim Letters(NumberOfLayers - 1)
    For LayerIndex = 0 To NumberOfLayers - 1
       ReDim TempArray(SumOfLetters - 1)
       Letters(LayerIndex) = TempArray
