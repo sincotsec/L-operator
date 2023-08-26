@@ -5,12 +5,9 @@
 1. Создайте пустую книгу Excel.
 2. В редакторе Visual Basic импортируйте модули из файлов:
 ```plaintext
-Common.vba
 EquationSystem.vba
 InputTable.vba
 Main.vba
-Operator.vba
-Union.vba
 ```
 3. Запустите макрос `fillInputSheet`.
 4. На листе заполните степени операторов.
