@@ -109,15 +109,18 @@ Public Sub prepareSolution()
    DiminishingUnknownIndex = -1
 End Sub
 
-Public Sub fillDegreesOfDenominator()
+Public Sub fillDenominatorDegrees()
    Dim FactorIndex As Integer
    Dim GroupIndex As Integer
    Dim FactorGroupIndexes() As Integer
    ReDim DenominatorDegrees(NumberOfUnknowns - 1)
    For GroupIndex = 0 To NumberOfUnknowns - 1
       FactorGroupIndexes = getLetterIndexes(GroupIndex)
+      DenominatorDegrees(GroupIndex) = 0
       For FactorIndex = 0 To NumberOfLayers - 1
-         DenominatorDegrees(GroupIndex) = DenominatorDegrees(GroupIndex) + Degrees(FactorIndex)(FactorGroupIndexes(FactorIndex))
+         DenominatorDegrees(GroupIndex) _
+            = DenominatorDegrees(GroupIndex) _
+            + Degrees(FactorIndex)(FactorGroupIndexes(FactorIndex))
       Next FactorIndex
    Next GroupIndex
    Erase FactorGroupIndexes

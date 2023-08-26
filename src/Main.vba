@@ -8,7 +8,7 @@ Sub multiplyOperators()
    ESO.fillDegrees
    ESO.fillLetters
    ESO.prepareSolution
-   ESO.fillDegreesOfDenominator
+   ESO.fillDenominatorDegrees
    ESO.printHeaders
    ESO.doMultiplication
    ESO.prepareSheetAfter
