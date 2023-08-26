@@ -37,8 +37,6 @@ Dim ConformityArray() As Integer
 ' Basic methods
 
 Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
-   Dim TempArrayFrom() As Integer
-   Dim TempArrayTo() As Integer
    Dim TempArray() As Integer
    Dim LayerIndex As Integer
    Dim DegreeIndex As Integer
@@ -46,10 +44,7 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
    NumberOfLayers = NumberOfFactors
    SumOfLetters = NumberOfDegrees
    ReDim Letters(NumberOfLayers - 1)
-   ReDim Degrees(NumberOfLayers - 1)
-   ReDim NumberOfSections(NumberOfLayers - 1)
    ReDim FactorDegrees(NumberOfLayers - 1)
-   ReDim ConformityArray(SumOfLetters - 1)
 
    For LayerIndex = 0 To NumberOfLayers - 1
       ReDim TempArray(SumOfLetters - 1)
@@ -57,13 +52,26 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
       For DegreeIndex = 0 To SumOfLetters - 1
          FactorDegrees(LayerIndex)(DegreeIndex) = Cells(1 + LayerIndex, 5 + DegreeIndex)
       Next DegreeIndex
+   Next LayerIndex
 
+   Erase TempArray
+End Sub
+
+Public Sub fillDegrees()
+   Dim TempArrayFrom() As Integer
+   Dim TempArrayTo() As Integer
+   Dim LayerIndex As Integer
+   Dim DegreeIndex As Integer
+   ReDim ConformityArray(SumOfLetters - 1)
+   ReDim Degrees(NumberOfLayers - 1)
+   ReDim NumberOfSections(NumberOfLayers - 1)
+   
+   For LayerIndex = 0 To NumberOfLayers - 1
       TempArrayFrom = FactorDegrees(LayerIndex)
       groupArrays TempArrayFrom, SumOfLetters, TempArrayTo, NumberOfSections(LayerIndex)
       Degrees(LayerIndex) = TempArrayTo
    Next LayerIndex
-
-   Erase TempArray
+   
    Erase TempArrayFrom
    Erase TempArrayTo
 End Sub
