@@ -83,6 +83,11 @@ Public Sub fillLetters()
    For LayerIndex = 0 To NumberOfLayers - 1
       ReDim TempArray(SumOfLetters - 1)
       Letters(LayerIndex) = TempArray
+      
+      For DegreeIndex = 0 To NumberOfSections(LayerIndex) - 1
+         Letters(LayerIndex)(DegreeIndex) = 0
+      Next DegreeIndex
+      
       For DegreeIndex = 0 To SumOfLetters - 1
          Letters(LayerIndex)(ConformityArray(DegreeIndex)) _
             = Letters(LayerIndex)(ConformityArray(DegreeIndex)) _
