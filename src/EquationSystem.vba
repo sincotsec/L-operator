@@ -61,16 +61,27 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
       TempArrayFrom = FactorDegrees(LayerIndex)
       groupArrays TempArrayFrom, SumOfLetters, TempArrayTo, NumberOfSections(LayerIndex)
       Degrees(LayerIndex) = TempArrayTo
-
-      Letters(LayerIndex) = TempArray
-      For DegreeIndex = 0 To SumOfLetters - 1
-         Letters(LayerIndex)(ConformityArray(DegreeIndex)) = Letters(LayerIndex)(ConformityArray(DegreeIndex)) + 1
-      Next DegreeIndex
    Next LayerIndex
 
    Erase TempArray
    Erase TempArrayFrom
    Erase TempArrayTo
+End Sub
+
+Public Sub fillLetters()
+   Dim LayerIndex As Integer
+   Dim DegreeIndex As Integer
+   Dim TempArray() As Integer
+   For LayerIndex = 0 To NumberOfLayers - 1
+      ReDim TempArray(SumOfLetters - 1)
+      Letters(LayerIndex) = TempArray
+      For DegreeIndex = 0 To SumOfLetters - 1
+         Letters(LayerIndex)(ConformityArray(DegreeIndex)) _
+            = Letters(LayerIndex)(ConformityArray(DegreeIndex)) _
+            + 1
+      Next DegreeIndex
+   Next LayerIndex
+   Erase TempArray
 End Sub
 
 Public Sub prepareSolution()
