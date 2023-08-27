@@ -153,6 +153,7 @@ Public Sub doMultiplication()
    DiminishingUnknownIndex = -1
    Do
       fillUnknowns
+      fillDiminishingUnknownIndex
       groupRepetitionsFromDenominator
       fillDegreesOfResult
       printTerm
@@ -315,17 +316,6 @@ Private Function getMu(UnknownIndex As Integer) As Integer
    Erase TempIndexes
 End Function
 
-Private Sub fillDiminishingUnknownIndex()
-   Dim UnknownIndex As Integer
-   DiminishingUnknownIndex = -1
-   For UnknownIndex = NumberOfUnknowns - 1 To 0 Step -1
-      If Unknowns(UnknownIndex) > LowerBounds(UnknownIndex) Then
-         DiminishingUnknownIndex = UnknownIndex
-         Exit For
-      End If
-   Next UnknownIndex
-End Sub
-
 Private Sub fillUnknowns()
    Dim UnknownIndex As Integer
    If DiminishingUnknownIndex <> -1 Then
@@ -336,7 +326,17 @@ Private Sub fillUnknowns()
       LowerBounds(UnknownIndex) = getMu(UnknownIndex)
       If LowerBounds(UnknownIndex) < 0 Then LowerBounds(UnknownIndex) = 0
    Next UnknownIndex
-   fillDiminishingUnknownIndex
+End Sub
+
+Private Sub fillDiminishingUnknownIndex()
+   Dim UnknownIndex As Integer
+   DiminishingUnknownIndex = -1
+   For UnknownIndex = NumberOfUnknowns - 1 To 0 Step -1
+      If Unknowns(UnknownIndex) > LowerBounds(UnknownIndex) Then
+         DiminishingUnknownIndex = UnknownIndex
+         Exit For
+      End If
+   Next UnknownIndex
 End Sub
 
 Private Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
