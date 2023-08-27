@@ -213,7 +213,7 @@ Private Sub groupArrays(ArrayFrom() As Integer, CountFrom As Integer, ArrayTo() 
    Next IndexFrom
 End Sub
 
-Private Function getLetterIndexes(ByVal UnknownIndex As Integer) As Integer()
+Private Function getLetterIndexes(UnknownIndex As Integer) As Integer()
    Dim i As Integer
    Dim TempIndex As Integer
    Dim LetterIndexes() As Integer
@@ -228,7 +228,7 @@ Private Function getLetterIndexes(ByVal UnknownIndex As Integer) As Integer()
    Erase LetterIndexes
 End Function
 
-Private Function getUnknownIndex(ByRef LetterIndexes() As Integer) As Integer
+Private Function getUnknownIndex(LetterIndexes() As Integer) As Integer
    Dim i As Integer
    getUnknownIndex = LetterIndexes(0)
    For i = 1 To NumberOfLayers - 1
@@ -237,7 +237,7 @@ Private Function getUnknownIndex(ByRef LetterIndexes() As Integer) As Integer
    Next i
 End Function
 
-Private Function isFirstIndex(ByVal LayerIndex As Integer, ByVal UnknownIndex As Integer) As Boolean
+Private Function isFirstIndex(LayerIndex As Integer, UnknownIndex As Integer) As Boolean
    Dim LetterIndexes() As Integer
    Dim i As Integer
    LetterIndexes = getLetterIndexes(UnknownIndex)
@@ -250,7 +250,7 @@ Private Function isFirstIndex(ByVal LayerIndex As Integer, ByVal UnknownIndex As
    Next i
 End Function
 
-Private Function getPreviousIndex(LayerIndex As Integer, ByVal UnknownIndex As Integer) As Integer
+Private Function getPreviousIndex(LayerIndex As Integer, UnknownIndex As Integer) As Integer
    Dim i As Integer
    Dim PreviousLetterIndexes() As Integer
    ReDim PreviousLetterIndexes(NumberOfLayers - 1)
@@ -339,7 +339,7 @@ Private Sub fillDiminishingUnknownIndex()
    Next UnknownIndex
 End Sub
 
-Private Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactorial As Boolean, ByVal RowIndex As Integer, ByVal ColumnIndex As Integer)
+Private Sub printArray(dgArray() As Integer, dgSize As Integer, dgFactorial As Boolean, RowIndex As Integer, ColumnIndex As Integer)
    Dim i As Integer
    Dim Factorial As String
    Factorial = ""
@@ -349,7 +349,7 @@ Private Sub printArray(dgArray() As Integer, dgSize As Integer, ByVal dgFactoria
    Next i
 End Sub
 
-Private Sub printPointersOfDenominator(ByVal ColumnIndex As Integer)
+Private Sub printPointersOfDenominator(ColumnIndex As Integer)
    Dim i As Integer
    Dim j As Integer
    Dim FactorGroupIndexes() As Integer
