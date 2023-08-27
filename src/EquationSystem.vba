@@ -331,12 +331,10 @@ Private Sub fillUnknowns()
    If DiminishingUnknownIndex <> -1 Then
       Unknowns(DiminishingUnknownIndex) = Unknowns(DiminishingUnknownIndex) - 1
    End If
-   For UnknownIndex = 0 To NumberOfUnknowns - 1
-      If UnknownIndex > DiminishingUnknownIndex Then
-         Unknowns(UnknownIndex) = getUnknown(UnknownIndex)
-         LowerBounds(UnknownIndex) = getMu(UnknownIndex)
-         If LowerBounds(UnknownIndex) < 0 Then LowerBounds(UnknownIndex) = 0
-      End If
+   For UnknownIndex = DiminishingUnknownIndex + 1 To NumberOfUnknowns - 1
+      Unknowns(UnknownIndex) = getUnknown(UnknownIndex)
+      LowerBounds(UnknownIndex) = getMu(UnknownIndex)
+      If LowerBounds(UnknownIndex) < 0 Then LowerBounds(UnknownIndex) = 0
    Next UnknownIndex
    fillDiminishingUnknownIndex
 End Sub
