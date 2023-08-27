@@ -272,6 +272,7 @@ Private Function getUnknown(UnknownIndex As Integer) As Integer
    Dim PreviousIndex As Integer
    Dim LetterIndexes() As Integer
    LetterIndexes = getLetterIndexes(UnknownIndex)
+   
    For LayerIndex = 0 To NumberOfLayers - 1
       If isFirstIndex(LayerIndex, UnknownIndex) Then
          UpperBounds(LayerIndex, UnknownIndex) = Letters(LayerIndex)(LetterIndexes(LayerIndex))
@@ -281,6 +282,7 @@ Private Function getUnknown(UnknownIndex As Integer) As Integer
       End If
    Next LayerIndex
    getUnknown = UpperBounds(0, UnknownIndex)
+   
    For LayerIndex = 0 To NumberOfLayers - 1
       getUnknown = WorksheetFunction.Min(getUnknown, UpperBounds(LayerIndex, UnknownIndex))
    Next LayerIndex
@@ -296,19 +298,17 @@ Private Function getMu(UnknownIndex As Integer) As Integer
    
    LetterIndexes = getLetterIndexes(UnknownIndex)
    ReDim TempIndexes(NumberOfLayers - 1)
-   getMu = (1 - NumberOfLayers) * SumOfLetters
-   LettersASum = 0
-   
-   For SectionIndex = 0 To LetterIndexes(0)
-      LettersASum = LettersASum + Letters(0)(SectionIndex)
-   Next SectionIndex
-   'MsgBox LettersASum
-   
-   getMu = getMu + (NumberOfLayers - 2) * LettersASum + 2 * UpperBounds(0, UnknownIndex)
-   
    For LayerIndex = 0 To NumberOfLayers - 1
       TempIndexes(LayerIndex) = 0
    Next LayerIndex
+   
+   LettersASum = 0
+   For SectionIndex = 0 To LetterIndexes(0)
+      LettersASum = LettersASum + Letters(0)(SectionIndex)
+   Next SectionIndex
+   
+   getMu = (1 - NumberOfLayers) * SumOfLetters
+   getMu = getMu + (NumberOfLayers - 2) * LettersASum + 2 * UpperBounds(0, UnknownIndex)
    
    For LayerIndex = 0 To NumberOfLayers - 1
       For SectionIndex = 0 To LetterIndexes(LayerIndex)
