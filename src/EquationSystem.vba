@@ -293,17 +293,23 @@ Private Function getMu(UnknownIndex As Integer) As Integer
    Dim LettersASum As Integer
    Dim TempIndexes() As Integer
    Dim LetterIndexes() As Integer
+   
    LetterIndexes = getLetterIndexes(UnknownIndex)
    ReDim TempIndexes(NumberOfLayers - 1)
    getMu = (1 - NumberOfLayers) * SumOfLetters
    LettersASum = 0
+   
    For SectionIndex = 0 To LetterIndexes(0)
       LettersASum = LettersASum + Letters(0)(SectionIndex)
    Next SectionIndex
+   'MsgBox LettersASum
+   
    getMu = getMu + (NumberOfLayers - 2) * LettersASum + 2 * UpperBounds(0, UnknownIndex)
+   
    For LayerIndex = 0 To NumberOfLayers - 1
       TempIndexes(LayerIndex) = 0
    Next LayerIndex
+   
    For LayerIndex = 0 To NumberOfLayers - 1
       For SectionIndex = 0 To LetterIndexes(LayerIndex)
          getMu = getMu + UpperBounds(LayerIndex, getUnknownIndex(TempIndexes))
@@ -312,6 +318,7 @@ Private Function getMu(UnknownIndex As Integer) As Integer
       TempIndexes(LayerIndex) = TempIndexes(LayerIndex) - 1
       getMu = getMu - UpperBounds(0, getUnknownIndex(TempIndexes))
    Next LayerIndex
+   
    Erase LetterIndexes
    Erase TempIndexes
 End Function
@@ -339,7 +346,7 @@ Private Sub fillDiminishingUnknownIndex()
    Next UnknownIndex
 End Sub
 
-Private Sub printArray(dgArray() As Integer, dgSize As Integer, dgFactorial As Boolean, RowIndex As Integer, ColumnIndex As Integer)
+Private Sub printArray(dgArray() As Integer, dgSize As Integer, dgFactorial As Boolean, RowIndex As Long, ColumnIndex As Integer)
    Dim i As Integer
    Dim Factorial As String
    Factorial = ""
