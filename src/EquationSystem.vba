@@ -40,7 +40,7 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
    Dim TempArray() As Integer
    Dim LayerIndex As Integer
    Dim DegreeIndex As Integer
-
+   
    NumberOfLayers = NumberOfFactors
    SumOfLetters = NumberOfDegrees
    ReDim FactorDegrees(NumberOfLayers - 1)
@@ -218,6 +218,7 @@ Private Function getLetterIndexes(UnknownIndex As Integer) As Integer()
    Dim TempIndex As Integer
    Dim LetterIndexes() As Integer
    ReDim LetterIndexes(NumberOfLayers - 1)
+   
    TempIndex = UnknownIndex
    For i = NumberOfLayers - 1 To 1 Step -1
       LetterIndexes(i) = TempIndex Mod NumberOfSections(i)
@@ -307,8 +308,9 @@ Private Function getMu(UnknownIndex As Integer) As Integer
       LettersASum = LettersASum + Letters(0)(SectionIndex)
    Next SectionIndex
    
-   getMu = (1 - NumberOfLayers) * SumOfLetters
-   getMu = getMu + (NumberOfLayers - 2) * LettersASum + 2 * UpperBounds(0, UnknownIndex)
+   getMu = (1 - NumberOfLayers) * SumOfLetters _
+      + (NumberOfLayers - 2) * LettersASum _
+      + 2 * UpperBounds(0, UnknownIndex)
    
    For LayerIndex = 0 To NumberOfLayers - 1
       For SectionIndex = 0 To LetterIndexes(LayerIndex)
