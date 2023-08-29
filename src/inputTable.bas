@@ -1,4 +1,4 @@
-Attribute VB_Name = "InputTable"
+Attribute VB_Name = "inputTable"
 Option Explicit
 
 Public Sub prepareSheetBefore()
@@ -17,7 +17,7 @@ Public Sub prepareSheetBefore()
    End With
 End Sub
 
-Sub fillInputSheet()
+Public Sub fillInputSheet()
    Sheets(1).Name = "L-operator"
    Call prepareSheetBefore
    Call fillTitle(2, 9)
@@ -38,7 +38,7 @@ Private Sub fillString(FactorIndex As Integer, NumberOfDegrees As Integer)
    Cells(FactorIndex, NumberOfDegrees + 5) = "]"
 End Sub
 
-Sub redrawTable()
+Public Sub redrawTable()
    Dim NumberOfFactors As Integer
    Dim NumberOfDegrees As Integer
    Dim i As Integer

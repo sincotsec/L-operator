@@ -1,12 +1,4 @@
-VERSION 1.0 CLASS
-BEGIN
-  MultiUse = -1  'True
-END
-Attribute VB_Name = "EquationSystem"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
-Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Name = "multiplication"
 Option Explicit
 
 Const MaxRow = 1500
@@ -32,12 +24,20 @@ Dim ResultDegrees() As Integer
 Dim DenominatorDegrees() As Integer
 
 Dim NumberOfNumeratorDegrees As Integer
-
 Dim NumeratorConformity() As Integer
 
-' Basic methods
+Public Sub multiplyOperators()
+   fillArrays Cells(1, 2), Cells(2, 2)
+   fillDegrees
+   fillLetters
+   fillDenominatorDegrees
+   printHeaders
+   doMultiplication
+   prepareSheetAfter
+   eraseArrays
+End Sub
 
-Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
+Private Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
    Dim TempArray() As Integer
    Dim LayerIndex As Integer
    Dim DegreeIndex As Integer
@@ -58,7 +58,7 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
    Erase TempArray
 End Sub
 
-Public Sub fillDegrees()
+Private Sub fillDegrees()
    Dim TempArrayFrom() As Integer
    Dim TempArrayTo() As Integer
    Dim LayerIndex As Integer
@@ -80,7 +80,7 @@ Public Sub fillDegrees()
    Erase TempConformity
 End Sub
 
-Public Sub fillLetters()
+Private Sub fillLetters()
    Dim LayerIndex As Integer
    Dim DegreeIndex As Integer
    Dim TempArray() As Integer
@@ -102,7 +102,7 @@ Public Sub fillLetters()
    Erase TempArray
 End Sub
 
-Public Sub fillDenominatorDegrees()
+Private Sub fillDenominatorDegrees()
    Dim FactorIndex As Integer
    Dim GroupIndex As Integer
    Dim FactorGroupIndexes() As Integer
@@ -127,7 +127,7 @@ Public Sub fillDenominatorDegrees()
    groupArrays DenominatorDegrees, NumberOfUnknowns, NumeratorDegrees, NumberOfNumeratorDegrees, NumeratorConformity
 End Sub
 
-Public Sub printHeaders()
+Private Sub printHeaders()
    Dim LastColumn As Integer
    Dim LayerIndex As Integer
    Dim TempArray() As Integer
@@ -152,7 +152,7 @@ Public Sub printHeaders()
    Erase TempArray
 End Sub
 
-Public Sub doMultiplication()
+Private Sub doMultiplication()
    ReDim Unknowns(NumberOfUnknowns - 1)
    ReDim UpperBounds(NumberOfLayers - 1, NumberOfUnknowns - 1)
    ReDim LowerBounds(NumberOfUnknowns - 1)
@@ -166,7 +166,7 @@ Public Sub doMultiplication()
    Loop Until (LastRow >= MaxRow Or DiminishingUnknownIndex = -1)
 End Sub
 
-Public Sub prepareSheetAfter()
+Private Sub prepareSheetAfter()
    ActiveWindow.WindowState = xlMaximized
    ActiveWindow.ScrollColumn = 1
    Cells(NumberOfLayers + 2, 1).Select
@@ -445,7 +445,7 @@ End Function
 
 ' Destructor
 
-Private Sub Class_Terminate()
+Private Sub eraseArrays()
    Erase UpperBounds
    Erase LowerBounds
    Erase Letters
@@ -460,3 +460,4 @@ Private Sub Class_Terminate()
    Erase FactorConformity
    Erase NumeratorConformity
 End Sub
+
