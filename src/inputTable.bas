@@ -24,30 +24,30 @@ Public Sub fillInputSheet()
    Call redrawTable
 End Sub
 
-Private Sub fillTitle(NumberOfFactors As Integer, NumberOfDegrees As Integer)
+Private Sub fillTitle(numberOfFactors As Integer, numberOfDegrees As Integer)
    Range("A1") = "Number of factors"
-   Range("B1") = NumberOfFactors
+   Range("B1") = numberOfFactors
    Range("A2") = "Number of degrees"
-   Range("B2") = NumberOfDegrees
+   Range("B2") = numberOfDegrees
 End Sub
 
-Private Sub fillString(FactorIndex As Integer, NumberOfDegrees As Integer)
+Private Sub fillString(factorIndex As Integer, numberOfDegrees As Integer)
    Dim i As Integer
-   Cells(FactorIndex, 4) = "L["
-   Range(Cells(FactorIndex, 5), Cells(FactorIndex, NumberOfDegrees + 5)) = 0
-   Cells(FactorIndex, NumberOfDegrees + 5) = "]"
+   Cells(factorIndex, 4) = "L["
+   Range(Cells(factorIndex, 5), Cells(factorIndex, numberOfDegrees + 5)) = 0
+   Cells(factorIndex, numberOfDegrees + 5) = "]"
 End Sub
 
 Public Sub redrawTable()
-   Dim NumberOfFactors As Integer
-   Dim NumberOfDegrees As Integer
+   Dim numberOfFactors As Integer
+   Dim numberOfDegrees As Integer
    Dim i As Integer
-   NumberOfFactors = Cells(1, 2)
-   NumberOfDegrees = Cells(2, 2)
+   numberOfFactors = Cells(1, 2)
+   numberOfDegrees = Cells(2, 2)
    Call prepareSheetBefore
-   Call fillTitle(NumberOfFactors, NumberOfDegrees)
-   For i = 1 To NumberOfFactors
-      Call fillString(i, NumberOfDegrees)
+   Call fillTitle(numberOfFactors, numberOfDegrees)
+   For i = 1 To numberOfFactors
+      Call fillString(i, numberOfDegrees)
    Next i
    Cells.EntireColumn.AutoFit
 End Sub
