@@ -16,6 +16,7 @@ Dim NumberOfLayers As Integer
 Dim SumOfLetters As Integer
 Dim Letters() As Variant
 Dim Degrees() As Variant
+Dim FactorConformity() As Variant
 Dim FactorDegrees() As Variant
 Dim NumberOfSections() As Integer
 
@@ -32,7 +33,7 @@ Dim DenominatorDegrees() As Integer
 
 Dim NumberOfNumeratorDegrees As Integer
 
-Dim ConformityArray() As Integer
+Dim NumeratorConformity() As Integer
 
 ' Basic methods
 
@@ -44,6 +45,7 @@ Public Sub fillArrays(NumberOfFactors As Integer, NumberOfDegrees As Integer)
    NumberOfLayers = NumberOfFactors
    SumOfLetters = NumberOfDegrees
    ReDim FactorDegrees(NumberOfLayers - 1)
+   ReDim FactorConformity(NumberOfLayers - 1)
 
    For LayerIndex = 0 To NumberOfLayers - 1
       ReDim TempArray(SumOfLetters - 1)
@@ -61,18 +63,21 @@ Public Sub fillDegrees()
    Dim TempArrayTo() As Integer
    Dim LayerIndex As Integer
    Dim DegreeIndex As Integer
-   ReDim ConformityArray(SumOfLetters - 1)
+   Dim TempConformity() As Integer
+   ReDim TempConformity(SumOfLetters - 1)
    ReDim Degrees(NumberOfLayers - 1)
    ReDim NumberOfSections(NumberOfLayers - 1)
    
    For LayerIndex = 0 To NumberOfLayers - 1
       TempArrayFrom = FactorDegrees(LayerIndex)
-      groupArrays TempArrayFrom, SumOfLetters, TempArrayTo, NumberOfSections(LayerIndex)
+      groupArrays TempArrayFrom, SumOfLetters, TempArrayTo, NumberOfSections(LayerIndex), TempConformity
       Degrees(LayerIndex) = TempArrayTo
+      FactorConformity(LayerIndex) = TempConformity
    Next LayerIndex
    
    Erase TempArrayFrom
    Erase TempArrayTo
+   Erase TempConformity
 End Sub
 
 Public Sub fillLetters()
@@ -89,8 +94,8 @@ Public Sub fillLetters()
       Next DegreeIndex
       
       For DegreeIndex = 0 To SumOfLetters - 1
-         Letters(LayerIndex)(ConformityArray(DegreeIndex)) _
-            = Letters(LayerIndex)(ConformityArray(DegreeIndex)) _
+         Letters(LayerIndex)(FactorConformity(LayerIndex)(DegreeIndex)) _
+            = Letters(LayerIndex)(FactorConformity(LayerIndex)(DegreeIndex)) _
             + 1
       Next DegreeIndex
    Next LayerIndex
@@ -108,6 +113,7 @@ Public Sub fillDenominatorDegrees()
    Next FactorIndex
    
    ReDim DenominatorDegrees(NumberOfUnknowns - 1)
+   ReDim NumeratorConformity(NumberOfUnknowns - 1)
    For GroupIndex = 0 To NumberOfUnknowns - 1
       FactorGroupIndexes = getLetterIndexes(GroupIndex)
       DenominatorDegrees(GroupIndex) = 0
@@ -118,7 +124,7 @@ Public Sub fillDenominatorDegrees()
       Next FactorIndex
    Next GroupIndex
    Erase FactorGroupIndexes
-   groupArrays DenominatorDegrees, NumberOfUnknowns, NumeratorDegrees, NumberOfNumeratorDegrees
+   groupArrays DenominatorDegrees, NumberOfUnknowns, NumeratorDegrees, NumberOfNumeratorDegrees, NumeratorConformity
 End Sub
 
 Public Sub printHeaders()
@@ -188,7 +194,7 @@ Private Sub printTerm()
    Cells(LastRow, LastColumn) = "]"
 End Sub
 
-Private Sub groupArrays(ArrayFrom() As Integer, CountFrom As Integer, ArrayTo() As Integer, CountTo As Integer)
+Private Sub groupArrays(ArrayFrom() As Integer, CountFrom As Integer, ArrayTo() As Integer, CountTo As Integer, ConformityArray() As Integer)
    Dim isFound As Boolean
    Dim IndexFrom As Integer
    Dim IndexTo As Integer
@@ -377,7 +383,7 @@ Private Sub groupRepetitionsFromDenominator()
       NumeratorRepetitions(GroupIndex) = 0
    Next GroupIndex
    For GroupIndex = 0 To NumberOfUnknowns - 1
-      NumeratorRepetitions(ConformityArray(GroupIndex)) = NumeratorRepetitions(ConformityArray(GroupIndex)) + Unknowns(GroupIndex)
+      NumeratorRepetitions(NumeratorConformity(GroupIndex)) = NumeratorRepetitions(NumeratorConformity(GroupIndex)) + Unknowns(GroupIndex)
    Next GroupIndex
 End Sub
 
@@ -450,6 +456,7 @@ Private Sub Class_Terminate()
    Erase NumeratorRepetitions
    Erase ResultDegrees
    Erase DenominatorDegrees
-   Erase ConformityArray
    Erase FactorDegrees
+   Erase FactorConformity
+   Erase NumeratorConformity
 End Sub
