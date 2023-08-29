@@ -2,9 +2,8 @@
 ~$*
 *.xlsx
 *.xlsm
-src/Лист1.vba
-src/Лист2.vba
-src/ЭтаКнига.vba
+src/Лист1.*
+src/ЭтаКнига.*
 *.png
 *.svg
 *.gv
