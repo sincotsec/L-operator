@@ -5,9 +5,8 @@
 1. Создайте пустую книгу Excel.
 2. В редакторе Visual Basic импортируйте модули из файлов:
 ```plaintext
-EquationSystem.vba
-InputTable.vba
-Main.vba
+inputTable.bas
+multiplication.vba
 ```
 3. Запустите макрос `fillInputSheet`.
 4. На листе заполните степени операторов.
