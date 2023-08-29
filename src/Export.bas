@@ -13,7 +13,7 @@ Sub exportProject()
    Set FSO = Nothing
    Set Components = ThisWorkbook.VBProject.VBComponents
    For i = 1 To Components.Count
-      Components(i).Export RepoPath & "\" & Components(i).Name & ".vba"
+      Components(i).Export RepoPath & "\" & Components(i).Name & ".bas"
    Next i
    Set Components = Nothing
 End Sub
