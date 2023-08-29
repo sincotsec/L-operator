@@ -1,4 +1,4 @@
-Attribute VB_Name = "export2"
+Attribute VB_Name = "export"
 Option Explicit
 
 Sub exportProject()
