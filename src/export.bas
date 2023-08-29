@@ -4,16 +4,16 @@ Option Explicit
 Sub exportProject()
    Dim i As Integer
    Dim FSO As Scripting.FileSystemObject
-   Dim FileName As String
-   Dim Components As Object
-   Const RepoPath = "C:\sincotsec\L-operator\src"
+   Dim fileName As String
+   Dim components As Object
+   Const repoPath = "C:\sincotsec\L-operator\src"
    Set FSO = New Scripting.FileSystemObject
-   If FSO.FolderExists(RepoPath) Then FSO.DeleteFolder RepoPath
-   FSO.CreateFolder RepoPath
+   If FSO.FolderExists(repoPath) Then FSO.DeleteFolder repoPath
+   FSO.CreateFolder repoPath
    Set FSO = Nothing
-   Set Components = ThisWorkbook.VBProject.VBComponents
-   For i = 1 To Components.Count
-      Components(i).export RepoPath & "\" & Components(i).Name & ".bas"
+   Set components = ThisWorkbook.VBProject.VBComponents
+   For i = 1 To components.Count
+      components(i).export repoPath & "\" & components(i).Name & ".bas"
    Next i
-   Set Components = Nothing
+   Set components = Nothing
 End Sub
