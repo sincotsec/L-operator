@@ -1,4 +1,4 @@
-Attribute VB_Name = "multiplication"
+Attribute VB_Name = "multiplication2"
 Option Explicit
 
 Const MaxRow = 1500

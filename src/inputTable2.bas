@@ -1,4 +1,4 @@
-Attribute VB_Name = "inputTable"
+Attribute VB_Name = "inputTable2"
 Option Explicit
 
 Public Sub prepareSheetBefore()
