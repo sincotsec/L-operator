@@ -38,74 +38,74 @@ Public Sub multiplyOperators()
 End Sub
 
 Private Sub fillArrays(numberOfFactors As Integer, numberOfDegrees As Integer)
-   Dim TempArray() As Integer
-   Dim LayerIndex As Integer
-   Dim DegreeIndex As Integer
+   Dim tempArray() As Integer
+   Dim layerIndex As Integer
+   Dim degreeIndex As Integer
    
    numberOfLayers = numberOfFactors
    sumOfLetters = numberOfDegrees
    ReDim factorDegrees(numberOfLayers - 1)
    ReDim factorConformity(numberOfLayers - 1)
 
-   For LayerIndex = 0 To numberOfLayers - 1
-      ReDim TempArray(sumOfLetters - 1)
-      factorDegrees(LayerIndex) = TempArray
-      For DegreeIndex = 0 To sumOfLetters - 1
-         factorDegrees(LayerIndex)(DegreeIndex) = Cells(1 + LayerIndex, 5 + DegreeIndex)
-      Next DegreeIndex
-   Next LayerIndex
+   For layerIndex = 0 To numberOfLayers - 1
+      ReDim tempArray(sumOfLetters - 1)
+      factorDegrees(layerIndex) = tempArray
+      For degreeIndex = 0 To sumOfLetters - 1
+         factorDegrees(layerIndex)(degreeIndex) = Cells(1 + layerIndex, 5 + degreeIndex)
+      Next degreeIndex
+   Next layerIndex
 
-   Erase TempArray
+   Erase tempArray
 End Sub
 
 Private Sub fillDegrees()
-   Dim TempArrayFrom() As Integer
-   Dim TempArrayTo() As Integer
-   Dim LayerIndex As Integer
-   Dim DegreeIndex As Integer
-   Dim TempConformity() As Integer
-   ReDim TempConformity(sumOfLetters - 1)
+   Dim tempArrayFrom() As Integer
+   Dim tempArrayTo() As Integer
+   Dim layerIndex As Integer
+   Dim degreeIndex As Integer
+   Dim tempConformity() As Integer
+   ReDim tempConformity(sumOfLetters - 1)
    ReDim degrees(numberOfLayers - 1)
    ReDim numberOfSections(numberOfLayers - 1)
    
-   For LayerIndex = 0 To numberOfLayers - 1
-      TempArrayFrom = factorDegrees(LayerIndex)
-      groupArrays TempArrayFrom, sumOfLetters, TempArrayTo, numberOfSections(LayerIndex), TempConformity
-      degrees(LayerIndex) = TempArrayTo
-      factorConformity(LayerIndex) = TempConformity
-   Next LayerIndex
+   For layerIndex = 0 To numberOfLayers - 1
+      tempArrayFrom = factorDegrees(layerIndex)
+      groupArrays tempArrayFrom, sumOfLetters, tempArrayTo, numberOfSections(layerIndex), tempConformity
+      degrees(layerIndex) = tempArrayTo
+      factorConformity(layerIndex) = tempConformity
+   Next layerIndex
    
-   Erase TempArrayFrom
-   Erase TempArrayTo
-   Erase TempConformity
+   Erase tempArrayFrom
+   Erase tempArrayTo
+   Erase tempConformity
 End Sub
 
 Private Sub fillLetters()
-   Dim LayerIndex As Integer
-   Dim DegreeIndex As Integer
-   Dim TempArray() As Integer
+   Dim layerIndex As Integer
+   Dim degreeIndex As Integer
+   Dim tempArray() As Integer
    ReDim letters(numberOfLayers - 1)
-   For LayerIndex = 0 To numberOfLayers - 1
-      ReDim TempArray(sumOfLetters - 1)
-      letters(LayerIndex) = TempArray
+   For layerIndex = 0 To numberOfLayers - 1
+      ReDim tempArray(sumOfLetters - 1)
+      letters(layerIndex) = tempArray
       
-      For DegreeIndex = 0 To numberOfSections(LayerIndex) - 1
-         letters(LayerIndex)(DegreeIndex) = 0
-      Next DegreeIndex
+      For degreeIndex = 0 To numberOfSections(layerIndex) - 1
+         letters(layerIndex)(degreeIndex) = 0
+      Next degreeIndex
       
-      For DegreeIndex = 0 To sumOfLetters - 1
-         letters(LayerIndex)(factorConformity(LayerIndex)(DegreeIndex)) _
-            = letters(LayerIndex)(factorConformity(LayerIndex)(DegreeIndex)) _
+      For degreeIndex = 0 To sumOfLetters - 1
+         letters(layerIndex)(factorConformity(layerIndex)(degreeIndex)) _
+            = letters(layerIndex)(factorConformity(layerIndex)(degreeIndex)) _
             + 1
-      Next DegreeIndex
-   Next LayerIndex
-   Erase TempArray
+      Next degreeIndex
+   Next layerIndex
+   Erase tempArray
 End Sub
 
 Private Sub fillDenominatorDegrees()
    Dim factorIndex As Integer
-   Dim GroupIndex As Integer
-   Dim FactorGroupIndexes() As Integer
+   Dim groupIndex As Integer
+   Dim factorGroupIndexes() As Integer
    
    numberOfUnknowns = 1
    For factorIndex = 0 To numberOfLayers - 1
@@ -114,42 +114,42 @@ Private Sub fillDenominatorDegrees()
    
    ReDim denominatorDegrees(numberOfUnknowns - 1)
    ReDim numeratorConformity(numberOfUnknowns - 1)
-   For GroupIndex = 0 To numberOfUnknowns - 1
-      FactorGroupIndexes = getLetterIndexes(GroupIndex)
-      denominatorDegrees(GroupIndex) = 0
+   For groupIndex = 0 To numberOfUnknowns - 1
+      factorGroupIndexes = getLetterIndexes(groupIndex)
+      denominatorDegrees(groupIndex) = 0
       For factorIndex = 0 To numberOfLayers - 1
-         denominatorDegrees(GroupIndex) _
-            = denominatorDegrees(GroupIndex) _
-            + degrees(factorIndex)(FactorGroupIndexes(factorIndex))
+         denominatorDegrees(groupIndex) _
+            = denominatorDegrees(groupIndex) _
+            + degrees(factorIndex)(factorGroupIndexes(factorIndex))
       Next factorIndex
-   Next GroupIndex
-   Erase FactorGroupIndexes
+   Next groupIndex
+   Erase factorGroupIndexes
    groupArrays denominatorDegrees, numberOfUnknowns, numeratorDegrees, numberOfNumeratorDegrees, numeratorConformity
 End Sub
 
 Private Sub printHeaders()
-   Dim LastColumn As Integer
-   Dim LayerIndex As Integer
-   Dim TempArray() As Integer
+   Dim lastColumn As Integer
+   Dim layerIndex As Integer
+   Dim tempArray() As Integer
    prepareSheetBefore
    Cells(numberOfLayers + 1, 1).EntireRow.Font.Bold = True
    Range("A1") = "Number of factors"
    Range("B1") = numberOfLayers
    Range("A2") = "Number of degrees"
    Range("B2") = sumOfLetters
-   For LayerIndex = 0 To numberOfLayers - 1
-      TempArray = factorDegrees(LayerIndex)
-      Cells(LayerIndex + 1, 4) = "L["
-      printArray TempArray, sumOfLetters, False, LayerIndex + 1, 5
-      Cells(LayerIndex + 1, sumOfLetters + 5) = "]"
-   Next LayerIndex
+   For layerIndex = 0 To numberOfLayers - 1
+      tempArray = factorDegrees(layerIndex)
+      Cells(layerIndex + 1, 4) = "L["
+      printArray tempArray, sumOfLetters, False, layerIndex + 1, 5
+      Cells(layerIndex + 1, sumOfLetters + 5) = "]"
+   Next layerIndex
    lastRow = numberOfLayers + 1
-   LastColumn = sumOfLetters + 7
-   printArray numeratorDegrees, numberOfNumeratorDegrees, False, lastRow, LastColumn
-   LastColumn = LastColumn + numberOfNumeratorDegrees + 1
-   printPointersOfDenominator LastColumn
-   printArray denominatorDegrees, numberOfUnknowns, False, lastRow, LastColumn
-   Erase TempArray
+   lastColumn = sumOfLetters + 7
+   printArray numeratorDegrees, numberOfNumeratorDegrees, False, lastRow, lastColumn
+   lastColumn = lastColumn + numberOfNumeratorDegrees + 1
+   printPointersOfDenominator lastColumn
+   printArray denominatorDegrees, numberOfUnknowns, False, lastRow, lastColumn
+   Erase tempArray
 End Sub
 
 Private Sub doMultiplication()
@@ -179,268 +179,268 @@ End Sub
 ' Intermediate methods
 
 Private Sub printTerm()
-   Dim LastColumn As Integer
+   Dim lastColumn As Integer
    lastRow = lastRow + 1
-   LastColumn = sumOfLetters + 6
-   Cells(lastRow, LastColumn) = "("
-   printArray numeratorRepetitions, numberOfNumeratorDegrees, True, lastRow, LastColumn + 1
-   LastColumn = LastColumn + numberOfNumeratorDegrees + 1
-   Cells(lastRow, LastColumn) = ") : ("
-   printArray unknowns, numberOfUnknowns, True, lastRow, LastColumn + 1
-   LastColumn = LastColumn + numberOfUnknowns + 1
-   Cells(lastRow, LastColumn) = ") L["
-   printArray resultDegrees, sumOfLetters, False, lastRow, LastColumn + 1
-   LastColumn = LastColumn + sumOfLetters + 1
-   Cells(lastRow, LastColumn) = "]"
+   lastColumn = sumOfLetters + 6
+   Cells(lastRow, lastColumn) = "("
+   printArray numeratorRepetitions, numberOfNumeratorDegrees, True, lastRow, lastColumn + 1
+   lastColumn = lastColumn + numberOfNumeratorDegrees + 1
+   Cells(lastRow, lastColumn) = ") : ("
+   printArray unknowns, numberOfUnknowns, True, lastRow, lastColumn + 1
+   lastColumn = lastColumn + numberOfUnknowns + 1
+   Cells(lastRow, lastColumn) = ") L["
+   printArray resultDegrees, sumOfLetters, False, lastRow, lastColumn + 1
+   lastColumn = lastColumn + sumOfLetters + 1
+   Cells(lastRow, lastColumn) = "]"
 End Sub
 
-Private Sub groupArrays(ArrayFrom() As Integer, CountFrom As Integer, ArrayTo() As Integer, CountTo As Integer, ConformityArray() As Integer)
+Private Sub groupArrays(arrayFrom() As Integer, countFrom As Integer, arrayTo() As Integer, countTo As Integer, conformityArray() As Integer)
    Dim isFound As Boolean
-   Dim IndexFrom As Integer
-   Dim IndexTo As Integer
-   ReDim ConformityArray(CountFrom - 1)
-   ReDim ArrayTo(CountFrom - 1)
-   CountTo = 0
+   Dim indexFrom As Integer
+   Dim indexTo As Integer
+   ReDim conformityArray(countFrom - 1)
+   ReDim arrayTo(countFrom - 1)
+   countTo = 0
    
-   For IndexFrom = 0 To CountFrom - 1
+   For indexFrom = 0 To countFrom - 1
       isFound = False
-      For IndexTo = 0 To CountTo - 1
-         If ArrayTo(IndexTo) = ArrayFrom(IndexFrom) Then
-            ConformityArray(IndexFrom) = IndexTo
+      For indexTo = 0 To countTo - 1
+         If arrayTo(indexTo) = arrayFrom(indexFrom) Then
+            conformityArray(indexFrom) = indexTo
             isFound = True
             Exit For
          End If
-      Next IndexTo
+      Next indexTo
       If (Not isFound) Then
-         CountTo = CountTo + 1
-         ArrayTo(CountTo - 1) = ArrayFrom(IndexFrom)
-         ConformityArray(IndexFrom) = CountTo - 1
+         countTo = countTo + 1
+         arrayTo(countTo - 1) = arrayFrom(indexFrom)
+         conformityArray(indexFrom) = countTo - 1
       End If
-   Next IndexFrom
+   Next indexFrom
 End Sub
 
-Private Function getLetterIndexes(UnknownIndex As Integer) As Integer()
+Private Function getLetterIndexes(unknownIndex As Integer) As Integer()
    Dim i As Integer
-   Dim TempIndex As Integer
-   Dim LetterIndexes() As Integer
-   ReDim LetterIndexes(numberOfLayers - 1)
+   Dim tempIndex As Integer
+   Dim letterIndexes() As Integer
+   ReDim letterIndexes(numberOfLayers - 1)
    
-   TempIndex = UnknownIndex
+   tempIndex = unknownIndex
    For i = numberOfLayers - 1 To 1 Step -1
-      LetterIndexes(i) = TempIndex Mod numberOfSections(i)
-      TempIndex = TempIndex \ numberOfSections(i)
+      letterIndexes(i) = tempIndex Mod numberOfSections(i)
+      tempIndex = tempIndex \ numberOfSections(i)
    Next i
-   LetterIndexes(0) = TempIndex
-   getLetterIndexes = LetterIndexes()
-   Erase LetterIndexes
+   letterIndexes(0) = tempIndex
+   getLetterIndexes = letterIndexes()
+   Erase letterIndexes
 End Function
 
-Private Function getUnknownIndex(LetterIndexes() As Integer) As Integer
+Private Function getUnknownIndex(letterIndexes() As Integer) As Integer
    Dim i As Integer
-   getUnknownIndex = LetterIndexes(0)
+   getUnknownIndex = letterIndexes(0)
    For i = 1 To numberOfLayers - 1
       getUnknownIndex = getUnknownIndex * numberOfSections(i)
-      getUnknownIndex = getUnknownIndex + LetterIndexes(i)
+      getUnknownIndex = getUnknownIndex + letterIndexes(i)
    Next i
 End Function
 
-Private Function isFirstIndex(LayerIndex As Integer, UnknownIndex As Integer) As Boolean
-   Dim LetterIndexes() As Integer
+Private Function isFirstIndex(layerIndex As Integer, unknownIndex As Integer) As Boolean
+   Dim letterIndexes() As Integer
    Dim i As Integer
-   LetterIndexes = getLetterIndexes(UnknownIndex)
+   letterIndexes = getLetterIndexes(unknownIndex)
    isFirstIndex = True
    For i = 0 To numberOfLayers - 1
-      If (i <> LayerIndex) And (LetterIndexes(i) <> 0) Then
+      If (i <> layerIndex) And (letterIndexes(i) <> 0) Then
          isFirstIndex = False
          Exit For
       End If
    Next i
 End Function
 
-Private Function getPreviousIndex(LayerIndex As Integer, UnknownIndex As Integer) As Integer
+Private Function getPreviousIndex(layerIndex As Integer, unknownIndex As Integer) As Integer
    Dim i As Integer
-   Dim PreviousLetterIndexes() As Integer
-   ReDim PreviousLetterIndexes(numberOfLayers - 1)
-   PreviousLetterIndexes = getLetterIndexes(UnknownIndex)
+   Dim previousLetterIndexes() As Integer
+   ReDim previousLetterIndexes(numberOfLayers - 1)
+   previousLetterIndexes = getLetterIndexes(unknownIndex)
    For i = numberOfLayers - 1 To 0 Step -1
-      If (i <> LayerIndex) And (PreviousLetterIndexes(i) > 0) Then
-         PreviousLetterIndexes(i) = PreviousLetterIndexes(i) - 1
+      If (i <> layerIndex) And (previousLetterIndexes(i) > 0) Then
+         previousLetterIndexes(i) = previousLetterIndexes(i) - 1
          Exit For
-      ElseIf (i <> LayerIndex) And (PreviousLetterIndexes(i) = 0) Then
-         PreviousLetterIndexes(i) = numberOfSections(i) - 1
+      ElseIf (i <> layerIndex) And (previousLetterIndexes(i) = 0) Then
+         previousLetterIndexes(i) = numberOfSections(i) - 1
       End If
    Next i
-   getPreviousIndex = getUnknownIndex(PreviousLetterIndexes)
-   Erase PreviousLetterIndexes
+   getPreviousIndex = getUnknownIndex(previousLetterIndexes)
+   Erase previousLetterIndexes
 End Function
 
-Private Function getUnknown(UnknownIndex As Integer) As Integer
-   Dim LayerIndex As Integer
-   Dim PreviousIndex As Integer
-   Dim LetterIndexes() As Integer
-   LetterIndexes = getLetterIndexes(UnknownIndex)
+Private Function getUnknown(unknownIndex As Integer) As Integer
+   Dim layerIndex As Integer
+   Dim previousIndex As Integer
+   Dim letterIndexes() As Integer
+   letterIndexes = getLetterIndexes(unknownIndex)
    
-   For LayerIndex = 0 To numberOfLayers - 1
-      If isFirstIndex(LayerIndex, UnknownIndex) Then
-         upperBounds(LayerIndex, UnknownIndex) = letters(LayerIndex)(LetterIndexes(LayerIndex))
+   For layerIndex = 0 To numberOfLayers - 1
+      If isFirstIndex(layerIndex, unknownIndex) Then
+         upperBounds(layerIndex, unknownIndex) = letters(layerIndex)(letterIndexes(layerIndex))
       Else
-         PreviousIndex = getPreviousIndex(LayerIndex, UnknownIndex)
-         upperBounds(LayerIndex, UnknownIndex) = upperBounds(LayerIndex, PreviousIndex) - unknowns(PreviousIndex)
+         previousIndex = getPreviousIndex(layerIndex, unknownIndex)
+         upperBounds(layerIndex, unknownIndex) = upperBounds(layerIndex, previousIndex) - unknowns(previousIndex)
       End If
-   Next LayerIndex
-   getUnknown = upperBounds(0, UnknownIndex)
+   Next layerIndex
+   getUnknown = upperBounds(0, unknownIndex)
    
-   For LayerIndex = 0 To numberOfLayers - 1
-      getUnknown = WorksheetFunction.Min(getUnknown, upperBounds(LayerIndex, UnknownIndex))
-   Next LayerIndex
-   Erase LetterIndexes
+   For layerIndex = 0 To numberOfLayers - 1
+      getUnknown = WorksheetFunction.Min(getUnknown, upperBounds(layerIndex, unknownIndex))
+   Next layerIndex
+   Erase letterIndexes
 End Function
 
-Private Function getMu(UnknownIndex As Integer) As Integer
-   Dim LayerIndex As Integer
-   Dim SectionIndex As Integer
-   Dim LettersASum As Integer
-   Dim TempIndexes() As Integer
-   Dim LetterIndexes() As Integer
+Private Function getMu(unknownIndex As Integer) As Integer
+   Dim layerIndex As Integer
+   Dim sectionIndex As Integer
+   Dim lettersASum As Integer
+   Dim tempIndexes() As Integer
+   Dim letterIndexes() As Integer
    
-   LetterIndexes = getLetterIndexes(UnknownIndex)
-   ReDim TempIndexes(numberOfLayers - 1)
-   For LayerIndex = 0 To numberOfLayers - 1
-      TempIndexes(LayerIndex) = 0
-   Next LayerIndex
+   letterIndexes = getLetterIndexes(unknownIndex)
+   ReDim tempIndexes(numberOfLayers - 1)
+   For layerIndex = 0 To numberOfLayers - 1
+      tempIndexes(layerIndex) = 0
+   Next layerIndex
    
-   LettersASum = 0
-   For SectionIndex = 0 To LetterIndexes(0)
-      LettersASum = LettersASum + letters(0)(SectionIndex)
-   Next SectionIndex
+   lettersASum = 0
+   For sectionIndex = 0 To letterIndexes(0)
+      lettersASum = lettersASum + letters(0)(sectionIndex)
+   Next sectionIndex
    
    getMu = (1 - numberOfLayers) * sumOfLetters _
-      + (numberOfLayers - 2) * LettersASum _
-      + 2 * upperBounds(0, UnknownIndex)
+      + (numberOfLayers - 2) * lettersASum _
+      + 2 * upperBounds(0, unknownIndex)
    
-   For LayerIndex = 0 To numberOfLayers - 1
-      For SectionIndex = 0 To LetterIndexes(LayerIndex)
-         getMu = getMu + upperBounds(LayerIndex, getUnknownIndex(TempIndexes))
-         TempIndexes(LayerIndex) = TempIndexes(LayerIndex) + 1
-      Next SectionIndex
-      TempIndexes(LayerIndex) = TempIndexes(LayerIndex) - 1
-      getMu = getMu - upperBounds(0, getUnknownIndex(TempIndexes))
-   Next LayerIndex
+   For layerIndex = 0 To numberOfLayers - 1
+      For sectionIndex = 0 To letterIndexes(layerIndex)
+         getMu = getMu + upperBounds(layerIndex, getUnknownIndex(tempIndexes))
+         tempIndexes(layerIndex) = tempIndexes(layerIndex) + 1
+      Next sectionIndex
+      tempIndexes(layerIndex) = tempIndexes(layerIndex) - 1
+      getMu = getMu - upperBounds(0, getUnknownIndex(tempIndexes))
+   Next layerIndex
    
-   Erase LetterIndexes
-   Erase TempIndexes
+   Erase letterIndexes
+   Erase tempIndexes
 End Function
 
 Private Sub fillUnknowns()
-   Dim UnknownIndex As Integer
+   Dim unknownIndex As Integer
    If diminishingUnknownIndex <> -1 Then
       unknowns(diminishingUnknownIndex) = unknowns(diminishingUnknownIndex) - 1
    End If
-   For UnknownIndex = diminishingUnknownIndex + 1 To numberOfUnknowns - 1
-      unknowns(UnknownIndex) = getUnknown(UnknownIndex)
-      lowerBounds(UnknownIndex) = getMu(UnknownIndex)
-      If lowerBounds(UnknownIndex) < 0 Then lowerBounds(UnknownIndex) = 0
-   Next UnknownIndex
+   For unknownIndex = diminishingUnknownIndex + 1 To numberOfUnknowns - 1
+      unknowns(unknownIndex) = getUnknown(unknownIndex)
+      lowerBounds(unknownIndex) = getMu(unknownIndex)
+      If lowerBounds(unknownIndex) < 0 Then lowerBounds(unknownIndex) = 0
+   Next unknownIndex
 End Sub
 
 Private Sub fillDiminishingUnknownIndex()
-   Dim UnknownIndex As Integer
+   Dim unknownIndex As Integer
    diminishingUnknownIndex = -1
-   For UnknownIndex = numberOfUnknowns - 1 To 0 Step -1
-      If unknowns(UnknownIndex) > lowerBounds(UnknownIndex) Then
-         diminishingUnknownIndex = UnknownIndex
+   For unknownIndex = numberOfUnknowns - 1 To 0 Step -1
+      If unknowns(unknownIndex) > lowerBounds(unknownIndex) Then
+         diminishingUnknownIndex = unknownIndex
          Exit For
       End If
-   Next UnknownIndex
+   Next unknownIndex
 End Sub
 
-Private Sub printArray(dgArray() As Integer, dgSize As Integer, dgFactorial As Boolean, RowIndex As Long, ColumnIndex As Integer)
+Private Sub printArray(dgArray() As Integer, dgSize As Integer, dgFactorial As Boolean, rowIndex As Long, columnIndex As Integer)
    Dim i As Integer
-   Dim Factorial As String
-   Factorial = ""
-   If dgFactorial Then Factorial = "!"
+   Dim factorial As String
+   factorial = ""
+   If dgFactorial Then factorial = "!"
    For i = 0 To dgSize - 1
-      Cells(RowIndex, ColumnIndex + i) = dgArray(i) & Factorial
+      Cells(rowIndex, columnIndex + i) = dgArray(i) & factorial
    Next i
 End Sub
 
-Private Sub printPointersOfDenominator(ColumnIndex As Integer)
+Private Sub printPointersOfDenominator(columnIndex As Integer)
    Dim i As Integer
    Dim j As Integer
-   Dim FactorGroupIndexes() As Integer
+   Dim factorGroupIndexes() As Integer
    For i = 0 To numberOfUnknowns - 1
-      FactorGroupIndexes = getLetterIndexes(i)
+      factorGroupIndexes = getLetterIndexes(i)
       For j = 0 To numberOfLayers - 1
-         Cells(j + 1, ColumnIndex + i) = degrees(j)(FactorGroupIndexes(j))
+         Cells(j + 1, columnIndex + i) = degrees(j)(factorGroupIndexes(j))
       Next j
    Next i
 End Sub
 
 Private Sub groupRepetitionsFromDenominator()
-   Dim GroupIndex As Integer
+   Dim groupIndex As Integer
    ReDim numeratorRepetitions(numberOfNumeratorDegrees - 1)
-   For GroupIndex = 0 To numberOfNumeratorDegrees - 1
-      numeratorRepetitions(GroupIndex) = 0
-   Next GroupIndex
-   For GroupIndex = 0 To numberOfUnknowns - 1
-      numeratorRepetitions(numeratorConformity(GroupIndex)) = numeratorRepetitions(numeratorConformity(GroupIndex)) + unknowns(GroupIndex)
-   Next GroupIndex
+   For groupIndex = 0 To numberOfNumeratorDegrees - 1
+      numeratorRepetitions(groupIndex) = 0
+   Next groupIndex
+   For groupIndex = 0 To numberOfUnknowns - 1
+      numeratorRepetitions(numeratorConformity(groupIndex)) = numeratorRepetitions(numeratorConformity(groupIndex)) + unknowns(groupIndex)
+   Next groupIndex
 End Sub
 
 Private Sub fillDegreesOfResult()
-   Dim GroupIndex As Integer
+   Dim groupIndex As Integer
    Dim j As Integer
    Dim k As Integer
    ReDim resultDegrees(sumOfLetters - 1)
    k = 0
-   For GroupIndex = 0 To numberOfNumeratorDegrees - 1
-      For j = 1 To numeratorRepetitions(GroupIndex)
-         resultDegrees(k) = numeratorDegrees(GroupIndex)
+   For groupIndex = 0 To numberOfNumeratorDegrees - 1
+      For j = 1 To numeratorRepetitions(groupIndex)
+         resultDegrees(k) = numeratorDegrees(groupIndex)
          k = k + 1
       Next j
-   Next GroupIndex
+   Next groupIndex
    'Debug.Print getInfo()
 End Sub
 
 ' String functions
 
 Public Function getInfo() As String
-   Dim DebugString As String
+   Dim debugString As String
    Dim i As Integer, j As Integer
-   DebugString = "NumberOfLayers = " & numberOfLayers & vbLf & "SumOfLetters = " & sumOfLetters
+   debugString = "NumberOfLayers = " & numberOfLayers & vbLf & "SumOfLetters = " & sumOfLetters
    For i = 0 To numberOfLayers - 1
-      DebugString = DebugString & vbLf & i & ":"
+      debugString = debugString & vbLf & i & ":"
       For j = 0 To numberOfSections(i) - 1
-         DebugString = DebugString & " " & letters(i)(j)
+         debugString = debugString & " " & letters(i)(j)
       Next j
    Next i
-   DebugString = DebugString & vbLf & "NumberOfUnknowns = " & numberOfUnknowns
-   getInfo = DebugString
+   debugString = debugString & vbLf & "NumberOfUnknowns = " & numberOfUnknowns
+   getInfo = debugString
 End Function
 
 Public Function getUnknownInfo() As String
    Dim i As Integer
-   Dim DebugString As String
+   Dim debugString As String
    For i = 0 To numberOfUnknowns - 1
-      DebugString = DebugString & " " & unknowns(i)
+      debugString = debugString & " " & unknowns(i)
    Next i
-   DebugString = DebugString & " | " & diminishingUnknownIndex
-   getUnknownInfo = DebugString
+   debugString = debugString & " | " & diminishingUnknownIndex
+   getUnknownInfo = debugString
 End Function
 
 Public Function getLetterInfo() As String
-   Dim DebugString As String
+   Dim debugString As String
    Dim i As Integer
    Dim j As Integer
-   DebugString = "Array of letters" & vbLf
+   debugString = "Array of letters" & vbLf
    For i = 0 To numberOfLayers - 1
-      DebugString = DebugString & "Factor " & i + 1 & ". Groups: " & numberOfSections(i) & ". Repetitions:"
+      debugString = debugString & "Factor " & i + 1 & ". Groups: " & numberOfSections(i) & ". Repetitions:"
       For j = 0 To numberOfSections(i) - 1
-         DebugString = DebugString & " " & letters(i)(j)
+         debugString = debugString & " " & letters(i)(j)
       Next j
-      DebugString = DebugString & vbLf
+      debugString = debugString & vbLf
    Next i
-   getLetterInfo = DebugString
+   getLetterInfo = debugString
 End Function
 
 ' Destructor
